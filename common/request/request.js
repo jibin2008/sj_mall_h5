@@ -4,7 +4,7 @@
 import Request from '@/common/myp-request/index.js'
 // 设置 通用的 baseUrl 以及 header
 export const config = {
-	baseUrl: '/gzwz/service' ,
+	baseUrl: '' ,
     header: {
 		// 'cookie': uni.getStorageSync("sessionid"),
 		'content-type': 'application/x-www-form-urlencoded;charset=utf-8',

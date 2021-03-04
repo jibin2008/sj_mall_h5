@@ -3,7 +3,8 @@
 		{
 			"path": "pages/activity/DoubleHolidayOfferNew",
 			"style": {
-				"navigationBarTitleText": "双节大转盘"
+				"navigationBarTitleText": "拼手气 抽好礼",
+				"navigationStyle":"custom"
 			}
 		}
 	],

@@ -31,6 +31,9 @@
 </script>
 
 <style scoped>
+	.f18{
+		font-size: 36rpx;
+	}
 	.txshdz_btn {
 	    background: linear-gradient(to right,#ffb763,#ff8763);
 	    width: 80%;

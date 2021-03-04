@@ -70,6 +70,8 @@
 	
 	import { getActAward,getActAwardRecord,getActAwardRecordTop20,receiveCoupon,getAwardList } from './apiNew.js'
 	import {parseType} from './utils.js'
+	import { queryLocalPhoneNumber } from '@/common/mm.js'
+	
 	
 	export default {
 		components:{Turntable,
@@ -105,7 +107,7 @@
 				],
 				myAwardRecordList:[],
 				awardIndex:0,
-				phone:'17309693263',
+				phone:'',
 				userId:'',
 				storeId:''
 			}
@@ -123,7 +125,11 @@
 					if(this.myAwardRecordList.length>0){
 						this.$refs.awardResultAlreadyPop.open()
 					}else{
+						uni.showLoading({
+						    title: '请稍后'
+						})
 						getActAward(this.phone).then(rsp=>{
+							uni.hideLoading()
 							if(rsp.data.result===0){
 								this.awardIndex=rsp.data.awardIndex
 								this.$refs.turntable.rotate(rsp.data.awardIndex)
@@ -160,15 +166,11 @@
 			},
 			useNow(awardIdx){
 				if(awardIdx===7){
-					uni.navigateTo({
-						url: `../../pages/mall/MallProdListCreate?tabIndex=4`
-					})
+					window.location.href=`https://ah.189.cn/sj/cms/socialH5/product/productList.html?type=0&storeId=${this.storeId}&userId=${this.userId}`
 				}
 				else{
-					let prodCode=this.awardsList[awardIdx].productCode;
-					uni.navigateTo({
-						url:'../shop/Detail?storeId='+this.storeId + '&userId='+this.userId + "&productId="+prodCode
-					})
+					let prodCode=this.awardsList[awardIdx].productCode
+					window.location.href=`https://ah.189.cn/sj/cms/socialH5/product/other/Detail.html?shareType=1&storeId=${this.storeId}&userId=${this.userId}&productId=${prodCode}`
 				}
 			},
 			logout(){
@@ -176,30 +178,36 @@
 			}
 		},
 		onLoad(option){
-			this.phone=option.phoneNum
-			this.userId=option.userId
-			this.storeId=option.storeId
-			getActAwardRecordTop20().then(resp=>{
-				this.allAwardListTop=resp.data.awardRecordList.map(itm=>{
-					let award=this.awardsList[itm.awardId];
-					return {
-						tel:itm.phoneNumber,
-						cnp:award.text + parseType(award.type)
-					}
-				})
-			})
+			if(option.phoneNum)
+				this.phone=option.phoneNum
+			if(option.userId)
+				this.userId=option.userId
+			if(option.storeId)
+				this.storeId=option.storeId
 		},
 		created() {
 			getAwardList().then(resp=>{
 				this.awardsList=resp.data
+				getActAwardRecordTop20().then(resp=>{
+					this.allAwardListTop=resp.data.awardRecordList.map(itm=>{
+						let award=this.awardsList[itm.awardId];
+						return {
+							tel:itm.phoneNumber,
+							cnp:award.text + parseType(award.type)
+						}
+					})
+				})
 			})
 		},
 		onReady() {
-			if(this.phone === ''){
-				this.$refs.changePhonePopup.open()
-			}else{
-				this.refreshActAwardRecord()
-			}
+			queryLocalPhoneNumber()
+				.then(phoneNum=>{
+					this.phone=phoneNum
+					this.refreshActAwardRecord()
+				})
+				.catch(msg=>{
+					this.$refs.changePhonePopup.open()
+				})
 		}
 	}
 </script>
@@ -212,7 +220,7 @@
 		margin-left: 10rpx;
 	}
 	.body{
-		font:14rpx/30rpx "微软雅黑";
+	    font: 28rpx/64rpx "微软雅黑";
 		background: #3280ed url(https://ah.189.cn/sj/cms/activity/img/cjbg_01.png) no-repeat top;
 		background-size: contain;
 		padding-top: 311rpx;
@@ -236,7 +244,7 @@
 		height: 68rpx;
 		width: 40%;
 	}
-	.list_lh{ height:200px; overflow:hidden; padding:0px 20rpx; line-height:35px; padding-bottom:-20rpx;}
+	.list_lh{ height:400rpx; overflow:hidden; padding:0px 20rpx; line-height:70rpx; padding-bottom:-20rpx;}
 	.footer{text-align:center; font:30rpx "微软雅黑";color: #FFFFFF;}
 	.zjmd{ position:relative;margin-top: 25rpx;}
 	.jinse{ color:#da7906;  border:1px solid #fdd067; border-radius:10px; padding-bottom:20px;background-color: #fff;}

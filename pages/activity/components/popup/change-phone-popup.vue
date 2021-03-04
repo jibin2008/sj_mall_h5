@@ -4,12 +4,12 @@
 		    <div class="window yahei pb20 tc dnone" id="dengl" style="display: block;">
 		        <div>
 		            <a class="dblock fr pr5 pt5 pl10" @click="$refs.popup.close()">
-		                <img src="https://ah.189.cn/sj/cms/activity/img/fail.png" width="30">
+		                <img class="close-img" src="https://ah.189.cn/sj/cms/activity/img/fail.png">
 		            </a>
 		            <div class="clear"></div>
 		        </div>
 		        <div class="mt5 pl30 pr30">
-		            <input class="textbox01" placeholder="请输入您激活的手机号" v-model="phone" onfocus="if(value==defaultValue){value='';this.style.color='#000'}" onblur="if(!value){value=defaultValue;this.style.color='#9f9f9f'}" style="color: rgb(159, 159, 159);">
+		            <input class="textbox01" placeholder="请输入您的手机号" v-model="phone" onfocus="if(value==defaultValue){value='';this.style.color='#000'}" onblur="if(!value){value=defaultValue;this.style.color='#9f9f9f'}" style="color: rgb(159, 159, 159);">
 		        </div>
 		        <div class="pl30 pr30">
 		            <div class="mt5 fl">
@@ -30,8 +30,7 @@
 	export default{
 		components:{uniPopup},
 		props:{
-			value:{},
-			verifyCode:''
+			value:{}
 		},
 		methods:{
 			open(){
@@ -39,7 +38,7 @@
 				this.$refs.popup.open()
 			},
 			confirm(){
-				if(this.sendVerifyCodeAbled&&this.verifyCode!==''){
+				if(this.verifyCode!==''){
 					userH5Login(this.phone,this.verifyCode).then(resp=>{
 						if(resp.data.result==='0'){
 							this.$emit('input',this.phone)
@@ -87,7 +86,8 @@
 			return {
 				phone:'',
 				tim:'',
-				isVerifyCodeReqesting:false
+				isVerifyCodeReqesting:false,
+				verifyCode:''
 			}
 		},
 		watch:{
@@ -122,7 +122,6 @@
 	    margin: 0 auto;
 	    background: #FFF;
 	    border-radius: 20rpx;
-	    font: 28rpx/64rpx "微软雅黑";
 	    color: #9f9f9f;
 	}
 	.textbox01 {
@@ -151,5 +150,8 @@
 	.btn-abled{
 	    background: #f64639;
 	    color: #fff;
+	}
+	.close-img{
+		width: 60rpx;
 	}
 </style>

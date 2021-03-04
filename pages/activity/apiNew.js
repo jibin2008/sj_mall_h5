@@ -1,7 +1,7 @@
 import Request from '@/common/request/request.js'
 
 export function getActAwardRecord(phoneNumber){
-	let url='/sj/actitvity/getActAwardRecord'
+	let url='/gzwz/service/sj/actitvity/getActAwardRecord'
 	return Request.request({
 		url:url,
 		method: 'POST',
@@ -13,7 +13,7 @@ export function getActAwardRecord(phoneNumber){
 
 
 export function getActAward(phoneNumber){
-	let url='/sj/actitvity/getActAward'
+	let url='/gzwz/service/sj/actitvity/getActAward'
 	return Request.request({
 		url:url,
 		method: 'GET',
@@ -24,7 +24,7 @@ export function getActAward(phoneNumber){
 }
 
 export function getActAwardRecordTop20(){
-	let url='/sj/actitvity/getActAwardRecordTop20'
+	let url='/gzwz/service/sj/actitvity/getActAwardRecordTop20'
 	return Request.request({
 		url:url,
 		method: 'GET'
@@ -48,14 +48,14 @@ export function getAwardList(){
 
 
 export function getSms(phoneNumber){
-	let url=`/sj/service/gzwz/sjH5user/getSms/${phoneNumber}`
+	let url=`/gzwz/service/sj/service/gzwz/sjH5user/getSms/${phoneNumber}`
 	return Request.request({
 		url:url,
 		method: 'POST'
 	});
 }
 export function userH5Login(phoneNumber,randomCode){
-	let url=`/sj/service/gzwz/sjH5user/userH5Login`
+	let url=`/gzwz/service/sj/service/gzwz/sjH5user/userH5Login`
 	return Request.request({
 		url:url,
 		method: 'POST',
