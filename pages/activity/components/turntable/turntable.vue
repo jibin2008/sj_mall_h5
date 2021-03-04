@@ -21,9 +21,9 @@
 						</div>
 					</div>
 				</div>
-				<div :animation="animationData" class="lp-point ms ptl0">
+				<view :animation="animationData" class="lp-point ms ptl0">
 					<image @click="$emit('startClick')" class="img" src="https://ah.189.cn/sj/cms/activity/img/pointer.png"></cover>
-				</div>
+				</view>
 			</div>
 		</div>
 	</div>

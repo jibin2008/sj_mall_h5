@@ -39,15 +39,16 @@
 	
 	.baigbg {
 	    background: #fff;
-	    border-radius: 10rpx;
-	    margin-top: -60rpx;
+	    border-radius: 20rpx;
+	    margin-top: -120rpx;
 	}
 	
 	.close-icon{
-		width: 377rpx;
-		height: 299rpx;
+		width: 450rpx;
+		height: 360rpx;
 	}
 	.quan{
-		padding-top: 60rpx;
+		padding-top: 120rpx;
+		line-height: 48rpx;
 	}
 </style>
