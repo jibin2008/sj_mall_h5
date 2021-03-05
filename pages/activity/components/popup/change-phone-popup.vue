@@ -1,26 +1,28 @@
 <template>
 	<uni-popup ref='popup'>
-		<div class="d-content" style="padding: 0px;text-align: left;">
-		    <div class="window yahei pb20 dnone" id="dengl" style="display: block;">
-		        <div>
-		            <a class="dblock fr pr5 pt5 pl10" @click="$refs.popup.close()">
-		                <img class="close-img" src="https://ah.189.cn/sj/cms/activity/img/fail.png">
-		            </a>
-		            <div class="clear"></div>
-		        </div>
-		        <div class="mt5 pl30 pr30">
-		            <input class="textbox01" placeholder="请输入您的手机号" v-model="phone" onfocus="if(value==defaultValue){value='';this.style.color='#000'}" onblur="if(!value){value=defaultValue;this.style.color='#9f9f9f'}" style="color: rgb(159, 159, 159);">
-		        </div>
-		        <div class="pl30 pr30">
-		            <div class="mt5 fl">
-		                <input type="tel" class="textbox02" v-model="verifyCode">
-		            </div>
-		            <a @click="getVerifyCode" class="dblock mt5 fr yzm tc" :class="sendVerifyCodeAbled?'btn-abled':''">发送验证码{{this.tim}}</a>
-		            <div class="clear"></div>
-		        </div>
-		        <a class="btn02 tc btn-abled" @click="confirm">确认</a>
-		    </div>
-		</div>
+	  <div class="ad_tc">
+	    <a @click="$refs.popup.close" class="dblock fr close">
+	      <img class="close-img" src="https://ah.189.cn/sj/cms/activity/img/close1.png"/>
+	    </a>
+	    <div class="clear"></div>
+	    <div class="box">
+	      <p class="tc f20 pt10 dgray">登录</p>
+	      <div class="wp90 fc pb10">
+	        <div class="xx_box xx_box1 mt15">
+	          <input maxlength="11" type="number" v-model.number="phone" class="f14 lgray" placeholder="请输入您的手机号"/>
+	        </div>
+	        <div class="mt15">
+	          <div class="xx_box xx_box2 fl">
+	            <input maxlength="6" type="number" v-model.number="verifyCode" class="f14 lgray fl" placeholder="请输入验证码"/>
+	          </div>
+	          <a @click="getVerifyCode" v-if="!isVerifyCodeReqesting" class="huoqu_btn fr tc f14" :class="sendVerifyCodeAbled?'':'btn-disabled'">获取验证码</a>
+	          <a v-else class="huoqu_btn fr tc f14 btn-disabled">{{tim}}秒后重发</a>
+	          <div class="clear"></div>
+	        </div>
+	        <a @click="confirm" class="look_btn f18" :class="loginAbled?'':'btn-disabled'">确定</a>
+	      </div>
+	    </div>
+	  </div>
 	</uni-popup>
 </template>
 
@@ -38,7 +40,7 @@
 				this.$refs.popup.open()
 			},
 			confirm(){
-				if(this.verifyCode!==''){
+				if(this.loginAbled){
 					userH5Login(this.phone,this.verifyCode).then(resp=>{
 						if(resp.data.result==='0'){
 							this.$emit('input',this.phone)
@@ -98,58 +100,90 @@
 		computed:{
 			sendVerifyCodeAbled(){
 				return /^((1[3,5,8,7,9][0-9])|(14[5,7])|(17[0,6,7,8])|(19[1,7]))\d{8}$/.test(this.phone)&&!this.isVerifyCodeReqesting
+			},
+			loginAbled(){
+				return this.sendVerifyCodeAbled&&this.verifyCode>=100000&&this.verifyCode<=999999
 			}
 		}
 	}
 </script>
 
 <style scoped>
-	.pb20 {
-	    padding-bottom: 40rpx;
+	.btn-disabled{
+		background: #b2b2b2 !important;
 	}
-	.pr30 {
-		padding-right: 60rpx;
-	}
-	.pl30 {
-		padding-left: 60rpx;
-	}
-	.mt5 {
-		margin-top: 10rpx;
-	}
-	.d-content { display:inline-block; display:block\0/*IE8 BUG*/; display:inline-block\9\0; *zoom:1; *display:inline; text-align:left; border:0 none;  }
-	.window {
-	    width: 600rpx;
-	    margin: 0 auto;
-	    background: #FFF;
-	    border-radius: 20rpx;
-	    color: #9f9f9f;
-	}
-	.textbox01 {
-	    width: 480rpx;
-	    height: 64rpx;
-	    background: #f7f7f7;
-	}
-	.textbox02 {
-	    width: 280rpx;
-	    height: 64rpx;
-	    background: #f7f7f7;
-	}
-	.yzm {
-	    width: 180rpx;
-	    height: 60rpx;
-	    border: 2rpx solid #d7d7d7;
-	    color: #9f9f9f;
-	}
-	.btn02 {
+	.look_btn {
+	    background: linear-gradient(to right,#ffb763,#ff8763);
+	    width: 80%;
+	    height: 80rpx;
+	    margin: 40rpx auto;
 	    display: block;
-	    width: 480rpx;
-	    height: 60rpx;
-	    border-radius: 10rpx;
-	    margin: 30rpx 60rpx;
-	}
-	.btn-abled{
-	    background: #f64639;
+	    text-align: center;
+	    line-height: 80rpx;
+	    border-radius: 48rpx;
 	    color: #fff;
+	}
+	.f18 {
+	    font-size: 36rpx;
+	}
+	.xx_box input {
+	    background: none;
+	    padding-left: 10rpx;
+	}
+	.lgray {
+	    color: #9c9c9c;
+	}
+	.f14 {
+	    font-size: 28rpx;
+	}
+	.xx_box{
+	    background: #ffffff;
+	    border: 2rpx solid #cccccc;
+	    height: 80rpx;
+	    line-height: 80rpx;
+	    border-radius: 8rpx;
+		display: flex;
+		align-items: center;
+		justify-content: start;
+	}
+	.xx_box1 {
+	    width: 100%;
+	}
+	.xx_box2 {
+	    width: 62%;
+	}
+	.huoqu_btn {
+	    background: linear-gradient(to right,#ffb763,#ff8763);
+	    display: block;
+	    width: 35%;
+	    color: #fff;
+		height: 80rpx;
+	    line-height: 80rpx;
+		border-radius: 8rpx;
+	}
+	.mt15 {
+	    margin-top: 30rpx;
+	}
+	.pt10 {
+	    padding-top: 20rpx;
+	}
+	.pb10 {
+		padding-bottom: 20rpx;
+	}
+	.ad_tc {
+	    width: 80%;
+	    position: fixed;
+	    top: 15%;
+	    left: 10%;
+	}
+	.box {
+	    background: #ffffff;
+	    border-radius: 16rpx;
+	}
+	.close {
+	    margin-right: 0rpx;
+	    margin-bottom: 20rpx;
+		padding: 0rpx;
 	}
 	.close-img{
 		width: 60rpx;
