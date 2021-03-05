@@ -193,6 +193,7 @@ function noSecret(paramStr){
 					if (!phone) {
 						rj(dataJson.msg)
 					} else {
+						document.cookie = "dxytPhoneNumber=" + phone
 						rs(phone)
 					}
 				}).catch(m=>{

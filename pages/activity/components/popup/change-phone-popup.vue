@@ -1,7 +1,7 @@
 <template>
 	<uni-popup ref='popup'>
-		<div class="d-content" style="padding: 0px;">
-		    <div class="window yahei pb20 tc dnone" id="dengl" style="display: block;">
+		<div class="d-content" style="padding: 0px;text-align: left;">
+		    <div class="window yahei pb20 dnone" id="dengl" style="display: block;">
 		        <div>
 		            <a class="dblock fr pr5 pt5 pl10" @click="$refs.popup.close()">
 		                <img class="close-img" src="https://ah.189.cn/sj/cms/activity/img/fail.png">
@@ -15,10 +15,10 @@
 		            <div class="mt5 fl">
 		                <input type="tel" class="textbox02" v-model="verifyCode">
 		            </div>
-		            <a @click="getVerifyCode" class="dblock mt5 fr yzm" :class="sendVerifyCodeAbled?'btn-abled':''">发送验证码{{this.tim}}</a>
+		            <a @click="getVerifyCode" class="dblock mt5 fr yzm tc" :class="sendVerifyCodeAbled?'btn-abled':''">发送验证码{{this.tim}}</a>
 		            <div class="clear"></div>
 		        </div>
-		        <a class="btn02 btn-abled" @click="confirm">确认</a>
+		        <a class="btn02 tc btn-abled" @click="confirm">确认</a>
 		    </div>
 		</div>
 	</uni-popup>

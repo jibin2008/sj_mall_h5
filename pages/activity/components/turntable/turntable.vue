@@ -21,7 +21,7 @@
 						</div>
 					</div>
 				</div>
-				<view :animation="animationData" class="lp-point ms ptl0">
+				<view ref='pointer' :animation="animationData" class="lp-point ms ptl0">
 					<image @click="$emit('startClick')" class="img" src="https://ah.189.cn/sj/cms/activity/img/pointer.png"></cover>
 				</view>
 			</div>
@@ -83,6 +83,7 @@
 			},
 			rotate(idx){
 				if(this.abaled&&!this.isRunning){
+					this.$refs.pointer.$el.style=''
 					this.isRunning=true
 					let runNum = 5+this.getRandom(5);
 					// 旋转角度
@@ -98,6 +99,7 @@
 					this.animationData = animationRun.export();
 					setTimeout(()=>{
 						this.$emit('end')
+						this.isRunning=false
 					},len)
 				}
 			}

@@ -1,6 +1,9 @@
 <template>
 	<div class="body">
-		<div @click="logout" class="logout">【退出】</div>
+		<div class="logout">
+			<text>{{this.phoneS}}</text>
+			<text @click="logout">【退出】</text>
+		</div>
 		<!--大转盘-->
 		<div class="couten">
 			<Turntable
@@ -89,6 +92,9 @@
 				}else{
 					return ''
 				}
+			},
+			phoneS(){
+				return this.phone===''?'':(this.phone.substr(0,3)+'****'+this.phone.substr(7,4))
 			}
 		},
 		data() {
@@ -149,16 +155,14 @@
 			refreshActAwardRecord(callback){
 				getActAwardRecord(this.phone).then(rsp=>{
 					if(rsp.data.result===0){
-						if(rsp.data.awardRecordList.length>0){
-							this.myAwardRecordList=rsp.data.awardRecordList.map(itm=>{
-								let award = this.awardsList[itm.awardId]
-								return {
-									couponName:award.text+parseType(award.type),
-									awardId:itm.awardId,
-									prodCode:award.productCode
-								}
-							})
-						}
+						this.myAwardRecordList=rsp.data.awardRecordList.map(itm=>{
+							let award = this.awardsList[itm.awardId]
+							return {
+								couponName:award.text+parseType(award.type),
+								awardId:itm.awardId,
+								prodCode:award.productCode
+							}
+						})
 						if(callback)
 							callback()
 					}
@@ -208,6 +212,11 @@
 				.catch(msg=>{
 					this.$refs.changePhonePopup.open()
 				})
+		},
+		watch:{
+			phone(val){
+				this.refreshActAwardRecord()
+			}
 		}
 	}
 </script>
@@ -224,6 +233,7 @@
 		background: #3280ed url(https://ah.189.cn/sj/cms/activity/img/cjbg_01.png) no-repeat top;
 		background-size: contain;
 		padding-top: 311rpx;
+		overflow: hidden;
 	}
 	.top{width: 100%;}
 	.top img{
@@ -249,7 +259,7 @@
 	.zjmd{ position:relative;margin-top: 25rpx;}
 	.jinse{ color:#da7906;  border:1px solid #fdd067; border-radius:10px; padding-bottom:20px;background-color: #fff;}
 	.couten{
-		width:100%; 
+		width:750rpx; 
 		margin:0 auto; 
 		text-align:center;
 		background-size: contain;
