@@ -1,8 +1,9 @@
 <template>
 	<div class="body">
 		<div class="logout">
-			<text>{{this.phoneS}}</text>
-			<text @click="logout">【退出】</text>
+			<text>{{this.isLogin?this.phoneS:'您好！'}}【</text>
+			<text style="text-decoration: underline;" @click="logout">{{this.isLogin?'退出':'请登录'}}</text>
+			<text>】</text>
 		</div>
 		<!--大转盘-->
 		<div class="couten">
@@ -49,6 +50,9 @@
 		
 		</div>
 		<div class="footer">版权所有  中国电信安徽公司</div>
+		<div @click="copyUrl" class="fx">
+	      <img src="https://ah.189.cn/sj/cms/activity/img/icon-fx.png"/>分享链接
+		</div>
 		<MyAwardPopup @use='useNow' ref='myAwardPop' :awardRecordList='myAwardRecordList'></MyAwardPopup>
 		<ActivityRulesPopup ref='activityRulesPopup'></ActivityRulesPopup>
 		<AwardResultAlreadyPop ref='awardResultAlreadyPop'
@@ -71,8 +75,8 @@
 	import AwardResultSuccessPop from "./components/popup/award-result-success-popup.vue"
 	import ChangePhonePopup from "./components/popup/change-phone-popup.vue"
 	
-	import { getActAward,getActAwardRecord,getActAwardRecordTop20,receiveCoupon,getAwardList } from './apiNew.js'
-	import {parseType} from './utils.js'
+	import { getActAward,getActAwardRecord,getActAwardRecordTop20,receiveCoupon,getAwardList,insertAwardInterviewLog } from './apiNew.js'
+	import {parseType,getCookie} from './utils.js'
 	import { queryLocalPhoneNumber } from '@/common/mm.js'
 	
 	
@@ -95,6 +99,9 @@
 			},
 			phoneS(){
 				return this.phone===''?'':(this.phone.substr(0,3)+'****'+this.phone.substr(7,4))
+			},
+			isLogin(){
+				return this.phone!==''
 			}
 		},
 		data() {
@@ -115,7 +122,9 @@
 				awardIndex:0,
 				phone:'',
 				userId:'',
-				storeId:''
+				storeId:'',
+				byChanel:'',
+				sourceCode:''
 			}
 		},
 		methods: {
@@ -134,7 +143,13 @@
 						uni.showLoading({
 						    title: '请稍后'
 						})
-						getActAward(this.phone).then(rsp=>{
+						getActAward({
+							phoneNumber:this.phone,
+							storeId:this.storeId,
+							userId:this.userId,
+							sourceCode:this.sourceCode,
+							byChanel:this.byChanel
+						}).then(rsp=>{
 							uni.hideLoading()
 							if(rsp.data.result===0){
 								this.awardIndex=rsp.data.awardIndex
@@ -179,6 +194,12 @@
 			},
 			logout(){
 				this.$refs.changePhonePopup.open()
+			},
+			copyUrl(){
+				window.clipboardData.setData("Text",window.location.href)
+				uni.showToast({
+					title: "复制成功！"
+				})
 			}
 		},
 		onLoad(option){
@@ -188,6 +209,17 @@
 				this.userId=option.userId
 			if(option.storeId)
 				this.storeId=option.storeId
+			if(option.byChanel)
+				this.byChanel=option.byChanel
+			insertAwardInterviewLog({
+				phoneNumber:this.phone,
+				storeId:this.storeId,
+				userId:this.userId,
+				sourceCode:getCookie("sourceCode"),
+				byChanel:this.byChanel
+			}).catch(res=>{
+				console.log(res)
+			})
 		},
 		created() {
 			getAwardList().then(resp=>{
@@ -274,5 +306,16 @@
 		right: 3%;
 		color: #FFFFFF;
 	}
-
+	.fx{
+		position: absolute;
+		right: 0px;
+		top: 900rpx;
+		background: #441bbf47;
+		border-radius: 60rpx 0px 0px 60rpx;
+		color: white;
+		display: none;
+	}
+	.fx img{
+		height: 48rpx;
+	}
 </style>

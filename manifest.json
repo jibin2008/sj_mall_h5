@@ -1,5 +1,5 @@
 {
-    "name" : "sj_small_h5",
+    "name" : "拼手气赢好礼",
     "appid" : "__UNI__EB8A18C",
     "description" : "",
     "versionName" : "1.0.0",
@@ -82,6 +82,6 @@
             "https" : false
         },
         "domain" : "https://ah.189.cn",
-		"publicPath" : "https://ah.189.cn/sj/cms/activity/html"
+        "publicPath" : "https://ah.189.cn/sj/cms/activity/html"
     }
 }

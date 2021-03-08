@@ -12,13 +12,31 @@ export function getActAwardRecord(phoneNumber){
 }
 
 
-export function getActAward(phoneNumber){
+export function getActAward({phoneNumber,storeId,userId,sourceCode,byChanel}){
 	let url='/gzwz/service/sj/actitvity/getActAward'
 	return Request.request({
 		url:url,
-		method: 'GET',
+		method: 'POST',
 		data: {
-			 phoneNumber
+			phoneNumber,
+			storeId,
+			userId,
+			sourceCode,
+			byChanel
+		}
+	});
+}
+
+export function insertAwardInterviewLog({storeId,userId,sourceCode,byChanel}){
+	let url='/gzwz/service/sj/actitvity/insertAwardInterviewLog'
+	return Request.request({
+		url:url,
+		method: 'POST',
+		data: {
+			storeId,
+			userId,
+			sourceCode,
+			byChanel
 		}
 	});
 }

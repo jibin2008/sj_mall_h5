@@ -43,7 +43,7 @@
 				if(this.loginAbled){
 					userH5Login(this.phone,this.verifyCode).then(resp=>{
 						if(resp.data.result==='0'){
-							this.$emit('input',this.phone)
+							this.$emit('input',this.phone+'')
 							this.$refs.popup.close()
 							uni.showToast({
 								icon:'success',
@@ -99,10 +99,13 @@
 		},
 		computed:{
 			sendVerifyCodeAbled(){
-				return /^((1[3,5,8,7,9][0-9])|(14[5,7])|(17[0,6,7,8])|(19[1,7]))\d{8}$/.test(this.phone)&&!this.isVerifyCodeReqesting
+				return this.isPhoneNum&&!this.isVerifyCodeReqesting
+			},
+			isPhoneNum(){
+				return /^((1[3,5,8,7,9][0-9])|(14[5,7])|(17[0,6,7,8])|(19[1,7]))\d{8}$/.test(this.phone)
 			},
 			loginAbled(){
-				return this.sendVerifyCodeAbled&&this.verifyCode>=100000&&this.verifyCode<=999999
+				return this.isPhoneNum&&this.verifyCode>=100000&&this.verifyCode<=999999
 			}
 		}
 	}
