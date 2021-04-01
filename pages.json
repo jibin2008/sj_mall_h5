@@ -1,10 +1,10 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
-			"path": "pages/activity/DoubleHolidayOfferNew",
+			"path": "pages/activity/Act0G",
 			"style": {
-				"navigationBarTitleText": "拼手气赢好礼",
-				"navigationStyle":"custom"
+				"navigationBarTitleText": "5G网龄焕新机活动",
+				"navigationStyle": "custom"
 			}
 		}
 	],

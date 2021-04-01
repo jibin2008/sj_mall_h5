@@ -1,9 +1,9 @@
 <template>
-	<uni-popup ref='popup'>
+	<uni-popup :maskClick="false" ref='popup'>
 	  <div class="ad_tc">
-	    <a @click="$refs.popup.close" class="dblock fr close">
+	    <!-- <a @click="$refs.popup.close" class="dblock fr close">
 	      <img class="close-img" src="https://ah.189.cn/sj/cms/activity/img/close1.png"/>
-	    </a>
+	    </a> -->
 	    <div class="clear"></div>
 	    <div class="box">
 	      <p class="tc f20 pt10 dgray">登录</p>
@@ -40,16 +40,23 @@
 				this.$refs.popup.open()
 			},
 			confirm(){
+				// this.$emit('input','13305633426')
+				// return
 				if(this.loginAbled){
+					uni.showLoading({
+						title: '登陆中'
+					})
 					userH5Login(this.phone,this.verifyCode).then(resp=>{
+						uni.hideLoading()
 						if(resp.data.result==='0'){
-							this.$emit('input',this.phone+'')
 							this.$refs.popup.close()
 							uni.showToast({
 								icon:'success',
 								title: "登陆成功！"
 							})
+							this.$emit('input',this.phone+'')
 						}else{
+							this.$refs.popup.open()
 							uni.showToast({
 								title: resp.data.reason
 							})

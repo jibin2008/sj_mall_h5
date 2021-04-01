@@ -9,7 +9,7 @@
 		<template v-slot:bt>
 			<div class="btn_an mt25">
 				<text @click="close" class="dblock fl no_btn tc f16">关闭</text>
-				<text @click="use" class="dblock fr go_btn tc f16">立即使用&gt;</text>
+				<text @click="use" class="dblock fr go_btn tc f16">确定</text>
 				<div class="clear"></div>
 			</div>
 		</template>

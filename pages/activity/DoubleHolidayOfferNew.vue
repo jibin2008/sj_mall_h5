@@ -75,8 +75,8 @@
 	import AwardResultSuccessPop from "./components/popup/award-result-success-popup.vue"
 	import ChangePhonePopup from "./components/popup/change-phone-popup.vue"
 	
-	import { getActAward,getActAwardRecord,getActAwardRecordTop20,receiveCoupon,getAwardList,insertAwardInterviewLog } from './apiNew.js'
-	import {parseType,getCookie} from './utils.js'
+	import { getActAward,getActAwardRecord,getActAwardRecordTop20,receiveCoupon,getAwardList,insertAwardInterviewLog ,recode} from './apiNew.js'
+	import {parseType,getCookie} from '@/common/utils.js'
 	import { queryLocalPhoneNumber } from '@/common/mm.js'
 	
 	
@@ -136,13 +136,14 @@
 					this.$refs.changePhonePopup.open()
 					return
 				}
+				uni.showLoading({
+					title: '请稍后'
+				})
 				this.refreshActAwardRecord(()=>{
 					if(this.myAwardRecordList.length>0){
 						this.$refs.awardResultAlreadyPop.open()
+						uni.hideLoading()
 					}else{
-						uni.showLoading({
-						    title: '请稍后'
-						})
 						getActAward({
 							phoneNumber:this.phone,
 							storeId:this.storeId,
@@ -193,7 +194,18 @@
 				}
 			},
 			logout(){
-				this.$refs.changePhonePopup.open()
+				if(this.isLogin){
+					this.phone=''
+					uni.showToast({
+						title: "退出成功！",
+						success(){
+						}
+					})
+					setTimeout(()=>{
+							this.$refs.changePhonePopup.open()
+					},1500)
+				}else
+					this.$refs.changePhonePopup.open()
 			},
 			copyUrl(){
 				window.clipboardData.setData("Text",window.location.href)
@@ -211,13 +223,15 @@
 				this.storeId=option.storeId
 			if(option.byChanel)
 				this.byChanel=option.byChanel
-			insertAwardInterviewLog({
-				phoneNumber:this.phone,
-				storeId:this.storeId,
-				userId:this.userId,
-				sourceCode:getCookie("sourceCode"),
-				byChanel:this.byChanel
-			}).catch(res=>{
+			recode(
+			// {
+			// 	phoneNumber:this.phone,
+			// 	storeId:this.storeId,
+			// 	userId:this.userId,
+			// 	sourceCode:getCookie("sourceCode"),
+			// 	byChanel:this.byChanel
+			// }
+			).catch(res=>{
 				console.log(res)
 			})
 		},

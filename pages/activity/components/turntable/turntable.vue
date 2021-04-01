@@ -30,7 +30,7 @@
 </template>
 
 <script>	
-	import {parseType} from '../../utils.js'
+	import {parseType} from '@/common/utils.js'
 	export default {
 		props:{
 			awardsList:{},
@@ -102,7 +102,14 @@
 						this.isRunning=false
 					},len)
 				}
-			}
+			},
+			rotateWaiting(animationCtx){
+				
+			},
+			rotateStop(animationCtx){
+				
+			},
+			setResult(idx){}
 		}
 	}
 </script>
