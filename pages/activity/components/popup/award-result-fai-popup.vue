@@ -3,7 +3,10 @@
 		icon='https://ah.189.cn/sj/cms/activity/img/cry.png'
 	>
 		<template>
-			<p class="f18 dgray pt10 pb40">呜呜~您与大奖擦身而过！<br>感谢您对本次活动的支持！</p>
+			<p class="xxcy">谢谢参与</p>
+			<p class="hdtj">—活动推荐—</p>
+			<img @click="redirect" class="hdimg" src="https://ah.189.cn/sj/cms/activity/img/202104/hd.png"/>
+			<view style="height: 40rpx;"></view>
 		</template>
 	</AwardResultPopup>
 </template>
@@ -15,26 +18,30 @@
 		methods:{
 			open(){
 				this.$refs.popSelf.open()
+			},
+			redirect(){
+				uni.redirectTo({
+					url:""
+				})
 			}
 		}
 	}
 </script>
 
 <style scoped>
-	.btn_an {
-	    border-top: 1px solid #dddddd;
+	.xxcy {
+		font-size: 70rpx;
+		margin-top: 40rpx;
+		color: #463933;
 	}
-	.btn_an .no_btn {
-	    border-right: 1px solid #dddddd;
-	    color: #9494a0;
-	    height: 45px;
-	    line-height: 45px;
-	    width: 49%;
+	.hdtj{
+		margin-top: 70rpx;
+		font-size: 32rpx;
+		color: #da7904;
 	}
-	.btn_an .go_btn {
-	    color: #f45a24;
-	    height: 45px;
-	    line-height: 45px;
-	    width: 49%;
+	.hdimg{
+		margin-top: 25rpx;
+		width: 600rpx;
+		height: 256rpx;
 	}
 </style>

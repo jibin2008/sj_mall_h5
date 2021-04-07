@@ -3,19 +3,26 @@
 		icon='https://ah.189.cn/sj/cms/activity/img/lw.png'
 	>
 		<template>
-			<p class="f18 dgray">恭喜您获得</p>
-			<p class="f18 huangss">{{cnpName}}</p>
-			<view @click="select(0)" class="phone phone1" :class="pIndex===0?'select':''">
-				<img class="img" src="https://ah.189.cn/sj/cms/activity/img/202103/oprn5.jpg"/>
-				<img src="https://ah.189.cn/sj/cms/activity/img/202103/xz.png" v-if="pIndex===0" class="slct-img"/>
-			</view>
-			<view @click="select(1)" class="phone phone2" :class="pIndex===1?'select':''">
-				<img class="img" src="https://ah.189.cn/sj/cms/activity/img/202103/vvs9.png"/>
-				<img src="https://ah.189.cn/sj/cms/activity/img/202103/xz.png" v-if="pIndex===1" class="slct-img"/>
-			</view>
-			<view @click="select(2)" class="phone phone3" :class="pIndex===2?'select':''">
-				<img class="img" src="https://ah.189.cn/sj/cms/activity/img/202103/hwmt40.jpg"/>
-				<img src="https://ah.189.cn/sj/cms/activity/img/202103/xz.png" v-if="pIndex===2" class="slct-img"/>
+			<p class="dgray">恭喜您获得</p>
+			<p class="huangss">{{cnpName}}</p>
+			
+			<view class="s-text">选择手机：</view>
+			<phoneInfo
+				:imgUrl="selectPhone.img"
+				:name="selectPhone.name"
+				:desc="selectPhone.desc"
+				:price="selectPhone.price"
+				:seleced="true"
+			></phoneInfo>
+			<view class="dxsj">
+				<view @click="select(idx)" class="item"  v-for="(itm,idx) in phoneList">
+					<view class="img-top">
+						<img v-if="selected(idx)" src="https://ah.189.cn/sj/cms/activity/img/202104/aa.png"/>
+					</view>
+					<view class="p-img" :class="selected(idx)?'selected':''">
+						<img :src="itm.img" />
+					</view>
+				</view>
 			</view>
 		</template>
 		<template v-slot:bt>
@@ -28,14 +35,21 @@
 
 <script>
 	import AwardResultPopup from './award-result-popup.vue'
+	import PhoneInfo from "../phone-info.vue"
 	export default{
-		components:{AwardResultPopup},
+		components:{AwardResultPopup,PhoneInfo},
 		props:{
-			cnpName:{}
+			cnpName:{},
+			phoneList:{}
 		},
 		data(){
 			return {
 				pIndex:0
+			}
+		},
+		computed:{
+			selectPhone(){
+				return this.phoneList[this.pIndex]
 			}
 		},
 		methods:{
@@ -44,62 +58,25 @@
 			},
 			use(){
 				this.close()
-				this.$emit('use',this.pIndex)
+				this.$emit('use',this.selectPhone)
 			},
 			close(){
 				this.$refs.popSelf.close()
 			},
 			select(idx){
 				this.pIndex=idx
+			},
+			selected(idx){
+				return this.pIndex===idx
 			}
 		}
 	}
 </script>
 
 <style scoped>
-	.btn_an {
-	    border-top: 1px solid #dddddd;
-	}
-	.btn_an .no_btn {
-	    border-right: 1px solid #dddddd;
-	    color: #9494a0;
-	    height: 45px;
-	    line-height: 45px;
-	    width: 49%;
-	}
-	.btn_an .go_btn {
-	    color: #f45a24;
-	    height: 45px;
-	    line-height: 45px;
-	    width: 49%;
-	}
-	.phone1 .img{
-		width: 610rpx;
-		height: 244rpx;
-	}
-	.phone2 .img{
-		width: 611rpx;
-		height: 237rpx;
-	}
-	.phone3 .img{
-		width: 611rpx;
-		height: 245rpx;
-	}
-	.phone{
-		position: relative;
-		margin-top: 20rpx;
-	}
-	.select .img{
+	.selected {
 		border: 2rpx solid #f45a24;
 	}
-	.select .slct-img{
-		position: absolute;
-		right: 32rpx;
-		bottom: 0rpx;
-		width: 120rpx;
-		height: 84rpx;
-	}
-	
 	.look_btn {
 	    background: linear-gradient(to right,#ffb763,#ff8763);
 	    width: 80%;
@@ -115,5 +92,44 @@
 	}
 	.bt-div{
 		padding: 20rpx;
+	}
+	.s-text{
+		width: 100%;
+		padding-left: 20rpx;
+		text-align: left;
+		margin-top: 45rpx;
+		font-size: 28rpx;
+		font-weight: bold;
+	}
+	.dxsj{
+		display: flex;
+	}
+	.item{
+		width: 25%;
+		padding: 10rpx;
+	}
+	.item img{
+		width: 100%;
+	}
+	.img-top{
+		display: flex;
+		justify-content: center;
+		height: 13rpx;
+	}
+	.img-top img{
+		width: 14rpx;
+		height: 13rpx;
+	}
+	.p-img{
+		padding: 10rpx;
+	}
+	.dgray{
+		font-size: 60rpx;
+		color: #f75e25;
+	}
+	.huangss{
+		font-size: 50rpx;
+		color: #f75e25;
+		margin-top: 20rpx;
 	}
 </style>

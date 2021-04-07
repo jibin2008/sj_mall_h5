@@ -37,34 +37,12 @@
 		    <div class=" clear">
 		</div>
 		<!--中奖名单-->
-		<div class="zjmd">
-			<div class="fc yahei tc jinse"> 
-				<div class="bgt"><img src="https://ah.189.cn/sj/cms/activity/img/c_06.jpg"></div>
-				<div >
-					<ul id="sliderUl">
-						<swiper class="list_lh"
-							display-multiple-items='6'
-							:interval='3000'
-							:vertical='true'
-							:duration='1000'
-							:autoplay='allAwardListTop.length>6'
-						>
-							<swiper-item class="bbxd" v-for="itm in allAwardListTopC">
-								<li>{{itm.tel}}<span class="pl10 pr10">{{itm.tel?'抽中':''}}</span>{{itm.cnp}}</li>
-							</swiper-item>
-						</swiper>
-					</ul>
-				</div>
-			</div>
-		</div>
+		<ZjmdPanel :rcdList='allAwardListTopC'></ZjmdPanel>
+		
+		<!-- 精选手机 -->
+		<JxsjPanel :phoneList="phoneList"></JxsjPanel>
 		
 		</div>
-		
-		<view class="jxsj">
-			<!-- <view style="left: 310rpx; top: 320rpx;" class="btn-ljqg">立即抢购</view>
-			<view style="left: 310rpx; top: 693rpx;" class="btn-ljqg">立即抢购</view>
-			<view style="left: 310rpx; top: 1066rpx;" class="btn-ljqg">立即抢购</view> -->
-		</view>
 		<!-- <div class="footer">版权所有  中国电信安徽公司</div> -->
 		<div @click="copyUrl" class="fx">
 	      <img src="https://ah.189.cn/sj/cms/activity/img/icon-fx.png"/>分享链接
@@ -82,7 +60,9 @@
 		<AwardResultSuccessPopNew ref='awardResultSuccessPopNew'
 			@use='buyPhone'
 			:cnpName="cnpTextNew"
+			:phoneList="phoneList"
 		></AwardResultSuccessPopNew>
+		<AwardResultFailPop ref="awardResultFailPop"></AwardResultFailPop>
 		
 		<!-- <ChangePhonePopup ref="changePhonePopup" v-model="phone"></ChangePhonePopup> -->
 	</div>
@@ -94,7 +74,10 @@
 	import ActivityRulesPopup from "./components/popup/activity-rules-popup.vue"
 	import AwardResultAlreadyPop from "./components/popup/award-result-already-popup.vue"
 	import AwardResultSuccessPop from "./components/popup/award-result-success-popup.vue"
+	import AwardResultFailPop from "./components/popup/award-result-fai-popup.vue"
 	import AwardResultSuccessPopNew from "./components/popup/award-result-success-popup_new.vue"
+	import ZjmdPanel from "./components/zjmd-panel.vue"
+	import JxsjPanel from "./components/jxsj-panel.vue"
 	
 	import { 
 		useAward,getActAward,getActAwardRecord
@@ -115,25 +98,21 @@
 			AwardResultSuccessPop,
 			StoreInfo,
 			Loading,
-			AwardResultSuccessPopNew
+			AwardResultSuccessPopNew,
+			AwardResultFailPop,
+			ZjmdPanel,
+			JxsjPanel
 		},
 		computed:{
 			cnpText(){
-				if(this.awardIndex&&this.awardsList.length>0){
-					let award = this.awardsList[this.awardIndex]
-					return award.text + parseType(award.type) + (award.netAgeAmount?`,并且鉴于您是老用户还将赠送您#{award.netAgeAmount}元5G终端购机券`:'')
-				}else{
-					return ''
-				}
+				let award = this.awardsList[this.awardIndex]
+				return award?
+					(award.text + parseType(award.type) )
+					:""
 			},
 			cnpTextNew(){
-				if(this.awardIndex&&this.awardsList.length>0){
-					let award = this.awardsList[this.awardIndex]
-					let total = this.awardsList[this.awardIndex].price + this.awardInfo.netAgeAmount
-					return total+ '元' + parseType(award.type) + (award.netAgeAmount?`,并且鉴于您是老用户还将赠送您#{award.netAgeAmount}元5G终端购机券`:'')
-				}else{
-					return ''
-				}
+				let award = this.awardsList[this.awardIndex]
+				return award?(this.yh+ '元' + parseType(award.type)):"奖项文字"
 			},
 			phoneS(){
 				return this.phone===''?'':(this.phone.substr(0,3)+'****'+this.phone.substr(7,4))
@@ -165,6 +144,13 @@
 			},
 			showNetAgeInfo(){
 				return this.awardInfo.netAge&&this.awardInfo.netAge!==0
+			},
+			yh(){
+				let award = this.awardsList[this.awardIndex]
+				if(award){
+					return this.awardsList[this.awardIndex].price + (this.awardInfo.netAgeAmount?this.awardInfo.netAgeAmount:0)
+				}else
+					return 0
 			}
 		},
 		data() {
@@ -172,7 +158,7 @@
 				awardsList:[],
 				allAwardListTop:[],
 				myAwardRecordList:[],
-				awardIndex:0,
+				awardIndex:-1,
 				phone:'',
 				userId:'',
 				storeId:'741',
@@ -187,12 +173,41 @@
 				awardInfo:{},
 				isLogout:false,
 				hasRotate:false,
-				curRcdId:''
+				curRcdId:'',
+				isRoate:false,
+				phoneList:[
+						{
+							name:"天翼一号",
+							desc:"1080P高清屏 | 5000mAh大电池",
+							img:"https://ah.189.cn/sj/cms/activity/img/202104/tyn01.png",
+							price:"1099"
+						},
+						{
+							name:"VIVO S9",
+							desc:"前置4400万超清双摄",
+							img:"https://ah.189.cn/sj/cms/activity/img/202104/vivo-s9.png",
+							price:"2399"
+						},
+						{
+							name:"OPPO Reno5",
+							desc:"6400万四摄 | 65W超级闪充",
+							img:"https://ah.189.cn/sj/cms/activity/img/202104/oppo-reno5.png",
+							price:"2699"
+						},
+						{
+							name:"iPhone12",
+							desc:"升维大提速",
+							img:"https://ah.189.cn/sj/cms/activity/img/202104/iphone12.png",
+							price:"5499"
+						}
+					]
 			}
 		},
 		methods: {
 			rotateStart(){
-				if(!this.hasRotate&&this.awardInfo.awardIndex){
+					// this.$refs.turntable.rotate(this.awardIndex)
+					// return
+				if(!this.hasRotate&&this.awardIndex!==-1){
 					this.hasRotate=true
 					this.$refs.turntable.rotate(this.awardIndex)
 				}else if(this.myAwardRecordList.length===0){
@@ -202,14 +217,16 @@
 					this.$refs.awardResultAlreadyPop.open()
 				}
 			},
-			useNow(rcdId){
-				uni.showLoading({
-					title: '努力加载中，请稍候'
-				})
+			useNow(rcdId,hideLoad,yh){
+				if(!hideLoad)
+					uni.showLoading({
+						title: '努力加载中，请稍候'
+					})
 				useAward({
 					actId:rcdId,
 					storeId:this.storeId,
-					userId:this.userId
+					userId:this.userId,
+					yh:this.yh
 				}).then(resp=>{
 					uni.hideLoading()
 					this.myAwardRecordList = this.myAwardRecordList.map(it=>{
@@ -217,9 +234,10 @@
 							it.status=1
 						return it
 					})
-					uni.showToast({
-						title: "使用成功！"
-					})
+					if(!hideLoad)
+						uni.showToast({
+							title: "使用成功！"
+						})
 				})
 			},
 			logout(){
@@ -238,24 +256,28 @@
 						||this.awardIndex==2
 						||this.awardIndex==4
 						||this.awardIndex==6){
+						this.useNow(this.curRcdId,true,this.yh)
 						this.$refs.awardResultSuccessPopNew.open()
 					}else{
 						this.$refs.awardResultSuccessPop.open()
 					}
 				}
 				else
-					uni.showToast({
-						title: "感谢您的参与！！"
-					})
+					this.$refs.awardResultFailPop.open()
+					// uni.showToast({
+					// 	title: "感谢您的参与！！"
+					// })
 			},
 			dataReady(data){
 				this.awardsList=data.itmLst
 				this.myAwardRecordList=data.rcdLst
-				this.awardInfo=data.awardInfo
+				if(data.awardInfo){
+					this.awardInfo=data.awardInfo
+					this.awardIndex=data.awardInfo.awardIndex
+				}
 				this.storeInfo=data.storeInfo
 				this.phone = data.phoneNum
 				this.loading=false
-				this.awardIndex=this.awardInfo.awardIndex
 				this.curRcdId = this.awardInfo.actiId
 				getActAwardRecordTop20().then(resp=>{
 					let awardRecordList = resp.data.content
@@ -271,8 +293,10 @@
 			},
 			openMy(){
 				this.$refs.myAwardPop.open()
+				// this.$refs.awardResultSuccessPopNew.open()
+				// this.$refs.awardResultFailPop.open()
 			},
-			buyPhone(idx){
+			buyPhone(phoneIfo){
 				uni.showLoading({
 					title:"正在下单，请稍后。。"
 				})
@@ -284,8 +308,8 @@
 					,age:this.awardInfo.netAge
 					// ,age:37
 					,userId:this.storeInfo.managerUserId
-					,price:terminal_price[idx]
-					,iterm:terminal_name[idx]
+					,price:phoneIfo.price
+					,iterm:phoneIfo.name
 					,yh:this.awardsList[this.awardIndex].price
 				}).then(resp=>{
 					if(resp.data.result==0){
@@ -324,11 +348,11 @@
 	}
 	.body{
 	    font: 28rpx/64rpx "微软雅黑";
-		background: url(https://ah.189.cn/sj/cms/activity/img/cj-bg.jpg) no-repeat top;
+		background: #0342a1 url(https://ah.189.cn/sj/cms/activity/img/cj-bg.jpg) no-repeat top;
 		background-size: contain;
 		padding-top: 109rpx;
-		overflow: hidden;
-		height: 3500rpx;
+		/* overflow: hidden;
+		height: 3500rpx; */
 	}
 	.bg-mas{
 		background: url(https://ah.189.cn/sj/cms/activity/img/202103/cj-bg1.jpg) no-repeat top;
@@ -348,15 +372,7 @@
 		width: 100%;
 		height: 118rpx;
 	}
-	.bgt{ width:100%; display: flex;justify-content: center;}
-	.bgt img{
-		height: 68rpx;
-		width: 40%;
-	}
-	.list_lh{ height:400rpx; overflow:hidden; padding:0px 20rpx; line-height:70rpx; padding-bottom:-20rpx;}
 	.footer{text-align:center; font:30rpx "微软雅黑";color: #FFFFFF;}
-	.zjmd{ position:relative;margin-top: 25rpx;}
-	.jinse{ color:#da7906;  border:1px solid #fdd067; border-radius:10px; padding-bottom:20px;background-color: #fff;}
 	.couten{
 		width:750rpx; 
 		margin:26rpx auto 0rpx auto; 
@@ -384,17 +400,6 @@
 	}
 	.fx img{
 		height: 48rpx;
-	}
-	.jxsj{
-		width: 674rpx;
-		height: 1212rpx;
-		margin-top: 38rpx;
-		margin-left: 38rpx;
-		background: url(https://ah.189.cn/sj/cms/activity/img/jxsj.jpg) no-repeat top;
-		background-size: contain;
-		position: relative;
-		border: 2rpx solid #fdd067;
-		border-radius: 20rpx;
 	}
 	.btn-ljqg{
 		position: absolute;

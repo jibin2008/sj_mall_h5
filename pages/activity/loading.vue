@@ -73,7 +73,7 @@
 				let latnId=this.stIf.sjUser.latnId
 				let itmLst=[]
 				let rcdLst=[]
-				let awardInfo = {}
+				let awardInfo = null
 				Promise.all([
 					getAwardList().then(itmLst_=>{
 						let awdLst = JSON.parse(itmLst_.data.content)
@@ -113,10 +113,10 @@
 					uni.hideLoading()
 					this.$emit("ready",{
 						// awardInfo:{
-						// 	awardIndex:4,
+						// 	awardIndex:7,
 						// 	actiId:"11354455",
-						// 	netAgeAmount:500,
-						// 	netAge:37
+						// 	// netAgeAmount:500,
+						// 	// netAge:37
 						// },
 						awardInfo,
 						rcdLst,

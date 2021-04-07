@@ -56,13 +56,13 @@ export function getAwardList() {
 
 
 export function useAward({
-	actId,storeId,userId
+	actId,storeId,userId,yh
 }) {
 	return Request.request({
 		url: '/gzwz/service/award/useAward',
 		method: 'POST',
 		data:{
-			actId,storeId,userId
+			actId,storeId,userId,yh
 		}
 	})
 }
