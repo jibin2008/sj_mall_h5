@@ -20,9 +20,7 @@
 				this.$refs.popSelf.open()
 			},
 			redirect(){
-				uni.redirectTo({
-					url:""
-				})
+				window.location.href="https://ah.189.cn/sj/cms/socialH5/activity/oneJiaoCoupon/index.html"
 			}
 		}
 	}

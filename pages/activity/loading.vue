@@ -115,8 +115,8 @@
 						// awardInfo:{
 						// 	awardIndex:7,
 						// 	actiId:"11354455",
-						// 	// netAgeAmount:500,
-						// 	// netAge:37
+						// 	netAgeAmount:500,
+						// 	netAge:37
 						// },
 						awardInfo,
 						rcdLst,
