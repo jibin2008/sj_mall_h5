@@ -28,7 +28,7 @@
 
 <script>
 	import uniPopup from '@/components/uni-popup/uni-popup.vue'
-	import { getSms,userH5Login } from '../../apiNew.js'
+	import { getSms,userH5Login } from '../../api0G.js'
 	export default{
 		components:{uniPopup},
 		props:{
@@ -49,12 +49,19 @@
 					userH5Login(this.phone,this.verifyCode).then(resp=>{
 						uni.hideLoading()
 						if(resp.data.result==='0'){
+							if(resp.data.phoneNum!==(this.phone+'')){
+								uni.showToast({
+									icon:'none',
+									title: "数据异常!"
+								})
+								return
+							}
 							this.$refs.popup.close()
 							uni.showToast({
 								icon:'success',
 								title: "登陆成功！"
 							})
-							this.$emit('input',this.phone+'')
+							this.$emit('input',resp.data.phoneNum+'')
 						}else{
 							this.$refs.popup.open()
 							uni.showToast({

@@ -1,4 +1,7 @@
 import Request from '@/common/request/request.js'
+import {Encrypt,Decrypt} from '@/common/aes.js'
+import CryptoJS from 'crypto-js'
+
 import {
 	getCookie
 } from '@/common/utils.js'
@@ -9,9 +12,12 @@ export function getActAwardRecord(phoneNumber) {
 		url: url,
 		method: 'POST',
 		data: {
-			phoneNum:phoneNumber
+			phoneNum:Encrypt(phoneNumber)
 		}
-	});
+	}).then(resp=>{
+		resp.data.content=JSON.parse(decodeStr(resp.data.content))
+		return Promise.resolve(resp)
+	})
 }
 
 
@@ -27,13 +33,16 @@ export function getActAward({
 		url: url,
 		method: 'POST',
 		data: {
-			phoneNum,
+			phoneNum:Encrypt(phoneNum),
 			storeId,
 			userId,
 			sourceCode,
 			byChanel
 		}
-	});
+	}).then(resp=>{
+		resp.data.content=JSON.parse(decodeStr(resp.data.content))
+		return Promise.resolve(resp)
+	})
 }
 
 export function getActAwardRecordTop20() {
@@ -62,7 +71,7 @@ export function useAward({
 		url: '/gzwz/service/award/useAward',
 		method: 'POST',
 		data:{
-			actId,storeId,userId,yh
+			actId:Encrypt(actId),storeId,userId,yh
 		}
 	})
 }
@@ -84,7 +93,10 @@ export function userH5Login(phoneNumber, randomCode) {
 			phoneNumber,
 			randomCode
 		}
-	});
+	}).then(resp=>{
+		resp.data=JSON.parse(decodeStr(resp.data)) 
+		return Promise.resolve(resp)
+	})
 }
 
 export function recode() {
@@ -109,6 +121,9 @@ export function getStoreInfo(storeId) {
 	return Request.request({
 		url:`/gzwz/service/sj/service/gzwz/store/${storeId}`,
 		method: 'GET'
+	}).then(resp=>{
+		resp.data.resultData=JSON.parse(decodeStr(resp.data.resultData))
+		return Promise.resolve(resp)
 	})
 }
 
@@ -120,7 +135,13 @@ export function terminalBuy({
 		url: '/gzwz/service/award/buy',
 		method: 'POST',
 		data:{
-			storeId,phoneNum,rcdId,age,userId,price,iterm,yh
+			storeId,phoneNum:Encrypt(phoneNum),rcdId,age,userId,price,iterm,yh
 		}
 	})
+}
+
+function decodeStr(enStr){
+	return Decrypt(enStr)
+	// let str = enStr.replace(/\s/g,'')
+	// return CryptoJS.enc.Base64.parse(str).toString(CryptoJS.enc.Utf8)
 }
