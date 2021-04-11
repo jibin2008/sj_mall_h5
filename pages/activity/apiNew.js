@@ -1,5 +1,7 @@
 import Request from '@/common/request/request.js'
 
+import {Encrypt,Decrypt} from '@/common/aes.js'
+
 export function getActAwardRecord(phoneNumber){
 	let url='/gzwz/service/sj/actitvity/getActAwardRecord'
 	return Request.request({
@@ -81,5 +83,8 @@ export function userH5Login(phoneNumber,randomCode){
 			 phoneNumber,
 			 randomCode
 		}
-	});
+	}).then(resp=>{
+		resp.data=JSON.parse(Decrypt(resp.data)) 
+		return Promise.resolve(resp)
+	})
 }
