@@ -1,5 +1,6 @@
 <template>
-	<Loading :logout="isLogout" @ready="dataReady" v-if="loading" :storeId="storeId"></Loading>
+	<Loading :logout="isLogout" @ready="dataReady" v-if="loading" :storeId="storeId"
+		:phone='phone'></Loading>
 	<div v-else class="body" :class="storeInfo.sjUser.latnId==='555'?'bg-mas':''">
 		<div class="logout">
 			<text>{{this.isLogin?this.phoneS:'您好！'}}【</text>
@@ -61,6 +62,7 @@
 			@use='buyPhone'
 			:cnpName="cnpTextNew"
 			:phoneList="phoneList"
+			:lvlAmount="lvlAmount"
 		></AwardResultSuccessPopNew>
 		<AwardResultFailPop ref="awardResultFailPop"></AwardResultFailPop>
 		
@@ -151,6 +153,9 @@
 					return this.awardsList[this.awardIndex].price + (this.awardInfo.netAgeAmount?this.awardInfo.netAgeAmount:0)
 				}else
 					return 0
+			},
+			lvlAmount(){
+				return this.awardInfo.lvlAmount
 			}
 		},
 		data() {
@@ -160,6 +165,7 @@
 				myAwardRecordList:[],
 				awardIndex:-1,
 				phone:'',
+				customerId:'',
 				userId:'',
 				storeId:'741',
 				byChanel:'',
@@ -174,6 +180,7 @@
 				isLogout:false,
 				hasRotate:false,
 				curRcdId:'',
+				sdIf:false,
 				isRoate:false,
 				phoneList:[
 						{
@@ -290,6 +297,7 @@
 							}
 						})
 				})
+				this.postIf()
 			},
 			openMy(){
 				this.$refs.myAwardPop.open()
@@ -311,6 +319,7 @@
 					,price:phoneIfo.price
 					,iterm:phoneIfo.name
 					,yh:this.awardsList[this.awardIndex].price
+					,sourceCode:this.sourceCode
 				}).then(resp=>{
 					if(resp.data.result==0){
 						uni.hideLoading()
@@ -323,17 +332,28 @@
 						})
 					}
 				})
+			},
+			postIf(){
+				if(this.sdIf){
+					console.log("发送数据到。。。")
+				}
 			}
 		},
 		onLoad(option){
-			if(option.phoneNum)
-				this.phone=option.phoneNum
+			if(option.phone)
+				this.phone=option.phone
+			if(option.customer_id){
+				this.customerId = option.customer_id
+				this.sdIf=!option.phone||option.phone===''
+			}
 			if(option.userId)
 				this.userId=option.userId
 			if(option.storeId)
 				this.storeId=option.storeId
 			if(option.byChanel)
 				this.byChanel=option.byChanel
+			if(option.sourceCode)
+				this.sourceCode=option.sourceCode
 			recode()
 		}
 	}

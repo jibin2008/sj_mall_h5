@@ -22,7 +22,8 @@
 			byChanel:{},
 			logout:{
 				default:false
-			}
+			},
+			phone:{}
 		},
 		components:{
 			ChangePhonePopup,
@@ -37,7 +38,7 @@
 				hasLoading:false
 			}
 		},
-		created(option) {
+		created() {
 			if(this.logout){
 				this.$nextTick(()=>{
 					this.loadStoreInfo()
@@ -49,15 +50,32 @@
 				})
 				Promise.all([
 					this.loadStoreInfo(),
-					queryLocalPhoneNumber()
-						.then(phoneNum=>{
-							this.phoneNum=phoneNum
-							this.loadData(phoneNum)
-						})
-						.catch(msg=>{
-							this.$refs.changePhonePopup.open()
-						})
-				]).then(()=>{
+					new Promise((rs,rj)=>{
+						if(!this.phone||this.phone===''){
+							return queryLocalPhoneNumber()
+								.then(phoneNum=>{
+									return new Promise(()=>{
+										this.phoneNum=phoneNum
+										this.loadData(phoneNum)
+									})
+								})
+								.catch(msg=>{
+									this.$refs.changePhonePopup.open()
+									rj(msg)
+								})
+						}
+						else{
+							return new Promise(()=>{
+								this.phoneNum=this.phone
+								this.loadData(this.phone)
+							})
+						}
+					})
+				])
+				.catch(msg=>{
+					
+				})
+				.finally(()=>{
 					uni.hideLoading()
 				})
 			}
@@ -113,10 +131,11 @@
 					uni.hideLoading()
 					this.$emit("ready",{
 						// awardInfo:{
-						// 	awardIndex:7,
+						// 	awardIndex:0,
 						// 	actiId:"11354455",
 						// 	netAgeAmount:500,
-						// 	netAge:37
+						// 	netAge:37,
+						// 	lvlAmount:129
 						// },
 						awardInfo,
 						rcdLst,

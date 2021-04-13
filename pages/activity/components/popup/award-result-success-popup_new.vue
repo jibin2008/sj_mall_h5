@@ -5,6 +5,7 @@
 		<template>
 			<p class="dgray">恭喜您获得</p>
 			<p class="huangss">{{cnpName}}</p>
+			<p v-if="lvlAmount">注：升{{lvlAmount}}元5G套餐大礼包</p>
 			
 			<view class="s-text">选择手机：</view>
 			<phoneInfo
@@ -40,7 +41,8 @@
 		components:{AwardResultPopup,PhoneInfo},
 		props:{
 			cnpName:{},
-			phoneList:{}
+			phoneList:{},
+			lvlAmount:{}
 		},
 		data(){
 			return {
