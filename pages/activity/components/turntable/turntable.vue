@@ -159,12 +159,11 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: start;
-		padding-top: 120rpx;
+		padding-top: 90rpx;
 	}
 	.lp-item .img{
-		width: 80rpx;
-		height: 80rpx;
-		margin-top: 20rpx;
+		width: 100rpx;
+		height: 100rpx;
 	}
 	.lp-items {
 	}
