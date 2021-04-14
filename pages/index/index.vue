@@ -1,14 +1,16 @@
 <template>
 	<div class="content">
-		<image class="logo" src="/static/logo.png"></image>
-		<div class="text-area">
-			<text class="title">{{title}}</text>
-		</div>
+		<img class="dczc-hdgz" src="/static/img/hdgz.png"></img>
+		<img src="/static/img/btn.png" class="bl-btn" @click="handle"/>
+		
+		<fzItm class="fpv"></fzItm>
 	</div>
 </template>
 
 <script>
+	import fzItm from "./fzItm.vue"
 	export default {
+		components:{fzItm},
 		data() {
 			return {
 				title: 'Hello'
@@ -18,35 +20,41 @@
 
 		},
 		methods: {
-
+			showAward(e){
+				debugger
+			},
+			handle(){
+				
+			}
 		}
 	}
 </script>
 
 <style>
 	.content {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
+		background: url(../../static/img/bg.jpg);
+		background-repeat: round;
+		width: 750rpx;
+		height: 4675rpx;
+		position: relative;
 	}
-
-	.logo {
-		height: 200rpx;
-		width: 200rpx;
-		margin-top: 200rpx;
-		margin-left: auto;
-		margin-right: auto;
-		margin-bottom: 50rpx;
+	.dczc-hdgz{
+		position: absolute;
+		right: 0rpx;
+		top: 23rpx;
+		width: 126rpx;
+		height: 44rpx;
 	}
-
-	.text-area {
-		display: flex;
-		justify-content: center;
+	.fpv{
+		position: absolute;
+		top: 974rpx;
+		left: 60rpx;
 	}
-
-	.title {
-		font-size: 36rpx;
-		color: #8f8f94;
+	.bl-btn{
+		position: absolute;
+		bottom: 30rpx;
+		width: 650rpx;
+		height: 106rpx;
+		left: 50rpx;
 	}
 </style>
