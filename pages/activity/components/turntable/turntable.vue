@@ -15,9 +15,11 @@
 						:style="''+ getTransformItem(idx)"
 					>
 						<div class="lp-item-context ms">
-							<div>{{item.text}}</div>
-							<div>{{getTypeText(item.type)}}</div>
-							<image mode="aspectFit" class="img" :src="item.icon"></image>
+							<div v-if="!showAbled(idx)">{{item.text}}</div>
+							<div v-if="!showAbled(idx)">{{getTypeText(item.type)}}</div>
+							<div v-else>神秘购机礼包</div>
+							<image v-if="idx===6" mode="aspectFit" class="img" src="https://ah.189.cn/sj/cms/activity/img/202104/lb2.png"></image>
+							<image v-else mode="aspectFit" class="img" :src="item.icon"></image>
 						</div>
 					</div>
 				</div>
@@ -109,7 +111,10 @@
 			rotateStop(animationCtx){
 				
 			},
-			setResult(idx){}
+			setResult(idx){},
+			showAbled(idx){
+				return idx===0||idx===2||idx===4
+			}
 		}
 	}
 </script>
@@ -159,7 +164,7 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: start;
-		padding-top: 90rpx;
+		padding-top: 110rpx;
 	}
 	.lp-item .img{
 		width: 100rpx;
