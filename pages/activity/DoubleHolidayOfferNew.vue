@@ -75,7 +75,7 @@
 	import AwardResultSuccessPop from "./components/popup/award-result-success-popup.vue"
 	import ChangePhonePopup from "./components/popup/change-phone-popup.vue"
 	
-	import { getActAward,getActAwardRecord,getActAwardRecordTop20,receiveCoupon,getAwardList,insertAwardInterviewLog } from './apiNew.js'
+	import { recode,getActAward,getActAwardRecord,getActAwardRecordTop20,receiveCoupon,getAwardList,insertAwardInterviewLog } from './apiNew.js'
 	import {parseType,getCookie} from './utils.js'
 	import { queryLocalPhoneNumber } from '@/common/mm.js'
 	
@@ -211,13 +211,15 @@
 				this.storeId=option.storeId
 			if(option.byChanel)
 				this.byChanel=option.byChanel
-			insertAwardInterviewLog({
-				phoneNumber:this.phone,
-				storeId:this.storeId,
-				userId:this.userId,
-				sourceCode:getCookie("sourceCode"),
-				byChanel:this.byChanel
-			}).catch(res=>{
+			recode(
+			// {
+			// 	phoneNumber:this.phone,
+			// 	storeId:this.storeId,
+			// 	userId:this.userId,
+			// 	sourceCode:getCookie("sourceCode"),
+			// 	byChanel:this.byChanel
+			// }
+			).catch(res=>{
 				console.log(res)
 			})
 		},

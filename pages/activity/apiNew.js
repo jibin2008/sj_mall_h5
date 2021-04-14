@@ -1,4 +1,5 @@
 import Request from '@/common/request/request.js'
+import { getCookie } from '@/common/utils.js'
 
 import {Encrypt,Decrypt} from '@/common/aes.js'
 
@@ -86,5 +87,20 @@ export function userH5Login(phoneNumber,randomCode){
 	}).then(resp=>{
 		resp.data=JSON.parse(Decrypt(resp.data)) 
 		return Promise.resolve(resp)
+	})
+}
+
+export function recode(){
+	let url=`/gzwz/service/sj/service/gzwz/sjH5user/visitorRecord`
+	
+	let sourceCode = getCookie('sourceCode')
+	if(sourceCode&&sourceCode===''){
+		sourceCode = getUrlKey('sourceCode')
+		document.cookie = "sourceCode="+sourceCode
+	}
+	return Request.request({
+		url:url,
+		method: 'POST',
+		data: {sourceCode:sourceCode,url:location.href},
 	})
 }
