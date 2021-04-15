@@ -350,6 +350,14 @@
 				this.userId=option.userId
 			if(option.storeId)
 				this.storeId=option.storeId
+				
+			///兼容云厅产品页面跳转
+			if(option.mid)
+				this.userId=option.mid
+			if(option.shopId){
+				this.storeId=option.shopId
+			}
+			
 			if(option.byChanel)
 				this.byChanel=option.byChanel
 			if(option.sourceCode)
