@@ -1,6 +1,6 @@
 <template>
 	<Loading :logout="isLogout" @ready="dataReady" v-if="loading" :storeId="storeId"
-		:phone='phone'></Loading>
+		:phone='phone' :sourceCode="sourceCode"></Loading>
 	<div v-else class="body" :class="storeInfo.sjUser.latnId==='555'?'bg-mas':''">
 		<div class="logout">
 			<text>{{this.isLogin?this.phoneS:'您好！'}}【</text>

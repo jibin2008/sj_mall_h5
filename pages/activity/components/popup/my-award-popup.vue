@@ -12,8 +12,8 @@
 							<view class="name1">{{itm.couponName}}</view>
 							<view class="name2">{{getDateStr(itm.createTime.time)}}</view>
 						</view>
-						<view class="fr btn" v-if="itm.type===5&&itm.status===0" @click="$emit('use',itm.rcdId)">立即领取</view>
-						<view class="fr btn btn-use" v-else-if="itm.type===5">已领取</view>
+						<view class="fr btn" v-if="(itm.type===5||itm.type===1)&&itm.status===0" @click="$emit('use',itm.rcdId)">立即领取</view>
+						<view class="fr btn btn-use" v-else-if="itm.type===5||itm.type===1">已领取</view>
 					</view>
 					<view class="item" v-if="awardRecordList.length===0">
 						<view class="fl item-name">
