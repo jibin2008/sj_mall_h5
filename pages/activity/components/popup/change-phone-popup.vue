@@ -13,7 +13,7 @@
 	        </div>
 	        <div class="mt15">
 	          <div class="xx_box xx_box2 fl">
-	            <input maxlength="6" type="number" v-model.number="verifyCode" class="f14 lgray fl" placeholder="请输入验证码"/>
+	            <input maxlength="6" type="number" v-model="verifyCode" class="f14 lgray fl" placeholder="请输入验证码"/>
 	          </div>
 	          <a @click="getVerifyCode" v-if="!isVerifyCodeReqesting" class="huoqu_btn fr tc f14" :class="sendVerifyCodeAbled?'':'btn-disabled'">获取验证码</a>
 	          <a v-else class="huoqu_btn fr tc f14 btn-disabled">{{tim}}秒后重发</a>
