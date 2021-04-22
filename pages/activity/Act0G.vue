@@ -134,11 +134,18 @@
 				return this.myAwardRecordList.filter(it1=>{
 					return it1.awardId!==7
 				}).map(it=>{
+					let awd = this.awardsList[it.awardId]
+					let cpnName = ""
+					if(awd.type===4){
+						cpnName=(awd.price+this.getNetAgeAmount(it.awardItemId))+"元"
+					}else{
+						cpnName=awd.text + parseType(awd.type)
+					}
 					return {
-						couponName:this.awardsList[it.awardId].text + parseType(this.awardsList[it.awardId].type),
+						couponName:cpnName,
 						awardId:it.awardId,
 						rcdId:it.id,
-						type:this.awardsList[it.awardId].type,
+						type:awd.type,
 						status:it.status,
 						createTime:it.createTime
 					}
@@ -337,6 +344,17 @@
 				if(this.sdIf){
 					console.log("发送数据到。。。")
 				}
+			},
+			getNetAgeAmount(age){
+				if(age>=5)
+					return 500;
+				if(age>=4)
+					return 400;
+				if(age>=3)
+					return 300;
+				if(age>=2)
+					return 200;
+				return 0;
 			}
 		},
 		onLoad(option){
