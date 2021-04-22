@@ -9,6 +9,7 @@
 
 <script>
 	import fzItm from "./fzItm.vue"
+	import api from "./api.js"
 	export default {
 		components:{fzItm},
 		data() {
@@ -24,7 +25,9 @@
 				debugger
 			},
 			handle(){
-				
+				api.isTarget("17309693263").then(resp=>{
+					console.log(resp.data)
+				})
 			}
 		}
 	}
@@ -32,8 +35,9 @@
 
 <style>
 	.content {
-		background: url(../../static/img/bg.jpg);
-		background-repeat: round;
+		background-image: url(../../static/img/bg.jpg);
+		background-repeat: no-repeat;
+		background-size: contain;
 		width: 750rpx;
 		height: 4675rpx;
 		position: relative;

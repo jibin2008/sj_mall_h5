@@ -57,7 +57,8 @@ const resInterceptor = (response, conf={}) => {
     // 必须返回你需要处理的数据，将会进入resolve（then中处理）
     // 如果需要reject，需要设置mypReqToReject:true，还可以携带自己定义的任何提示内容（catch中处理）
 	if(conf.header.encrypt === "aes"){
-		let data = Decrypt(response.data)
+		debugger
+		let data = JSON.parse(Decrypt(response.data.content))
 		if(data.seq === conf.header.encryptSeq){
 			response.data = data.data
 		}else{
