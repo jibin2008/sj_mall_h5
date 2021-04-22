@@ -77,8 +77,7 @@
                     "target" : "http://localhost:9008",
                     "changeOrigin" : true,
                     "secure" : false
-				}
-				,
+                },
                 "/" : {
                     "target" : "https://ah.189.cn",
                     "changeOrigin" : true,
@@ -89,6 +88,6 @@
         },
         "domain" : "https://ah.189.cn",
         "publicPath" : "https://ah.189.cn/sj/cms/activity/h1",
-        "title" : "5G网龄焕机活动"
+        "title" : "单C转融"
     }
 }
