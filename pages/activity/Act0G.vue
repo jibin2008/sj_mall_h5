@@ -14,10 +14,10 @@
 			<view v-if="showNetAgeInfo" class="wl-bg">
 				<img class='wl-lb' src="https://ah.189.cn/sj/cms/activity/img/lb.png"/>
 				<text>经检测: 您当前已经在网</text>
-				<text class="wl-zd">{{awardInfo.netAge}}年</text>
+				<text class="wl-zd">{{awardInfo.netAge}}年{{awardInfo.netAgeMouth?(awardInfo.netAgeMouth+'个月'):''}}</text>
 				<text>，可获得</text>
 				<text class="wl-zd">{{awardInfo.netAgeAmount}}元</text>
-				<text>购机直降金额</text>
+				<text>网龄购机优惠券</text>
 			</view>
 		</view>
 		<!--大转盘-->
@@ -49,7 +49,7 @@
 	      <img src="https://ah.189.cn/sj/cms/activity/img/icon-fx.png"/>分享链接
 		</div>
 		<MyAwardPopup @use='useNow' ref='myAwardPop' :awardRecordList='myAwardList1'></MyAwardPopup>
-		<ActivityRulesPopup :latnId='storeInfo.sjUser.latnId' ref='activityRulesPopup'></ActivityRulesPopup>
+		<ActivityRulesPopup :isSpecial='isSpecial(storeInfo.sjUser.latnId)' ref='activityRulesPopup'></ActivityRulesPopup>
 		<AwardResultAlreadyPop ref='awardResultAlreadyPop'
 			@viewAward='$refs.myAwardPop.open()'
 			:isTks="this.awardIndex!==7"
@@ -85,7 +85,7 @@
 		useAward,getActAward,getActAwardRecord
 		,getActAwardRecordTop20,receiveCoupon
 		,getAwardList,insertAwardInterviewLog 
-		,recode,terminalBuy} from './api0G.js'
+		,recode,terminalBuy,isSpecial} from './api0G.js'
 	import {parseType,getCookie} from '@/common/utils.js'
 	
 	import StoreInfo from './components/store-name.vue'
@@ -355,6 +355,9 @@
 				if(age>=2)
 					return 200;
 				return 0;
+			},
+			isSpecial(latnId){
+				return isSpecial(latnId)
 			}
 		},
 		onLoad(option){

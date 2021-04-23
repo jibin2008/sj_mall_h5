@@ -145,3 +145,7 @@ function decodeStr(enStr){
 	// let str = enStr.replace(/\s/g,'')
 	// return CryptoJS.enc.Base64.parse(str).toString(CryptoJS.enc.Utf8)
 }
+const E_LATN_IDS=["555","561"]
+export function isSpecial(latnId){
+	return E_LATN_IDS.indexOf(`${latnId}`)>-1
+}

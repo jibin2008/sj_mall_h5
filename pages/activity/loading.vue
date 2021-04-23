@@ -1,5 +1,5 @@
 <template>
-	<view class="lg-bd" :class="this.stIf.sjUser.latnId==='555'?'bg1':''">
+	<view class="lg-bd" :class="isSpecial(this.stIf.sjUser.latnId)?'bg1':''">
 		<StoreInfo :storeName="stIf.storeName"></StoreInfo>
 		
 		<ChangePhonePopup ref="changePhonePopup" v-model="phoneNum"></ChangePhonePopup>
@@ -13,7 +13,7 @@
 	import { queryLocalPhoneNumber } from '@/common/mm.js'
 	import ChangePhonePopup from "./components/popup/change-phone-popup.vue"
 	import StoreInfo from './components/store-name.vue'
-	import { getStoreInfo,getActAward,getAwardList,getActAwardRecord } from './api0G.js'
+	import { getStoreInfo,getActAward,getAwardList,getActAwardRecord,isSpecial } from './api0G.js'
 	export default{
 		props:{
 			storeId:{},
@@ -152,13 +152,16 @@
 			},
 			get4Text(latnId,lvl){
 				let idx=lvl-1
-				return latnId==="555"?LVL_PRICE_ARRAY_555[idx]:LVL_PRICE_ARRAY_OTHRE[idx]
+				return isSpecial(latnId)?LVL_PRICE_ARRAY_555[idx]:LVL_PRICE_ARRAY_OTHRE[idx]
 			},
 			loadStoreInfo(){
 				return getStoreInfo(this.storeId).then(resp=>{
 						this.stIf=resp.data.resultData.store
 						this.loadData(this.phoneNum)
 					})
+			},
+			isSpecial(latnId){
+				return isSpecial(latnId)
 			}
 		},
 		watch:{
