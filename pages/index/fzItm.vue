@@ -1,8 +1,8 @@
 <template>
 	<view class="fp">
-		<fp id="itm1" class="itm" :show="idxShow(0)" @showRslt="showResult(0)"></fp>
-		<fp id="itm2" class="itm" :show="idxShow(1)" @showRslt="showResult(1)"></fp>
-		<fp id="itm3" class="itm" :show="idxShow(2)" @showRslt="showResult(2)"></fp>
+		<fp id="itm1" :result="resultIMg" class="itm" :show="idxShow(0)" @showRslt="showResult(0)"></fp>
+		<fp id="itm2" :result="resultIMg" class="itm" :show="idxShow(1)" @showRslt="showResult(1)"></fp>
+		<fp id="itm3" :result="resultIMg" class="itm" :show="idxShow(2)" @showRslt="showResult(2)"></fp>
 	</view>
 </template>
 
@@ -11,7 +11,6 @@
 	export default{
 		props:{
 			resultIMg:{
-				default:0
 			}
 		},
 		components:{
@@ -34,6 +33,10 @@
 				this.hasClick=true
 				this.resultIndex=idx
 				this.show=true
+			},
+			reset(){
+				this.hasClick=false
+				this.show=false
 			}
 		}
 	}

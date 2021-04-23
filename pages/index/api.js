@@ -14,5 +14,8 @@ function req(url,data){
 export default{
 	isTarget(phone){
 		return req('/gzwz/service/dczr/isTarget',{phone})
+	},
+	setupCommit(obj){
+		return req('/gzwz/service/dczr/isTarget',obj)
 	}
 }

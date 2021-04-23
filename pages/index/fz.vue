@@ -1,6 +1,6 @@
 <template>
 	<view @click="showRslt" class="bd" :style="`background-image: url(${result})`">
-		<view :animation="animationData" class="bd" :style="`background-image: url(${cover})`">
+		<view ref="gz" :animation="animationData" class="bd" :style="`background-image: url(${cover})`">
 		</view>
 	</view>
 </template>
@@ -39,6 +39,8 @@
 					})
 					anm.scale(0).rotate(360*3).step()
 					this.animationData = anm.export()
+				}else{
+					this.$refs.gz.$el.style=`background-image: url(${this.cover})`
 				}
 			}
 		}

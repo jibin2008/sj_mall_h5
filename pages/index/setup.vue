@@ -1,5 +1,6 @@
 <template>
 	<view>
+		<view class="header">装宽带</view>
 		<FormItem label="抽中奖品">{{jp}}</FormItem>
 		<Title text="更具国家实名制要求,请准确提供身份证信息"></Title>
 		<FormItem label="您的姓名" v-model="name" placeholder="请输入身份证姓名"></FormItem>
@@ -21,28 +22,24 @@
 <script>
 	import FormItem from "./FormItem.vue"
 	import Title from "./FormTitle.vue"
+	import api from "./api.js"
 	export default{
 		components:{
 			FormItem,
 			Title
-		},
-		props:{
-			jp:{
-				default:"50M24个月免费宽带加装"
-			},
-			phoneNum:{
-				default:"17309693263"
-			},
-			price:{
-				default:560
-			}
 		},
 		data(){
 			return {
 				name:"",
 				idCardCode:"",
 				address:"",
-				addressDetails:""
+				addressDetails:"",
+				phoneNum:'',
+				jp:"50M 24个月免费宽带加装",
+				price:200,
+				adressObj:{
+					
+				}
 			}
 		},
 		methods:{
@@ -57,7 +54,30 @@
 						that.address=res.address
 				    }
 				})
+			},
+			commit(){
+				uni.showLoading({
+					mask:true,
+					title:"请稍后"
+				})
+				api.setupCommit({
+					name:this.name,
+					idCardCode:this.idCardCode,
+					address:this.address,
+					addressDetails:this.addressDetails,
+					phoneNum:this.phoneNum,
+					jp:this.jp,
+					adressObj:this.adressObj
+				}).then(resp=>{
+					uni.hideLoading()
+					uni.showToast({
+						title:"恭喜您下单成功！"
+					})
+				})
 			}
+		},
+		onLoad() {
+			this.phoneNum=uni.getStorageSync("phoneNum")
 		}
 	}
 </script>
@@ -94,5 +114,14 @@
 		color: #f08113;
 		font-weight: bold;
 		padding: 10rpx 35rpx;
+	}
+	.header{
+		height: 100rpx;
+		width: 100%;
+		background-color: #FFFFFF;
+		font-size: 40rpx;
+		text-align: center;
+		line-height: 100rpx;
+		margin-bottom: 2rpx;
 	}
 </style>
