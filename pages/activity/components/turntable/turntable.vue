@@ -102,7 +102,14 @@
 						this.isRunning=false
 					},len)
 				}
-			}
+			},
+			rotateWaiting(animationCtx){
+				
+			},
+			rotateStop(animationCtx){
+				
+			},
+			setResult(idx){}
 		}
 	}
 </script>
@@ -156,9 +163,9 @@
 		padding-top: 120rpx;
 	}
 	.lp-item .img{
-		width: 120rpx;
+		width: 100rpx;
 		height: auto;
-		margin-top: 10rpx;
+		margin-top: 20rpx;
 	}
 	.lp-items {
 	}

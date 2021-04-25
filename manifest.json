@@ -73,6 +73,11 @@
             "port" : 8080,
             "disableHostCheck" : true,
             "proxy" : {
+                "/gzwz/service/dczr" : {
+                    "target" : "http://localhost:9008",
+                    "changeOrigin" : true,
+                    "secure" : false
+                },
                 "/" : {
                     "target" : "https://ah.189.cn",
                     "changeOrigin" : true,
@@ -82,6 +87,7 @@
             "https" : false
         },
         "domain" : "https://ah.189.cn",
-        "publicPath" : "https://ah.189.cn/sj/cms/activity/html"
+        "publicPath" : "https://ah.189.cn/sj/cms/activity/h1",
+        "title" : "单C转融"
     }
 }

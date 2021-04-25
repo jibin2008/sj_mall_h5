@@ -1,17 +1,14 @@
 import Request from '@/common/request/request.js'
 import { getCookie } from '@/common/utils.js'
 
-import {Encrypt,Decrypt} from '@/common/aes.js'
-
-export function getActAwardRecord(phoneNumber){
-	let url='/gzwz/service/sj/actitvity/getActAwardRecord'
-	return Request.request({
-		url:url,
-		method: 'POST',
-		data: {
-			 phoneNumber
-		}
-	});
+const ACTV_IDS="5242328489151488,5140360162937856,4645949848947712"
+function extActIds(data){
+	data=data?data:{}
+	data.actvIds=ACTV_IDS
+	return data
+}
+export function getActAwardRecord(phone){
+	return Request.aesReq('/gzwz/service/actv/bsc/myrcd',extActIds({phone}));
 }
 
 
@@ -30,43 +27,9 @@ export function getActAward({phoneNumber,storeId,userId,sourceCode,byChanel}){
 	});
 }
 
-export function insertAwardInterviewLog({storeId,userId,sourceCode,byChanel}){
-	let url='/gzwz/service/sj/actitvity/insertAwardInterviewLog'
-	return Request.request({
-		url:url,
-		method: 'POST',
-		data: {
-			storeId,
-			userId,
-			sourceCode,
-			byChanel
-		}
-	});
-}
-
 export function getActAwardRecordTop20(){
-	let url='/gzwz/service/sj/actitvity/getActAwardRecordTop20'
-	return Request.request({
-		url:url,
-		method: 'GET'
-	});
+	return Request.aesReq('/gzwz/service/actv/bsc/rcdtp20',extActIds());
 }
-
-export function getAwardList(){
-	return new Promise((rs,rj)=>{
-		uni.request({
-			url:'/sj/cms/activity/data/awardlist.json',
-			method:'GET',
-			success:resp=>{
-				rs(resp)
-			},
-			fail:res=>{
-				rj(res)
-			}
-		})
-	})
-}
-
 
 export function getSms(phoneNumber){
 	let url=`/gzwz/service/sj/service/gzwz/sjH5user/getSms/${phoneNumber}`
@@ -84,10 +47,7 @@ export function userH5Login(phoneNumber,randomCode){
 			 phoneNumber,
 			 randomCode
 		}
-	}).then(resp=>{
-		resp.data=JSON.parse(Decrypt(resp.data)) 
-		return Promise.resolve(resp)
-	})
+	});
 }
 
 export function recode(){

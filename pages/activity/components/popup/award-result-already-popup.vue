@@ -3,7 +3,7 @@
 		icon='https://ah.189.cn/sj/cms/activity/img/lw.png'
 	>
 		<template>
-			<p class="f18 dgray">您已经抽取过奖品</p>
+			<p class="f18 dgray">您今天已经参与过抽奖</p>
 			<p class="f18 huangss">请前往【我的奖品】进行查看</p>
 		</template>
 		<template v-slot:bt>
