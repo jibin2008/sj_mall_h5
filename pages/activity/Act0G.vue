@@ -1,7 +1,7 @@
 <template>
 	<Loading :logout="isLogout" @ready="dataReady" v-if="loading" :storeId="storeId"
 		:phone='phone' :sourceCode="sourceCode"></Loading>
-	<div v-else class="body" :class="storeInfo.sjUser.latnId==='555'?'bg-mas':''">
+	<div v-else class="body" :class="isSpecial(storeInfo.sjUser.latnId)?'bg-mas':''">
 		<div class="logout">
 			<text>{{this.isLogin?this.phoneS:'您好！'}}【</text>
 			<text style="text-decoration: underline;" @click="logout">{{this.isLogin?'退出':'请登录'}}</text>
@@ -240,7 +240,8 @@
 					actId:rcdId,
 					storeId:this.storeId,
 					userId:this.userId,
-					yh:this.yh
+					yh:this.yh,
+					yh1:this.awardInfo.netAgeAmount
 				}).then(resp=>{
 					uni.hideLoading()
 					this.myAwardRecordList = this.myAwardRecordList.map(it=>{
