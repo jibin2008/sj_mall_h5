@@ -16,42 +16,49 @@
 		</div>
 		
 		<div class="con">
-		    <div class="mt20 btn">
-		        <div @click="$refs.myAwardPop.open()" class=" fl w50"><img src="https://ah.189.cn/sj/cms/activity/img/icon_hdgz.png"></div>
-		        <div @click="$refs.activityRulesPopup.open()" class=" fl w50 ml10"><img src="https://ah.189.cn/sj/cms/activity/img/icon_wdjp.png"></div>
-		    </div>
-		    <div class=" clear"></div>
 		  <!--中奖名单-->
-		  <div class="zjmd">
-			<div class="fc yahei tc jinse"> 
-				<div class="bgt"><img src="https://ah.189.cn/sj/cms/activity/img/c_06.jpg"></div>
-		        <div >
-		            <ul id="sliderUl">
-						<swiper class="list_lh"
-							display-multiple-items='6'
-							:interval='3000'
-							:vertical='true'
-							:duration='1000'
-							:autoplay='allAwardListTop.length>6'
-						>
-							<swiper-item class="bbxd" v-for="itm in allAwardListTop">
-								<li>{{itm.tel}}<span class="pl10 pr10">抽中</span>{{itm.cnp}}</li>
-							</swiper-item>
-							<template v-if="allAwardListTop.length<6" >
-								<swiper-item class="bbxd" v-for="itm in 6-allAwardListTop.length">
-									<li> <span class="pl10 pr10"> </span> </li>
-								</swiper-item>
-							</template>
-						</swiper>
-		            </ul>
-		        </div>
-		    </div>
+		  <wPanel title="中奖名单">
+			  <ul class="tc">
+				<swiper class="list_lh"
+					display-multiple-items='6'
+					:interval='3000'
+					:vertical='true'
+					:duration='1000'
+					:autoplay='allAwardListTop.length>6'
+				>
+					<swiper-item class="bbxd" v-for="itm in allAwardListTop">
+						<li>{{itm.tel}}<span class="pl10 pr10">抽中</span>{{itm.cnp}}</li>
+					</swiper-item>
+					<template v-if="allAwardListTop.length<6" >
+						<swiper-item class="bbxd" v-for="itm in 6-allAwardListTop.length">
+							<li> <span class="pl10 pr10"> </span> </li>
+						</swiper-item>
+					</template>
+				</swiper>
+			  </ul>
+		  </wPanel>
+		  
+		  <wPanel title="活动规则">
+			  <view class="rules">
+				<p>1、参与用户范围：安徽电信用户。</p>
+				<p>2、活动时间：2021年5月1日—2021年5月31日；</p>
+				<p>3、抽奖规则：活动期间内，同一手机号码每日均可参与1次抽奖，中奖概率随机。</p>
+				<p>4、奖品包含：50元直升5G优惠券、20元语音流量优惠券、50元5G畅享年包优惠券、20元会员权益月包优惠券、VR体验券。</p>
+				<p>5、奖品规则：</p>
+				<p>（1） 若您抽取了优惠券类奖品，将跳转至相应的活动页，具体办理规则以跳转活动页提示为准。业务订购成功后，优惠券将以翼支付权益金的形式在7个工作日内充值到参与号码的翼支付账户中。</p>
+				<p>（2） 若您抽取了VR体验券，可直接到线下厅店体验使用。</p>
+				<p>6、翼支付权益金到账及使用说明：</p>
+				<p>1)使用规则：可在翼支付合作的各类商户及翼支付客户端使用，可拆分多次使用，有效期120天(过期作废不可补赠送)，翼支付账户等级必须为二星级及以绑卡上用户，更多使用详情见翼支付客户端；</p>
+				<p>2)查询方式：登录翼支付客户端—我的—权益金；</p>
+				<p>3)办理前请先确认翼支付账户是否正常，若翼支付账户异常（未开通账户/黑名单限制/星级未达到二星等）则无法赠送，解决账户异常后可在我的奖品中补领。</p>
+				<p>7、特别提醒:</p>
+				<p>（1）对于任何通过不正当或第三方技术手段恶意攻击、篡改活动的参与活动者，安徽电信有权在不事先通知的情况下取消其参加活动及得奖资格；</p>
+				<p>（2）如遇不可抗力因素，本次活动因故无法进行时，安徽电信在法律允许的范围内有权决定取消、终止、修改或暂停本活动。</p>
+			  </view>
+		  </wPanel>
 		</div>
-		
-		</div>
-		<div class="footer">版权所有  中国电信安徽公司</div>
 		<div @click="copyUrl" class="fx">
-	      <img src="https://ah.189.cn/sj/cms/activity/img/icon-fx.png"/>分享链接
+	      我的奖品
 		</div>
 		<MyAwardPopup @use='useNow' ref='myAwardPop' :awardRecordList='myAwardRecordList'></MyAwardPopup>
 		<ActivityRulesPopup ref='activityRulesPopup'></ActivityRulesPopup>
@@ -76,8 +83,9 @@
 	import ChangePhonePopup from "./components/popup/change-phone-popup.vue"
 	
 	import { recode,getActAward,getActAwardRecord,getActAwardRecordTop20,receiveCoupon,getAwardList,insertAwardInterviewLog } from './apiNew.js'
-	import {parseType,getCookie} from './utils.js'
+	import {parseType,getCookie} from '@/common/utils.js'
 	import { queryLocalPhoneNumber } from '@/common/mm.js'
+	import wPanel from "./components/panel.vue"
 	
 	
 	export default {
@@ -86,7 +94,8 @@
 			ActivityRulesPopup,
 			AwardResultAlreadyPop,
 			AwardResultSuccessPop,
-			ChangePhonePopup
+			ChangePhonePopup,
+			wPanel
 		},
 		computed:{
 			cnpText(){
@@ -106,7 +115,41 @@
 		},
 		data() {
 			return {
-				awardsList:[],
+				awardsList:[
+					{
+						"productCode": 18367,
+						"icon": "/static/imgs/50.png",
+						"text": "50元直升5G",
+						textType:"优惠券"
+					},
+					{
+						"productCode": 18981,
+						"icon": "/static/imgs/20.png",
+						"text": "20元语音流量",
+						textType:"优惠券"
+					},
+					{
+						"icon": "/static/imgs/VR.png",
+						"text": "VR体验券"
+					},
+					{
+						"icon": "/static/imgs/5.png",
+						"text": "谢谢参与"
+					},
+					{
+						"productCode": 18953,
+						"icon": "/static/imgs/50.png",
+						"text": "50元5G畅想",
+						textType:"年包优惠券"
+					},
+					{
+						"productCode": 11161,
+						"icon": "/static/imgs/20.png",
+						"text": "20元会员权益",
+						textType:"月包优惠券"
+					}
+				]
+,
 				allAwardListTop:[
 					{tel:'177****9369',cnp:'30元天翼看家优惠券'},
 					{tel:'177****9369',cnp:'30元天翼看家优惠券'},
@@ -196,10 +239,7 @@
 				this.$refs.changePhonePopup.open()
 			},
 			copyUrl(){
-				window.clipboardData.setData("Text",window.location.href)
-				uni.showToast({
-					title: "复制成功！"
-				})
+				this.$refs.myAwardPop.open()
 			}
 		},
 		onLoad(option){
@@ -212,28 +252,25 @@
 			if(option.byChanel)
 				this.byChanel=option.byChanel
 			recode(
-			// {
-			// 	phoneNumber:this.phone,
-			// 	storeId:this.storeId,
-			// 	userId:this.userId,
-			// 	sourceCode:getCookie("sourceCode"),
-			// 	byChanel:this.byChanel
-			// }
+			{
+				phoneNumber:this.phone,
+				storeId:this.storeId,
+				userId:this.userId,
+				sourceCode:getCookie("sourceCode"),
+				byChanel:this.byChanel
+			}
 			).catch(res=>{
 				console.log(res)
 			})
 		},
 		created() {
-			getAwardList().then(resp=>{
-				this.awardsList=resp.data
-				getActAwardRecordTop20().then(resp=>{
-					this.allAwardListTop=resp.data.awardRecordList.map(itm=>{
-						let award=this.awardsList[itm.awardId];
-						return {
-							tel:itm.phoneNumber,
-							cnp:award.text + parseType(award.type)
-						}
-					})
+			getActAwardRecordTop20().then(resp=>{
+				this.allAwardListTop=resp.data.awardRecordList.map(itm=>{
+					let award=this.awardsList[itm.awardId];
+					return {
+						tel:itm.phoneNumber,
+						cnp:award.text + parseType(award.type)
+					}
 				})
 			})
 		},
@@ -264,9 +301,9 @@
 	}
 	.body{
 	    font: 28rpx/64rpx "微软雅黑";
-		background: #3280ed url(https://ah.189.cn/sj/cms/activity/img/cjbg_01.png) no-repeat top;
-		background-size: contain;
-		padding-top: 311rpx;
+		background: #ffd66a url(../../static/imgs/bg.jpg) no-repeat top;
+		background-size: 750rpx auto;
+		padding-top: 455rpx;
 		overflow: hidden;
 	}
 	.top{width: 100%;}
@@ -290,8 +327,6 @@
 	}
 	.list_lh{ height:400rpx; overflow:hidden; padding:0px 20rpx; line-height:70rpx; padding-bottom:-20rpx;}
 	.footer{text-align:center; font:30rpx "微软雅黑";color: #FFFFFF;}
-	.zjmd{ position:relative;margin-top: 25rpx;}
-	.jinse{ color:#da7906;  border:1px solid #fdd067; border-radius:10px; padding-bottom:20px;background-color: #fff;}
 	.couten{
 		width:750rpx; 
 		margin:0 auto; 
@@ -300,8 +335,9 @@
 		height: 665rpx;
 		padding-left: 54.5rpx;
 		padding-right: 54.5rpx;
+		margin-bottom: 187rpx;
 	}
-	.bbxd{border-bottom:1px dashed #c9c8c1;}
+	.bbxd{border-bottom:1px dashed #c9c8c1;color: #3a3a3a;}
 	.logout{
 		position: absolute;
 		top: 1%;
@@ -311,13 +347,20 @@
 	.fx{
 		position: absolute;
 		right: 0px;
-		top: 900rpx;
-		background: #441bbf47;
-		border-radius: 60rpx 0px 0px 60rpx;
+		top: 1117rpx;
+		background: #0059c6;
+		border-radius: 35rpx 0px 0px 35rpx;
 		color: white;
-		display: none;
+		height: 70rpx;
+		line-height: 70rpx;
+		padding-left: 35rpx;
+		padding-right: 18rpx;
+		text-align: center;
 	}
-	.fx img{
-		height: 48rpx;
+	.rules{
+		padding: 0rpx 30rpx;
+		font-size: 24rpx;
+		color: #999999;
+		line-height: 36rpx;
 	}
 </style>

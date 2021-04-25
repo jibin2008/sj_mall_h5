@@ -16,13 +16,13 @@
 					>
 						<div class="lp-item-context ms">
 							<div>{{item.text}}</div>
-							<div>{{getTypeText(item.type)}}</div>
-							<image mode="aspectFit" class="img" :src="item.icon"></image>
+							<div>{{item.textType}}</div>
+							<img mode="aspectFit" class="img" :src="item.icon"></img>
 						</div>
 					</div>
 				</div>
 				<view ref='pointer' :animation="animationData" class="lp-point ms ptl0">
-					<image @click="$emit('startClick')" class="img" src="https://ah.189.cn/sj/cms/activity/img/pointer.png"></cover>
+					<image @click="$emit('startClick')" class="img" src="/static/imgs/pt.png"></cover>
 				</view>
 			</div>
 		</div>
@@ -30,7 +30,7 @@
 </template>
 
 <script>	
-	import {parseType} from '../../utils.js'
+	import {parseType} from '@/common/utils.js'
 	export default {
 		props:{
 			awardsList:{},
@@ -61,7 +61,7 @@
 		},
 		methods:{
 			getTransformItemBg(idx){
-				return `transform:rotate(${this.getItemBgRotate(idx)}deg) skewY(-${this.skewY}deg)`
+				return `transform:rotate(${this.getItemBgRotate(idx)}deg) skewY(${this.skewY-90}deg)`
 			},
 			getTransformItem(idx){
 				return `transform:rotate(${this.getItemRotate(idx)}deg)`
@@ -113,7 +113,7 @@
 	    position: relative;
 	    background: no-repeat center / contain;
 	    cursor: default;
-		background-image: url(https://ah.189.cn/sj/cms/activity/img/zpbg1_03.png);
+		background-image: url(../../../../static/imgs/zpbj_03.png);
 		padding: 7rpx;
 	}
 	.lp{
@@ -138,7 +138,8 @@
 		height: 50%;
 		left: 50% !important;
 		transform-origin: 0% 100%;
-		background-color: #ffe358;
+		background-color: #fff3f1;
+		border: 2px solid #f3e2e2;
 	}
 	.lp-item{
 		font-size: 24rpx;
@@ -155,9 +156,9 @@
 		padding-top: 120rpx;
 	}
 	.lp-item .img{
-		width: 80rpx;
-		height: 80rpx;
-		margin-top: 20rpx;
+		width: 120rpx;
+		height: auto;
+		margin-top: 10rpx;
 	}
 	.lp-items {
 	}
@@ -174,7 +175,7 @@
 		justify-content: center;
 	}
 	.lp-point .img{
-		width: 210rpx;
-		height: 210rpx;
+		width: 244rpx;
+		height: 244rpx;
 	}
 </style>
