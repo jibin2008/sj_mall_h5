@@ -88,6 +88,7 @@
         },
         "domain" : "https://ah.189.cn",
         "publicPath" : "https://ah.189.cn/sj/cms/activity/h1",
-        "title" : "单C转融"
+        "title" : "单C转融",
+        "template" : "index.html"
     }
 }

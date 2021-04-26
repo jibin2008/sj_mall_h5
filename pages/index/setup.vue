@@ -23,6 +23,9 @@
 	import FormItem from "./FormItem.vue"
 	import Title from "./FormTitle.vue"
 	import api from "./api.js"
+	import md5 from "../../common/api/md5.js"
+	require("../../common/selectMapUtil.js")
+	
 	export default{
 		components:{
 			FormItem,
@@ -45,15 +48,16 @@
 		methods:{
 			selectLocation(){
 				let that = this
-				uni.chooseLocation({
-				    success: function (res) {
-				        console.log('位置名称：' + res.name);
-				        console.log('详细地址：' + res.address);
-				        console.log('纬度：' + res.latitude);
-				        console.log('经度：' + res.longitude);
-						that.address=res.address
-				    }
-				})
+				// uni.chooseLocation({
+				//     success: function (res) {
+				//         console.log('位置名称：' + res.name);
+				//         console.log('详细地址：' + res.address);
+				//         console.log('纬度：' + res.latitude);
+				//         console.log('经度：' + res.longitude);
+				// 		that.address=res.address
+				//     }
+				// })
+				Comm.wapMapAddress()
 			},
 			commit(){
 				uni.showLoading({

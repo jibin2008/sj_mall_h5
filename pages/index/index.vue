@@ -40,7 +40,20 @@
 				isTarget: false
 			}
 		},
-		onLoad() {
+		onLoad(options) {
+			if(options.standardaddressid){
+				parent.parent.Comm.setAddress({
+					addrId : options.standardaddressid,
+					addrName : decodeURI(options.addrName),
+					subAreaId : options.subAreaId,
+					siteId : options.siteId,
+					siteCode : options.siteCode,
+					siteName : decodeURI(options.siteName),
+					positionType: options.positiontype,
+					ability: options.ability
+				})
+				return
+			}
 			uni.showLoading({
 				title: "请稍后~~~",
 				mask: true

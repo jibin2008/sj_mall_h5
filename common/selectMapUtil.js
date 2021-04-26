@@ -1,7 +1,7 @@
 var citysIndex, searchIndex;
 var broadList;
+import md5 from "./api/md5.js"
 (function (Comm) {
-    
     Comm.verify = {};
 	
 
@@ -77,7 +77,8 @@ var broadList;
     /**
      * 城市区域公共封装类
      */
-    $.extend(true, CityArea, {
+	Object.assign(CityArea, 
+		{
         //数组顺序一一对应
         data: {
             cityCode: ["551", "553", "552", "554", "555", "561", "562", "556", "559", "550", "558", "557", "564", "560", "566", "563"],
@@ -131,65 +132,6 @@ var broadList;
             return "";
         }
     });
-
-    /*ajax封装*/
-    /*同步*/
-    Comm.post = function post(url, data, success) {
-        $.ajax({
-            url: url,
-            type: "POST",
-            cache: false,
-            async: false,
-            contentType: "application/x-www-form-urlencoded",
-            dataType: "json",
-            data: data,
-            success: function (msg) {
-                success(msg);
-            }
-        });
-    }
-    /*异步*/
-    Comm.post2 = function post(url, data, success) {
-        $.ajax({
-            url: url,
-            type: "POST",
-            contentType: "application/x-www-form-urlencoded",
-            dataType: "json",
-            data: data,
-            beforeSend: function () {
-                indexss = layer.load(3, {
-                    shade: [0.5, '#fff'] //0.1透明度的白色背景
-                })
-            },
-            error: function () {
-                layer.closeAll();
-            },
-            success: function (msg) {
-                layer.closeAll()
-                success(msg);
-            }
-        });
-    }
-    /*异步*/
-    Comm.post3 = function post(url, data, success) {
-        $.ajax({
-            url: url,
-            type: "POST",
-            /* cache : false,
-             async : false,*/
-            contentType: "application/x-www-form-urlencoded",
-            dataType: "json",
-            data: data,
-            error: function () {
-                layer.closeAll();
-            },
-            success: function (msg) {
-                layer.closeAll();
-                success(msg);
-            }
-        });
-    }
-   
     var sucCall;
     
     /**wap 资源看选址*/
@@ -211,7 +153,7 @@ var broadList;
                 var date = year + "" + month + "" + day;
             }
         }
-        var md5 = faultylabs.MD5('admin|' + date + '|zyxz');
+        let md5Str = md5.hexMD5('admin|' + date + '|zyxz');
         if (!suc) {
             sucCall = function (address) {
                 layer.close(searchIndex);
@@ -221,7 +163,7 @@ var broadList;
         }
         searchIndex = layer.open({
             type: 2,   //类型
-            shadeClose: true,
+            // shadeClose: true,
             title: false,
             //offset  : '20px',
             shade: 0.3,
@@ -230,7 +172,7 @@ var broadList;
             // maxmin: true, //开启最大化最小化按钮
             success: function (layero, index) {
             },	
-            content: 'https://it.jisu8.cn:9999/search/mobileSearch?user=admin&from=wtapp&sign=' + md5
+            content: 'https://it.jisu8.cn:9999/search/mobileSearch?user=admin&from=wtapp&sign=' + md5Str
         });
     }
 
@@ -256,112 +198,4 @@ var broadList;
     
 
 })(window.Comm = window.Comm || {}, window.CityArea = window.CityArea || {});
-
-
-/** 序列化表单 转换成对象 * */
-$.fn.serializeObject = function () {
-    var o = {};
-    var a = this.serializeArray();
-    $.each(a, function () {
-        if (o[this.name]) {
-            if (!o[this.name].push) {
-                o[this.name] = [o[this.name]];
-            }
-            o[this.name].push(this.value || '');
-        } else {
-            o[this.name] = this.value || '';
-        }
-    });
-    return o;
-};
-
-/** 拼接字符串 **/
-function StringBuffer(str) {
-    this._string_ = new Array();
-    this._string_.push(str);
-}
-StringBuffer.prototype.append = function (str) {
-    this._string_.push(str);
-}
-StringBuffer.prototype.toString = function () {
-    return this._string_.join('');
-}
-/**
- * 日期格式化
- * @param format
- * @returns
- */
-Date.prototype.format = function (format) {
-    var o = {
-        "M+": this.getMonth() + 1, // month
-        "d+": this.getDate(), // day
-        "h+": this.getHours(), // hour
-        "m+": this.getMinutes(), // minute
-        "s+": this.getSeconds(), // second
-        "q+": Math.floor((this.getMonth() + 3) / 3), // quarter
-        "S": this.getMilliseconds()
-    }
-    if (/(y+)/.test(format))
-        format = format.replace(RegExp.$1, (this.getFullYear() + "")
-            .substr(4 - RegExp.$1.length));
-    for (var k in o)
-        if (new RegExp("(" + k + ")").test(format))
-            format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k]
-                : ("00" + o[k]).substr(("" + o[k]).length));
-    return format;
-}
-/**
- * 计算字符串长度
- */
-String.prototype.strLen = function () {
-    var len = 0;
-    for (var i = 0; i < this.length; i++) {
-        if (this.charCodeAt(i) > 255 || this.charCodeAt(i) < 0) len += 2; else len++;
-    }
-    return len;
-}
-/**
- * 判断某个字符是否是汉字
- */
-String.prototype.isCHS = function (i) {
-    if (this.charCodeAt(i) > 255 || this.charCodeAt(i) < 0)
-        return true;
-    else
-        return false;
-}
-/**
- * 截取字符串（从start字节到end字节）
- */
-String.prototype.subCHString = function (start, end) {
-    var len = 0;
-    var str = "";
-    this.strToChars();
-    for (var i = 0; i < this.length; i++) {
-        if (this.charsArray[i][1])
-            len += 2;
-        else
-            len++;
-        if (end < len)
-            return str;
-        else if (start < len)
-            str += this.charsArray[i][0];
-    }
-    return str;
-}
-/**
- * 截取字符串（从start字节截取length个字节）
- */
-String.prototype.subCHStr = function (start, length) {
-    return this.subCHString(start, start + length);
-}
-
-//将字符串拆成字符，并存到数组中   
-String.prototype.strToChars = function () {
-    var chars = new Array();
-    for (var i = 0; i < this.length; i++) {
-        chars[i] = [this.substr(i, 1), this.isCHS(i)];
-    }
-    String.prototype.charsArray = chars;
-    return chars;
-}
 

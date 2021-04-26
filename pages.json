@@ -7,12 +7,12 @@
 		// 		"navigationStyle": "custom"
 		// 	}
 		// },{
-		// 	"path": "pages/index/index",
-		// 	"style": {
-		// 		"navigationBarTitleText": "单C转融",
-		// 		"navigationStyle": "custom"
-		// 	}
-		// },{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "单C转融",
+				"navigationStyle": "custom"
+			}
+		},{
 			"path": "pages/index/setup",
 			"style": {
 				"navigationBarTitleText": "装宽带",
