@@ -150,17 +150,7 @@
 					}
 				]
 ,
-				allAwardListTop:[
-					{tel:'177****9369',cnp:'30元天翼看家优惠券'},
-					{tel:'177****9369',cnp:'30元天翼看家优惠券'},
-					{tel:'177****9369',cnp:'30元天翼看家优惠券'},
-					{tel:'177****9369',cnp:'30元天翼看家优惠券'},
-					{tel:'177****9369',cnp:'30元天翼看家优惠券'},
-					{tel:'177****9369',cnp:'30元天翼看家优惠券'},
-					{tel:'177****9369',cnp:'30元天翼看家优惠券'},
-					{tel:'177****9369',cnp:'30元天翼看家优惠券'},
-					{tel:'177****9369',cnp:'30元天翼看家优惠券'},
-				],
+				allAwardListTop:[],
 				myAwardRecordList:[],
 				awardIndex:0,
 				phone:'',
@@ -179,13 +169,14 @@
 					this.$refs.changePhonePopup.open()
 					return
 				}
+				uni.showLoading({
+					title: '请稍后'
+				})
 				this.refreshActAwardRecord(()=>{
 					if(this.myAwardRecordList.length>0){
+						uni.hideLoading()
 						this.$refs.awardResultAlreadyPop.open()
 					}else{
-						uni.showLoading({
-						    title: '请稍后'
-						})
 						getActAward({
 							phoneNumber:this.phone,
 							storeId:this.storeId,
@@ -194,41 +185,32 @@
 							byChanel:this.byChanel
 						}).then(rsp=>{
 							uni.hideLoading()
-							if(rsp.data.result===0){
-								this.awardIndex=rsp.data.awardIndex
-								this.$refs.turntable.rotate(rsp.data.awardIndex)
-								this.refreshActAwardRecord()
-							}else if(rsp.data.result===1){
-								uni.showToast({
-									title: rsp.data.errorMsg,
-									icon:'none'
-								})
-							}else{
-								this.refreshActAwardRecord()
-							}
+							this.awardIndex=rsp.data
+							this.$refs.turntable.rotate(rsp.data)
+							this.refreshActAwardRecord()
 						})
 					}
 				})
 			},
 			refreshActAwardRecord(callback){
-				getActAwardRecord(this.phone).then(rsp=>{
-					if(rsp.data.result===0){
-						this.myAwardRecordList=rsp.data.awardRecordList.map(itm=>{
+				if(this.phone&&this.phone!=="")
+					getActAwardRecord(this.phone).then(rsp=>{
+						this.myAwardRecordList=rsp.data.map(itm=>{
 							let award = this.awardsList[itm.awardId]
 							return {
 								couponName:award.text+parseType(award.type),
 								awardId:itm.awardId,
-								prodCode:award.productCode
+								prodCode:award.productCode,
+								createTime:itm.createTime
 							}
 						})
 						if(callback)
 							callback()
-					}
-				})
+					})
 			},
 			useNow(awardIdx){
-				if(awardIdx===7){
-					window.location.href=`https://ah.189.cn/sj/cms/socialH5/product/productList.html?type=0&storeId=${this.storeId}&userId=${this.userId}`
+				if(awardIdx===3||awardIdx===2){
+					// window.location.href=`https://ah.189.cn/sj/cms/socialH5/product/productList.html?type=0&storeId=${this.storeId}&userId=${this.userId}`
 				}
 				else{
 					let prodCode=this.awardsList[awardIdx].productCode
@@ -236,6 +218,7 @@
 				}
 			},
 			logout(){
+				this.phone=''
 				this.$refs.changePhonePopup.open()
 			},
 			copyUrl(){
@@ -251,25 +234,17 @@
 				this.storeId=option.storeId
 			if(option.byChanel)
 				this.byChanel=option.byChanel
-			recode(
-			{
-				phoneNumber:this.phone,
-				storeId:this.storeId,
-				userId:this.userId,
-				sourceCode:getCookie("sourceCode"),
-				byChanel:this.byChanel
-			}
-			).catch(res=>{
+			recode().catch(res=>{
 				console.log(res)
 			})
 		},
 		created() {
 			getActAwardRecordTop20().then(resp=>{
-				this.allAwardListTop=resp.data.awardRecordList.map(itm=>{
+				this.allAwardListTop=resp.data.map(itm=>{
 					let award=this.awardsList[itm.awardId];
 					return {
 						tel:itm.phoneNumber,
-						cnp:award.text + parseType(award.type)
+						cnp:award.text + award.textType
 					}
 				})
 			})
@@ -278,7 +253,7 @@
 			queryLocalPhoneNumber()
 				.then(phoneNum=>{
 					this.phone=phoneNum
-					this.refreshActAwardRecord()
+					// this.refreshActAwardRecord()
 				})
 				.catch(msg=>{
 					this.$refs.changePhonePopup.open()

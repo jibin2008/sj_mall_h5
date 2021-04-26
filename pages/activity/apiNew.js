@@ -13,18 +13,9 @@ export function getActAwardRecord(phone){
 
 
 export function getActAward({phoneNumber,storeId,userId,sourceCode,byChanel}){
-	let url='/gzwz/service/sj/actitvity/getActAward'
-	return Request.request({
-		url:url,
-		method: 'POST',
-		data: {
-			phoneNumber,
-			storeId,
-			userId,
-			sourceCode,
-			byChanel
-		}
-	});
+	return Request.aesReq('/gzwz/service/actv/51/getaward',extActIds({
+		phone:phoneNumber,storeId,userId,sourceCode,byChanel
+	}));
 }
 
 export function getActAwardRecordTop20(){

@@ -87,7 +87,7 @@
 					this.isRunning=true
 					let runNum = 5+this.getRandom(5);
 					// 旋转角度
-					let runDeg = 360*runNum+this.getItemRotate(idx)
+					let runDeg = 360*runNum + 180 + 60*(idx+0.5)
 					//动画时长
 					let len=1000*(4+this.getRandom(4))
 					
