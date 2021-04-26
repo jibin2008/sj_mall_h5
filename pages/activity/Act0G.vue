@@ -135,11 +135,12 @@
 				return this.myAwardRecordList.filter(it1=>{
 					return it1.awardId!==7
 				}).map(it=>{
+					let awrd = this.awardsList[it.awardId]
 					return {
-						couponName:this.awardsList[it.awardId].text + parseType(this.awardsList[it.awardId].type),
+						couponName:(awrd.price+this.getCustomAgeAmount(it.awardItemId,this.storeInfo.sjUser.latnId))+ "元" + parseType(awrd.type),
 						awardId:it.awardId,
 						rcdId:it.id,
-						type:this.awardsList[it.awardId].type,
+						type:awrd.type,
 						status:it.status,
 						createTime:it.createTime
 					}
@@ -342,6 +343,23 @@
 			},
 			isSpecial(latnId){
 				return isSpecial(latnId)
+			},
+			getCustomAgeAmount(age,latnId,lvl){
+				latnId = `${latnId}`
+				if(latnId === ("556"))
+					return 500;
+				if(latnId === ("554")){
+					return (lvl!=null&&lvl>2)?600:400;
+				}
+				if(age>=5)
+					return 500;
+				if(age>=4)
+					return 400;
+				if(age>=3)
+					return 300;
+				if(age>=2)
+					return 200;
+				return 0;
 			}
 		},
 		onLoad(option){

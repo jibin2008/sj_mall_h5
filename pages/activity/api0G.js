@@ -155,7 +155,7 @@ const LVL_PRICE_ARRAY_OTHRE=[700,900,1100,1700]
 
 export function getLatnLvlPrice(latId){
 	latId = `${latId}`
-	if(isSpecial())
+	if(isSpecial(latId))
 		return LVL_PRICE_ARRAY_555
 		
 	if(latId==='554')
