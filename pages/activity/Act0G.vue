@@ -1,6 +1,7 @@
 <template>
 	<Loading :logout="isLogout" @ready="dataReady" v-if="loading" :storeId="storeId"
-		:phone='phone' :sourceCode="sourceCode"></Loading>
+		ref="loadPage"
+		:phone='phone'></Loading>
 	<div v-else class="body" :class="isSpecial(storeInfo.sjUser.latnId)?'bg-mas':''">
 		<div class="logout">
 			<text>{{this.isLogin?this.phoneS:'您好！'}}【</text>
@@ -14,10 +15,10 @@
 			<view v-if="showNetAgeInfo" class="wl-bg">
 				<img class='wl-lb' src="https://ah.189.cn/sj/cms/activity/img/lb.png"/>
 				<text>经检测: 您当前已经在网</text>
-				<text class="wl-zd">{{awardInfo.netAge}}年{{awardInfo.netAgeMouth?(awardInfo.netAgeMouth+'个月'):''}}</text>
+				<text class="wl-zd">{{awardInfo.netAge}}年</text>
 				<text>，可获得</text>
 				<text class="wl-zd">{{awardInfo.netAgeAmount}}元</text>
-				<text>网龄购机优惠券</text>
+				<text>购机直降金额</text>
 			</view>
 		</view>
 		<!--大转盘-->
@@ -49,7 +50,7 @@
 	      <img src="https://ah.189.cn/sj/cms/activity/img/icon-fx.png"/>分享链接
 		</div>
 		<MyAwardPopup @use='useNow' ref='myAwardPop' :awardRecordList='myAwardList1'></MyAwardPopup>
-		<ActivityRulesPopup :isSpecial='isSpecial(storeInfo.sjUser.latnId)' ref='activityRulesPopup'></ActivityRulesPopup>
+		<ActivityRulesPopup :latnId='storeInfo.sjUser.latnId' ref='activityRulesPopup'></ActivityRulesPopup>
 		<AwardResultAlreadyPop ref='awardResultAlreadyPop'
 			@viewAward='$refs.myAwardPop.open()'
 			:isTks="this.awardIndex!==7"
@@ -134,18 +135,11 @@
 				return this.myAwardRecordList.filter(it1=>{
 					return it1.awardId!==7
 				}).map(it=>{
-					let awd = this.awardsList[it.awardId]
-					let cpnName = ""
-					if(awd.type===4){
-						cpnName=(awd.price+this.getNetAgeAmount(it.awardItemId))+"元"
-					}else{
-						cpnName=awd.text + parseType(awd.type)
-					}
 					return {
-						couponName:cpnName,
+						couponName:this.awardsList[it.awardId].text + parseType(this.awardsList[it.awardId].type),
 						awardId:it.awardId,
 						rcdId:it.id,
-						type:awd.type,
+						type:this.awardsList[it.awardId].type,
 						status:it.status,
 						createTime:it.createTime
 					}
@@ -240,8 +234,7 @@
 					actId:rcdId,
 					storeId:this.storeId,
 					userId:this.userId,
-					yh:this.yh,
-					yh1:this.awardInfo.netAgeAmount
+					yh:this.yh
 				}).then(resp=>{
 					uni.hideLoading()
 					this.myAwardRecordList = this.myAwardRecordList.map(it=>{
@@ -327,6 +320,7 @@
 					,price:phoneIfo.price
 					,iterm:phoneIfo.name
 					,yh:this.awardsList[this.awardIndex].price
+					,yh1:this.awardInfo.netAgeAmount
 					,sourceCode:this.sourceCode
 				}).then(resp=>{
 					if(resp.data.result==0){
@@ -346,17 +340,6 @@
 					console.log("发送数据到。。。")
 				}
 			},
-			getNetAgeAmount(age){
-				if(age>=5)
-					return 500;
-				if(age>=4)
-					return 400;
-				if(age>=3)
-					return 300;
-				if(age>=2)
-					return 200;
-				return 0;
-			},
 			isSpecial(latnId){
 				return isSpecial(latnId)
 			}
@@ -372,19 +355,14 @@
 				this.userId=option.userId
 			if(option.storeId)
 				this.storeId=option.storeId
-				
-			///兼容云厅产品页面跳转
-			if(option.mid)
-				this.userId=option.mid
-			if(option.shopId){
-				this.storeId=option.shopId
-			}
-			
 			if(option.byChanel)
 				this.byChanel=option.byChanel
 			if(option.sourceCode)
 				this.sourceCode=option.sourceCode
 			recode()
+		},
+		onReady() {
+			this.$refs.loadPage.init()
 		}
 	}
 </script>

@@ -129,13 +129,13 @@ export function getStoreInfo(storeId) {
 
 
 export function terminalBuy({
-	storeId,phoneNum,rcdId,age,userId,price,iterm,yh
+	storeId,phoneNum,rcdId,age,userId,price,iterm,yh,yh1
 }) {
 	return Request.request({
 		url: '/gzwz/service/award/buy',
 		method: 'POST',
 		data:{
-			storeId,phoneNum:Encrypt(phoneNum),rcdId,age,userId,price,iterm,yh
+			storeId,phoneNum:Encrypt(phoneNum),rcdId,age,userId,price,iterm,yh,yh1
 		}
 	})
 }
@@ -145,7 +145,27 @@ function decodeStr(enStr){
 	// let str = enStr.replace(/\s/g,'')
 	// return CryptoJS.enc.Base64.parse(str).toString(CryptoJS.enc.Utf8)
 }
-const E_LATN_IDS=["555","561"]
+const E_LATN_IDS=["555","561",'556']
 export function isSpecial(latnId){
 	return E_LATN_IDS.indexOf(`${latnId}`)>-1
+}
+
+const LVL_PRICE_ARRAY_555=[500,600,800,1200]
+const LVL_PRICE_ARRAY_OTHRE=[700,900,1100,1700]
+
+export function getLatnLvlPrice(latId){
+	latId = `${latId}`
+	if(isSpecial())
+		return LVL_PRICE_ARRAY_555
+		
+	if(latId==='554')
+		return [400,400,400,400]
+		
+	return LVL_PRICE_ARRAY_OTHRE
+}
+
+export function getLastPrice(latId){
+	latId = `${latId}`
+	
+	return getLatnLvlPrice(latId)[3]+(latId==="554"?600:500)
 }

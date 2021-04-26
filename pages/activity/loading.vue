@@ -7,13 +7,11 @@
 </template>
 
 <script>
-	const LVL_PRICE_ARRAY_555=[500,600,800,1200]
-	const LVL_PRICE_ARRAY_OTHRE=[700,900,1100,1700]
 	
 	import { queryLocalPhoneNumber } from '@/common/mm.js'
 	import ChangePhonePopup from "./components/popup/change-phone-popup.vue"
 	import StoreInfo from './components/store-name.vue'
-	import { getStoreInfo,getActAward,getAwardList,getActAwardRecord,isSpecial } from './api0G.js'
+	import { getStoreInfo,getActAward,getAwardList,getActAwardRecord,isSpecial,getLatnLvlPrice } from './api0G.js'
 	export default{
 		props:{
 			storeId:{},
@@ -39,46 +37,6 @@
 			}
 		},
 		created() {
-			if(this.logout){
-				this.$nextTick(()=>{
-					this.loadStoreInfo()
-					this.$refs.changePhonePopup.open()
-				})
-			}else{
-				uni.showLoading({
-					title: '努力加载中'
-				})
-				Promise.all([
-					this.loadStoreInfo(),
-					new Promise((rs,rj)=>{
-						if(!this.phone||this.phone===''){
-							return queryLocalPhoneNumber()
-								.then(phoneNum=>{
-									return new Promise(()=>{
-										this.phoneNum=phoneNum
-										this.loadData(phoneNum)
-									})
-								})
-								.catch(msg=>{
-									this.$refs.changePhonePopup.open()
-									rj(msg)
-								})
-						}
-						else{
-							return new Promise(()=>{
-								this.phoneNum=this.phone
-								this.loadData(this.phone)
-							})
-						}
-					})
-				])
-				.catch(msg=>{
-					
-				})
-				.finally(()=>{
-					uni.hideLoading()
-				})
-			}
 		},
 		methods:{
 			loadData(phoneNum){
@@ -152,7 +110,7 @@
 			},
 			get4Text(latnId,lvl){
 				let idx=lvl-1
-				return isSpecial(latnId)?LVL_PRICE_ARRAY_555[idx]:LVL_PRICE_ARRAY_OTHRE[idx]
+				return getLatnLvlPrice(latnId)[idx]
 			},
 			loadStoreInfo(){
 				return getStoreInfo(this.storeId).then(resp=>{
@@ -162,6 +120,41 @@
 			},
 			isSpecial(latnId){
 				return isSpecial(latnId)
+			},
+			init(){
+				uni.showLoading({
+					title: '努力加载中'
+				})
+				this.loadStoreInfo().then(()=>{
+					if(this.logout){
+						this.$refs.changePhonePopup.open()
+					}else{
+						new Promise((rs,rj)=>{
+							if(!this.phone||this.phone===''){
+								return queryLocalPhoneNumber()
+									.then(phoneNum=>{
+										return new Promise(()=>{
+											this.phoneNum=phoneNum
+											this.loadData(phoneNum)
+										})
+									})
+									.catch(msg=>{
+										this.$refs.changePhonePopup.open()
+										rj(msg)
+									})
+							}
+							else{
+								return new Promise(()=>{
+									this.phoneNum=this.phone
+									this.loadData(this.phone)
+								})
+							}
+						})
+						.finally(()=>{
+							uni.hideLoading()
+						})
+					}
+				})
 			}
 		},
 		watch:{
