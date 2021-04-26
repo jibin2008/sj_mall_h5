@@ -118,33 +118,33 @@
 				awardsList:[
 					{
 						"productCode": 18367,
-						"icon": "/static/imgs/50.png",
+						"icon": "https://ah.189.cn/sj/cms/activity/h51/static/imgs/50.png",
 						"text": "50元直升5G",
 						textType:"优惠券"
 					},
 					{
 						"productCode": 18981,
-						"icon": "/static/imgs/20.png",
+						"icon": "https://ah.189.cn/sj/cms/activity/h51/static/imgs/20.png",
 						"text": "20元语音流量",
 						textType:"优惠券"
 					},
 					{
-						"icon": "/static/imgs/VR.png",
+						"icon": "https://ah.189.cn/sj/cms/activity/h51/static/imgs/VR.png",
 						"text": "VR体验券"
 					},
 					{
-						"icon": "/static/imgs/5.png",
+						"icon": "https://ah.189.cn/sj/cms/activity/h51/static/imgs/5.png",
 						"text": "谢谢参与"
 					},
 					{
 						"productCode": 18953,
-						"icon": "/static/imgs/50.png",
+						"icon": "https://ah.189.cn/sj/cms/activity/h51/static/imgs/50.png",
 						"text": "50元5G畅想",
 						textType:"年包优惠券"
 					},
 					{
 						"productCode": 11161,
-						"icon": "/static/imgs/20.png",
+						"icon": "https://ah.189.cn/sj/cms/activity/h51/static/imgs/20.png",
 						"text": "20元会员权益",
 						textType:"月包优惠券"
 					}

@@ -22,7 +22,7 @@
 					</div>
 				</div>
 				<view ref='pointer' :animation="animationData" class="lp-point ms ptl0">
-					<image @click="$emit('startClick')" class="img" src="/static/imgs/pt.png"></cover>
+					<image @click="$emit('startClick')" class="img" src="https://ah.189.cn/sj/cms/activity/h51/static/imgs/pt.png"></cover>
 				</view>
 			</div>
 		</div>
