@@ -6,16 +6,20 @@
 			<text>】</text>
 		</div>
 
-		<text class="dczc-hdgz" @click="$refs.jhPop.open()">激活教程</text>
-		<img src="https://ah.189.cn/sj/cms/activity/dc/static/img/btn.png" class="bl-btn" @click="handle" />
 
-		<fzItm ref="fp" :resultIMg="isTarget?'https://ah.189.cn/sj/cms/activity/dc/static/img/4.png':'https://ah.189.cn/sj/cms/activity/dc/static/img/3.png'" class="fpv"></fzItm>
+		<fzItm ref="fp" @kj="kj" :resultIMg="(isTarget&&myAwardList.length==0)?'https://ah.189.cn/sj/cms/activity/dc/static/img/4.png':'https://ah.189.cn/sj/cms/activity/dc/static/img/3.png'" class="fpv"></fzItm>
+		
+		
+		<text class="dczc-hdgz" @click="$refs.jhPop.open()">激活教程</text>
+		<text v-if="isLogin" class="dczc-hdgz dczc-wdjp" @click="$refs.myAwardPop.open()">我的奖品</text>
+		<img v-if="canBuy" src="https://ah.189.cn/sj/cms/activity/dc/static/img/btn.png" class="bl-btn" @click="handle" />
 		<ChangePhonePopup ref="changePhonePopup" v-model="phoneNum"></ChangePhonePopup>
 		<uni-popup ref="jhPop">
-			<scroll-view class="jh-view">
+			<scroll-view :scroll-y="true" class="jh-view">
 				<img class="jh-img" src="https://ah.189.cn/sj/cms/activity/dc/static/img/jh.png"></img>
 			</scroll-view>
-		</uni-popup>
+		</uni-popup>		
+		<myAwardRcd @use='useNow' ref='myAwardPop' :awardRecordList='myAwardList'></myAwardRcd>
 	</div>
 </template>
 
@@ -24,6 +28,7 @@
 	import api from "./api.js"
 	import ChangePhonePopup from "../activity/components/popup/change-phone-popup.vue"
 	import uniPopup from '@/components/uni-popup/uni-popup.vue'
+	import myAwardRcd from "../activity/components/popup/my-award-popup.vue"
 	import {
 		queryLocalPhoneNumber
 	} from '@/common/mm.js'
@@ -31,7 +36,8 @@
 		components: {
 			fzItm,
 			ChangePhonePopup,
-			uniPopup
+			uniPopup,
+			myAwardRcd
 		},
 		computed: {
 			isLogin() {
@@ -44,17 +50,24 @@
 		data() {
 			return {
 				phoneNum: "",
-				isTarget: true,
+				isTarget: false,
 				storeId:"",
 				userId:"",
-				sourceCode:""
+				sourceCode:"",
+				canBuy:false,
+				myAwardList:[]
 			}
 		},
 		onLoad(options) {
 			if(options.storeId)
 				this.storeId=options.storeId
+			if(options.shopId)
+				this.storeId=options.shopId
 			if(options.userId)
 				this.userId=options.userId
+			if(options.mid)
+				this.userId=options.mid
+				
 			if(options.sourceCode)
 				this.sourceCode=options.sourceCode
 			uni.showLoading({
@@ -83,6 +96,13 @@
 			logout() {
 				this.phoneNum = ""
 				this.$refs.fp.reset()
+			},
+			kj(){
+				if(this.isTarget)
+					this.canBuy=true
+			},
+			useNow(){
+				this.handle()
 			}
 		},
 		watch: {
@@ -108,7 +128,7 @@
 	.content {
 		background-image: url(../../static/img/bg.jpg);
 		background-repeat: no-repeat;
-		background-size: contain;
+		background-size: cover;
 		width: 750rpx;
 		height: 4675rpx;
 		position: relative;
@@ -128,15 +148,18 @@
 		font-weight: bold;
 		border-radius: 22rpx 0rpx 0rpx 22rpx;
 	}
+	.dczc-wdjp{
+		top: 150rpx;
+	}
 
 	.fpv {
 		position: absolute;
-		top: 974rpx;
-		left: 60rpx;
+		top: 980rpx;
+		left: 56rpx;
 	}
 
 	.bl-btn {
-		position: absolute;
+		position: fixed;
 		bottom: 30rpx;
 		width: 650rpx;
 		height: 106rpx;

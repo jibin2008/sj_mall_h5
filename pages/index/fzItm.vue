@@ -33,6 +33,7 @@
 				this.hasClick=true
 				this.resultIndex=idx
 				this.show=true
+				this.$emit("kj")
 			},
 			reset(){
 				this.hasClick=false
