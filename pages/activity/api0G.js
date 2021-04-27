@@ -140,6 +140,16 @@ export function terminalBuy({
 	})
 }
 
+export function reqCustPh(custId,phone){
+	return Request.request({
+		url: '/gzwz/service/award/reqCustomPhone',
+		method: 'POST',
+		data:{
+			phone,custId
+		}
+	})
+}
+
 function decodeStr(enStr){
 	return Decrypt(enStr)
 	// let str = enStr.replace(/\s/g,'')

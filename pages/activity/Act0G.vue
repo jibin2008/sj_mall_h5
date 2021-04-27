@@ -86,7 +86,7 @@
 		useAward,getActAward,getActAwardRecord
 		,getActAwardRecordTop20,receiveCoupon
 		,getAwardList,insertAwardInterviewLog 
-		,recode,terminalBuy,isSpecial} from './api0G.js'
+		,recode,terminalBuy,isSpecial,reqCustPh} from './api0G.js'
 	import {parseType,getCookie} from '@/common/utils.js'
 	
 	import StoreInfo from './components/store-name.vue'
@@ -339,6 +339,7 @@
 			postIf(){
 				if(this.sdIf){
 					console.log("发送数据到。。。")
+					reqCustPh(this.customerId,this.phone)
 				}
 			},
 			isSpecial(latnId){
