@@ -6,11 +6,16 @@
 			<text>】</text>
 		</div>
 
-		<img class="dczc-hdgz" src="/static/img/hdgz.png"></img>
-		<img src="/static/img/btn.png" class="bl-btn" @click="handle" />
+		<text class="dczc-hdgz" @click="$refs.jhPop.open()">激活教程</text>
+		<img src="https://ah.189.cn/sj/cms/activity/dc/static/img/btn.png" class="bl-btn" @click="handle" />
 
-		<fzItm ref="fp" :resultIMg="isTarget?'/static/img/4.png':'/static/img/3.png'" class="fpv"></fzItm>
+		<fzItm ref="fp" :resultIMg="isTarget?'https://ah.189.cn/sj/cms/activity/dc/static/img/4.png':'https://ah.189.cn/sj/cms/activity/dc/static/img/3.png'" class="fpv"></fzItm>
 		<ChangePhonePopup ref="changePhonePopup" v-model="phoneNum"></ChangePhonePopup>
+		<uni-popup ref="jhPop">
+			<scroll-view class="jh-view">
+				<img class="jh-img" src="/static/img/jh.png"></img>
+			</scroll-view>
+		</uni-popup>
 	</div>
 </template>
 
@@ -18,13 +23,15 @@
 	import fzItm from "./fzItm.vue"
 	import api from "./api.js"
 	import ChangePhonePopup from "../activity/components/popup/change-phone-popup.vue"
+	import uniPopup from '@/components/uni-popup/uni-popup.vue'
 	import {
 		queryLocalPhoneNumber
 	} from '@/common/mm.js'
 	export default {
 		components: {
 			fzItm,
-			ChangePhonePopup
+			ChangePhonePopup,
+			uniPopup
 		},
 		computed: {
 			isLogin() {
@@ -37,23 +44,19 @@
 		data() {
 			return {
 				phoneNum: "",
-				isTarget: false
+				isTarget: true,
+				storeId:"",
+				userId:"",
+				sourceCode:""
 			}
 		},
 		onLoad(options) {
-			if(options.standardaddressid){
-				parent.parent.Comm.setAddress({
-					addrId : options.standardaddressid,
-					addrName : decodeURI(options.addrName),
-					subAreaId : options.subAreaId,
-					siteId : options.siteId,
-					siteCode : options.siteCode,
-					siteName : decodeURI(options.siteName),
-					positionType: options.positiontype,
-					ability: options.ability
-				})
-				return
-			}
+			if(options.storeId)
+				this.storeId=options.storeId
+			if(options.userId)
+				this.userId=options.userId
+			if(options.sourceCode)
+				this.sourceCode=options.sourceCode
 			uni.showLoading({
 				title: "请稍后~~~",
 				mask: true
@@ -73,12 +76,11 @@
 				if (this.isTarget) {
 					uni.setStorageSync("phoneNum",this.phoneNum)
 					uni.redirectTo({
-						url: `/pages/index/setup`
+						url: `/pages/index/setup?userId=${this.userId}&storeId=${this.storeId}&sourceCode=${this.sourceCode}`
 					})
 				}
 			},
 			logout() {
-				window.close()
 				this.phoneNum = ""
 				this.$refs.fp.reset()
 			}
@@ -113,11 +115,18 @@
 	}
 
 	.dczc-hdgz {
-		position: absolute;
+		position: fixed;
 		right: 0rpx;
 		top: 100rpx;
 		width: 126rpx;
 		height: 44rpx;
+		font-size: 22rpx;
+		line-height: 44rpx;
+		text-align: center;
+		background: #ff8201;
+		color: #FFFFFF;
+		font-weight: bold;
+		border-radius: 22rpx 0rpx 0rpx 22rpx;
 	}
 
 	.fpv {
@@ -139,5 +148,12 @@
 		top: 1%;
 		right: 3%;
 		color: #FFFFFF;
+	}
+	.jh-view{
+		width: 640rpx;
+		height: 900rpx;
+	}
+	.jh-img{
+		width: 640rpx;
 	}
 </style>

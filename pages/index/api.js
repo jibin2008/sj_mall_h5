@@ -16,6 +16,25 @@ export default{
 		return req('/gzwz/service/dczr/isTarget',{phone})
 	},
 	setupCommit(obj){
-		return req('/gzwz/service/dczr/isTarget',obj)
+		return req('/gzwz/service/dczr/setupCommit',obj)
+	},
+	unifiedOrder(paramters){
+		paramters.tradeType = 'MWEB';
+		return Request.request({
+			url:'/gzwz/service/sj/weChatPay/unifiedOrder',
+			method: 'POST',
+			data:paramters,
+			header:{
+				contentType: "application/json;charset=UTF-8"
+			}
+		})
+	},
+	payStatuQuery(outTradeNo){
+		paramters.tradeType = 'MWEB';
+		return Request.request({
+			url:'/gzwz/service/sj/weChatPay/orderQuery',
+			method: 'POST',
+			data:outTradeNo
+		})
 	}
 }

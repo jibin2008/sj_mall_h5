@@ -156,7 +156,6 @@ import md5 from "./api/md5.js"
         let md5Str = md5.hexMD5('admin|' + date + '|zyxz');
         if (!suc) {
             sucCall = function (address) {
-                layer.close(searchIndex);
             }
         } else {
             sucCall = suc
@@ -177,6 +176,7 @@ import md5 from "./api/md5.js"
     }
 
     Comm.setAddress = function (address) {
+		layer.close(searchIndex);
         sucCall(address);
     }
 

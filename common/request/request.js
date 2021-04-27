@@ -58,6 +58,12 @@ const resInterceptor = (response, conf={}) => {
     // 如果需要reject，需要设置mypReqToReject:true，还可以携带自己定义的任何提示内容（catch中处理）
 	if(conf.header.encrypt === "aes"){
 		if(response.statusCode === 200){
+			if(response.data.result!==0){
+				return {
+					mypReqToReject:true,
+					errorMsg:response.data.reason
+				}
+			}
 			let data = JSON.parse(Decrypt(response.data.content))
 			if(data.seq === conf.header.encryptSeq){
 				response.data = data.data

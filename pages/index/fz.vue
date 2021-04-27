@@ -9,10 +9,10 @@
 	export default{
 		props:{
 			result:{
-				default:"/static/img/2.png"
+				default:"https://ah.189.cn/sj/cms/activity/dc/static/img/2.png"
 			},
 			cover:{
-				default:"/static/img/1.png"
+				default:"https://ah.189.cn/sj/cms/activity/dc/static/img/1.png"
 			},
 			show:{
 				default:false

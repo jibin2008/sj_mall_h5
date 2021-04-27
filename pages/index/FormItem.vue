@@ -4,7 +4,7 @@
 				<view v-if="showLabel" class="label">{{label}}:</view>
 				<view class="input">
 					<slot>
-						<input @focus="inputClick" class="input-v" :type="inputType" :placeholder="placeholder" v-model="value"/>
+						<input @focus="inputClick" class="input-v" :type="inputType" :placeholder="placeholder" v-model="inputValue"/>
 					</slot>
 				</view>
 			</view>
@@ -25,12 +25,25 @@
 			}
 		},
 		data(){
-			return {}
+			return {
+				inputValue:""
+			}
 		},
 		methods:{
 			inputClick(){
 				this.$emit('vFocus')
 			}
+		},
+		watch:{
+			value(v){
+				this.inputValue=v
+			},
+			inputValue(v){
+				this.$emit("input",v)
+			}
+		},
+		created() {
+			this.inputValue=this.value
 		}
 	}
 </script>
