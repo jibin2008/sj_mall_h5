@@ -43,7 +43,7 @@
 				adressObj: {
 					ability: "",
 					addrId: "",
-					addrName: "安徽合肥合肥市蜀山区蜀山经济开发区井岗路大富山庄35幢1单元14层1405室",
+					addrName: "",
 					positionType: "",
 					siteCode: "",
 					siteId: "",

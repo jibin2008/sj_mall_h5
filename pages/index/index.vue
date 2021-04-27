@@ -13,7 +13,7 @@
 		<ChangePhonePopup ref="changePhonePopup" v-model="phoneNum"></ChangePhonePopup>
 		<uni-popup ref="jhPop">
 			<scroll-view class="jh-view">
-				<img class="jh-img" src="/static/img/jh.png"></img>
+				<img class="jh-img" src="https://ah.189.cn/sj/cms/activity/dc/static/img/jh.png"></img>
 			</scroll-view>
 		</uni-popup>
 	</div>
