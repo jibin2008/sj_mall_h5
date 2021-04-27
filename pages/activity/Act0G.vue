@@ -137,7 +137,7 @@
 				}).map(it=>{
 					let awrd = this.awardsList[it.awardId]
 					return {
-						couponName:(awrd.price+it.awardItemId)+ "元" + parseType(awrd.type),
+						couponName:(awrd.price+this.getCustomAgeAmount(it.awardItemId,this.storeInfo.sjUser.latnId))+ "元" + parseType(awrd.type),
 						awardId:it.awardId,
 						rcdId:it.id,
 						type:awrd.type,
