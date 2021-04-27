@@ -73,11 +73,11 @@
             "port" : 8080,
             "disableHostCheck" : true,
             "proxy" : {
-                "/gzwz/service/dczr" : {
-                    "target" : "http://localhost:9008",
-                    "changeOrigin" : true,
-                    "secure" : false
-                },
+                // "/gzwz/service/dczr" : {
+                //     "target" : "http://localhost:9008",
+                //     "changeOrigin" : true,
+                //     "secure" : false
+                // },
                 "/" : {
                     "target" : "https://ah.189.cn",
                     "changeOrigin" : true,
