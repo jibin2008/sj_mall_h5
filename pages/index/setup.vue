@@ -118,42 +118,7 @@
 						.then(resp=>{
 							let res = resp.data
 							var mweb_url = decodeURIComponent(res.mweb_url);
-							layer.open({
-								type: 2,   //类型
-								// shadeClose: true,
-								title: false,
-								//offset  : '20px',
-								shade: 0.3,
-								move: false,
-								area: ['95%', '95%'],
-								btn: ['支付验证', '取消'],
-								yes(idx){
-									api.payStatuQuery(res.out_trade_no)
-										.then(resp=>{
-											if(resp.data==="1"){
-												uni.showToast({
-													title:"支付成功！",
-													icon:"success",
-													success() {
-														setTimeout(()=>{
-															layer.close(index)
-															uni.navigateBack()
-														},1500)
-													}
-												})
-											}else{
-												uni.showToast({
-													title:"支付失败，请稍后验证！",
-													icon:"none"
-												})
-											}
-										})
-								},
-								btn2(index){
-									layer.close(index)
-								},
-								content: mweb_url
-							})
+							location.href = mweb_url
 						})
 						.catch(msg=>{
 							console.log(msg)
