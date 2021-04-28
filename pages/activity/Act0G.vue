@@ -135,12 +135,16 @@
 				return this.myAwardRecordList.filter(it1=>{
 					return it1.awardId!==7
 				}).map(it=>{
-					let awrd = this.awardsList[it.awardId]
+					debugger
+					let cpn = [0,2,4,6].indexOf(it.awardId)>-1
+					?((this.awardsList[it.awardId].price + it.awardItemId)+ "元" )
+					:this.awardsList[it.awardId].text
+					cpn += parseType(this.awardsList[it.awardId].type)
 					return {
-						couponName:(awrd.price+this.getCustomAgeAmount(it.awardItemId,this.storeInfo.sjUser.latnId))+ "元" + parseType(awrd.type),
+						couponName:cpn,
 						awardId:it.awardId,
 						rcdId:it.id,
-						type:awrd.type,
+						type:this.awardsList[it.awardId].type,
 						status:it.status,
 						createTime:it.createTime
 					}
