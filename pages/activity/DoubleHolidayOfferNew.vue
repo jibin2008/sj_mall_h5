@@ -151,7 +151,10 @@
 					}
 				]
 ,
-				allAwardListTop:[],
+				allAwardListTop:[
+					{tel:'173****3269',cnp:"优惠券"},
+					{tel:'173****3269',cnp:"优惠券"},
+				],
 				myAwardRecordList:[],
 				awardIndex:0,
 				phone:'',
@@ -196,13 +199,18 @@
 			refreshActAwardRecord(callback){
 				if(this.phone&&this.phone!=="")
 					getActAwardRecord(this.phone).then(rsp=>{
-						this.myAwardRecordList=rsp.data.map(itm=>{
+						this.myAwardRecordList=rsp.data
+						.filter(itm1=>{
+							return itm1.awardId!==3
+						})
+						.map(itm=>{
 							let award = this.awardsList[itm.awardId]
 							return {
 								couponName:award.text+parseType(award.type),
 								awardId:itm.awardId,
 								prodCode:award.productCode,
-								createTime:itm.createTime
+								createTime:itm.createTime,
+								canUse:itm.awardId!==2
 							}
 						})
 						if(callback)
@@ -245,7 +253,7 @@
 					let award=this.awardsList[itm.awardId];
 					return {
 						tel:itm.phoneNumber,
-						cnp:award.text + award.textType
+						cnp:award.text + (award.textType?award.textType:"")
 					}
 				})
 			})

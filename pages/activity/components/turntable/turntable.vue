@@ -21,7 +21,7 @@
 						</div>
 					</div>
 				</div>
-				<view ref='pointer' :animation="animationData" class="lp-point ms ptl0">
+				<view :style="`transform: rotate(${this.skewY/2}deg);`" ref='pointer' :animation="animationData" class="lp-point ms ptl0">
 					<image @click="$emit('startClick')" class="img" src="https://ah.189.cn/sj/cms/activity/h51/static/imgs/pt.png"></cover>
 				</view>
 			</div>
@@ -53,7 +53,7 @@
 				return this.width
 			},
 			mainStyle(){
-				return `width: ${this.width};height: ${this.height};`
+				return `width: ${this.width};height: ${this.height};transform: rotate(-${this.skewY/2}deg);`
 			},
 			skewY(){
 				return 360/this.awardsList.length

@@ -14,7 +14,7 @@
 						</view>
 						<!-- <view class="fr btn" v-if="itm.type===5&&itm.status===0" @click="$emit('use',itm.rcdId)">立即领取</view>
 						<view class="fr btn btn-use" v-else-if="itm.type===5">已领取</view> -->
-						<view class="fr btn" @click="$emit('use',itm.awardId)">使用</view>
+						<view v-if="itm.canUse" class="fr btn" @click="$emit('use',itm.awardId)">使用</view>
 						
 					</view>
 					<view class="item" v-if="awardRecordList.length===0">
