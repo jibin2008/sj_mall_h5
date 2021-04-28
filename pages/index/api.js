@@ -18,6 +18,9 @@ export default{
 	setupCommit(obj){
 		return req('/gzwz/service/dczr/setupCommit',obj)
 	},
+	myRcd(phone){
+		return req('/gzwz/service/actv/bsc/myrcd',{phone,actvIds:"2019110746718041"})
+	},
 	unifiedOrder(paramters){
 		paramters.tradeType = 'MWEB';
 		return Request.request({

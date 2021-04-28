@@ -116,6 +116,9 @@
 						uni.hideLoading()
 						this.isTarget = resp.data
 					})
+					api.myRcd(val).then(rsp=>{
+						this.myAwardList=rsp.data
+					})
 				} else {
 					this.$refs.changePhonePopup.open()
 				}
