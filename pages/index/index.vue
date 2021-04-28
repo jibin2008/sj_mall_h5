@@ -117,7 +117,12 @@
 						this.isTarget = resp.data
 					})
 					api.myRcd(val).then(rsp=>{
-						this.myAwardList=rsp.data
+						this.myAwardList=rsp.data.map(itm=>{
+							return {
+								couponName:"0元加装50M宽带，免费24个月",
+								createTime:itm.createTime
+							}
+						})
 					})
 				} else {
 					this.$refs.changePhonePopup.open()
