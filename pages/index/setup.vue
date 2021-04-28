@@ -34,21 +34,21 @@
 		},
 		data() {
 			return {
-				name: "季彬",
-				idCardCode: "342623199010308155",
-				addressDetails: "测试支付",
+				name: "",
+				idCardCode: "",
+				addressDetails: "",
 				phoneNum: '',
 				jp: "50M 24个月免费宽带加装",
 				price: 200,
 				adressObj: {
-					ability: "0",
-					addrId: "48124",
-					addrName: "安徽合肥合肥市蜀山区蜀山经济开发区井岗路大富山庄38幢1单元13层1307室",
-					positionType: "",
-					siteCode: "551ASQ.DFSZG",
-					siteId: "1638204",
-					siteName: "合肥市大富山庄共建共享",
-					subAreaId: ""
+					// ability: "0",
+					// addrId: "48124",
+					// addrName: "安徽合肥合肥市蜀山区蜀山经济开发区井岗路大富山庄38幢1单元13层1307室",
+					// positionType: "",
+					// siteCode: "551ASQ.DFSZG",
+					// siteId: "1638204",
+					// siteName: "合肥市大富山庄共建共享",
+					// subAreaId: ""
 				},
 				storeId:"",
 				userId:"",
