@@ -33,7 +33,6 @@ export default{
 		})
 	},
 	payStatuQuery(outTradeNo){
-		paramters.tradeType = 'MWEB';
 		return Request.request({
 			url:'/gzwz/service/sj/weChatPay/orderQuery',
 			method: 'POST',

@@ -34,20 +34,20 @@
 		},
 		data() {
 			return {
-				name: "",
-				idCardCode: "",
-				addressDetails: "",
+				name: "季彬",
+				idCardCode: "342623199010308155",
+				addressDetails: "测试支付",
 				phoneNum: '',
 				jp: "50M 24个月免费宽带加装",
 				price: 200,
 				adressObj: {
-					ability: "",
-					addrId: "",
-					addrName: "",
+					ability: "0",
+					addrId: "48124",
+					addrName: "安徽合肥合肥市蜀山区蜀山经济开发区井岗路大富山庄38幢1单元13层1307室",
 					positionType: "",
-					siteCode: "",
-					siteId: "",
-					siteName: "",
+					siteCode: "551ASQ.DFSZG",
+					siteId: "1638204",
+					siteName: "合肥市大富山庄共建共享",
 					subAreaId: ""
 				},
 				storeId:"",
@@ -116,7 +116,7 @@
 					}
 					api.unifiedOrder(orderObj)
 						.then(resp=>{
-							let res = JSON.parse(resp.data)
+							let res = resp.data
 							var mweb_url = decodeURIComponent(res.mweb_url);
 							layer.open({
 								type: 2,   //类型
