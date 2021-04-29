@@ -2,7 +2,7 @@
 	<Loading :logout="isLogout" @ready="dataReady" v-if="loading" :storeId="storeId"
 		ref="loadPage"
 		:phone='phone'></Loading>
-	<div v-else class="body" :class="isSpecial(storeInfo.sjUser.latnId)?'bg-mas':''">
+	<div v-else class="body" :style="getBg()">
 		<div class="logout">
 			<text>{{this.isLogin?this.phoneS:'您好！'}}【</text>
 			<text style="text-decoration: underline;" @click="logout">{{this.isLogin?'退出':'请登录'}}</text>
@@ -86,13 +86,14 @@
 		useAward,getActAward,getActAwardRecord
 		,getActAwardRecordTop20,receiveCoupon
 		,getAwardList,insertAwardInterviewLog 
-		,recode,terminalBuy,isSpecial,reqCustPh} from './api0G.js'
+		,recode,terminalBuy,reqCustPh,getHighestPrice} from './api0G.js'
 	import {parseType,getCookie} from '@/common/utils.js'
 	
 	import StoreInfo from './components/store-name.vue'
 	import Loading from './loading.vue'
 	const terminal_price=[2999,3299,6499]
 	const terminal_name=["OPPO Reno5","VIVO S9","华为METO40"]
+	const LVL_PRICE=[129,169,199,239,299,399]
 	export default {
 		components:{Turntable,
 			MyAwardPopup,
@@ -115,7 +116,7 @@
 			},
 			cnpTextNew(){
 				let award = this.awardsList[this.awardIndex]
-				return award?(this.yh+ '元' + parseType(award.type)):"奖项文字"
+				return award?(this.awardInfo.resultAmount+ '元' + parseType(award.type)):"奖项文字"
 			},
 			phoneS(){
 				return this.phone===''?'':(this.phone.substr(0,3)+'****'+this.phone.substr(7,4))
@@ -135,7 +136,6 @@
 				return this.myAwardRecordList.filter(it1=>{
 					return it1.awardId!==7
 				}).map(it=>{
-					debugger
 					let cpn = [0,2,4,6].indexOf(it.awardId)>-1
 					?((this.awardsList[it.awardId].price + it.awardItemId)+ "元" )
 					:this.awardsList[it.awardId].text
@@ -161,7 +161,7 @@
 					return 0
 			},
 			lvlAmount(){
-				return this.awardInfo.lvlAmount
+				return LVL_PRICE[this.awardInfo.lvl]
 			}
 		},
 		data() {
@@ -346,9 +346,6 @@
 					reqCustPh(this.customerId,this.phone)
 				}
 			},
-			isSpecial(latnId){
-				return isSpecial(latnId)
-			},
 			getCustomAgeAmount(age,latnId,lvl){
 				latnId = `${latnId}`
 				if(latnId === ("556"))
@@ -365,6 +362,9 @@
 				if(age>=2)
 					return 200;
 				return 0;
+			},
+			getBg(){
+				return `background-image:url(https://ah.189.cn/sj/cms/activity/img/202104/cj-bg-${getHighestPrice(this.storeInfo.sjUser.latnId)}.jpg);`
 			}
 		},
 		onLoad(option){
@@ -404,10 +404,6 @@
 		padding-top: 109rpx;
 		/* overflow: hidden;
 		height: 3500rpx; */
-	}
-	.bg-mas{
-		background: url(https://ah.189.cn/sj/cms/activity/img/202103/cj-bg1.jpg) no-repeat top;
-		background-size:contain
 	}
 	.top{width: 100%;}
 	.top img{

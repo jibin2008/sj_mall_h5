@@ -1,5 +1,5 @@
 <template>
-	<view class="lg-bd" :class="isSpecial(this.stIf.sjUser.latnId)?'bg1':''">
+	<view class="lg-bd" :style="getBg()">
 		<StoreInfo :storeName="stIf.storeName"></StoreInfo>
 		
 		<ChangePhonePopup ref="changePhonePopup" v-model="phoneNum"></ChangePhonePopup>
@@ -11,7 +11,7 @@
 	import { queryLocalPhoneNumber } from '@/common/mm.js'
 	import ChangePhonePopup from "./components/popup/change-phone-popup.vue"
 	import StoreInfo from './components/store-name.vue'
-	import { getStoreInfo,getActAward,getAwardList,getActAwardRecord,isSpecial,getLatnLvlPrice } from './api0G.js'
+	import { getStoreInfo,getActAward,getAwardList,getActAwardRecord,getHighestPrice } from './api0G.js'
 	export default{
 		props:{
 			storeId:{},
@@ -54,8 +54,8 @@
 					getAwardList().then(itmLst_=>{
 						let awdLst = JSON.parse(itmLst_.data.content)
 						itmLst = awdLst.map(it=>{
-							if(it.type===4){
-								let p=this.get4Text(latnId,it.lvl)
+							if(it.type===4&&it.lvl===4){
+								let p=getHighestPrice(latnId)
 								it.text=`${p}元`,
 								it.price=p
 							}
@@ -108,10 +108,6 @@
 					return Promise.resolve(resp.data.content.filter(i=>i.type!==0))
 				})
 			},
-			get4Text(latnId,lvl){
-				let idx=lvl-1
-				return getLatnLvlPrice(latnId)[idx]
-			},
 			loadStoreInfo(){
 				return getStoreInfo(this.storeId).then(resp=>{
 						this.stIf=resp.data.resultData.store
@@ -155,6 +151,9 @@
 						})
 					}
 				})
+			},
+			getBg(){
+				return `background-image:url(https://ah.189.cn/sj/cms/activity/img/202104/cj-ld-${getHighestPrice(this.stIf.sjUser.latnId)}.jpg);`
 			}
 		},
 		watch:{
