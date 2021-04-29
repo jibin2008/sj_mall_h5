@@ -61,7 +61,7 @@
 		<div @click="copyUrl" class="fx">
 	      我的奖品
 		</div>
-		<MyAwardPopup @use='useNow' ref='myAwardPop' :awardRecordList='myAwardRecordList'></MyAwardPopup>
+		<MyAwardPopup @use='useNow' ref='myAwardPop' :awardRecordList='showRrd'></MyAwardPopup>
 		<ActivityRulesPopup ref='activityRulesPopup'></ActivityRulesPopup>
 		<AwardResultAlreadyPop ref='awardResultAlreadyPop'
 			@viewAward='$refs.myAwardPop.open()'
@@ -72,6 +72,8 @@
 		></AwardResultSuccessPop>
 		
 		<ChangePhonePopup ref="changePhonePopup" v-model="phone"></ChangePhonePopup>
+		<awardThanks ref="awardThanks"></awardThanks>
+		<awardAlread ref="awardAlread"></awardAlread>
 	</div>
 </template>
 
@@ -82,6 +84,8 @@
 	import AwardResultAlreadyPop from "./components/popup/award-result-already-popup.vue"
 	import AwardResultSuccessPop from "./components/popup/award-result-success-popup.vue"
 	import ChangePhonePopup from "./components/popup/change-phone-popup.vue"
+	import awardThanks from "./components/popup/award-result-fai-popup.vue"
+	import awardAlread from "./components/popup/award-result-already-popup.vue"
 	
 	import { recode,getActAward,getActAwardRecord,getActAwardRecordTop20,receiveCoupon,getAwardList,insertAwardInterviewLog } from './apiNew.js'
 	import {parseType,getCookie} from '@/common/utils.js'
@@ -96,7 +100,9 @@
 			AwardResultAlreadyPop,
 			AwardResultSuccessPop,
 			ChangePhonePopup,
-			wPanel
+			wPanel,
+			awardThanks,
+			awardAlread
 		},
 		computed:{
 			cnpText(){
@@ -112,6 +118,22 @@
 			},
 			isLogin(){
 				return this.phone!==''
+			},
+			showRrd(){
+				return this.myAwardRecordList
+					.filter(itm1=>{
+						return itm1.awardId!==3
+					})
+					.map(itm=>{
+						let award = this.awardsList[itm.awardId]
+						return {
+							couponName:award.text+parseType(award.type),
+							awardId:itm.awardId,
+							prodCode:award.productCode,
+							createTime:itm.createTime,
+							canUse:itm.awardId!==2
+						}
+					})
 			}
 		},
 		data() {
@@ -166,7 +188,10 @@
 		},
 		methods: {
 			getAward(){
-				this.$refs.awardResultSuccessPop.open()
+				if(this.awardIndex===3){
+					this.$refs.awardThanks.open()
+				}else
+					this.$refs.awardResultSuccessPop.open()
 			},
 			rotateStart(){
 				if(this.phone===''){
@@ -200,19 +225,6 @@
 				if(this.phone&&this.phone!=="")
 					getActAwardRecord(this.phone).then(rsp=>{
 						this.myAwardRecordList=rsp.data
-						.filter(itm1=>{
-							return itm1.awardId!==3
-						})
-						.map(itm=>{
-							let award = this.awardsList[itm.awardId]
-							return {
-								couponName:award.text+parseType(award.type),
-								awardId:itm.awardId,
-								prodCode:award.productCode,
-								createTime:itm.createTime,
-								canUse:itm.awardId!==2
-							}
-						})
 						if(callback)
 							callback()
 					})

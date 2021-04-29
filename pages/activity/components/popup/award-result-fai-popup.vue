@@ -4,9 +4,9 @@
 	>
 		<template>
 			<p class="xxcy">谢谢参与</p>
-			<p class="hdtj">—活动推荐—</p>
-			<img @click="redirect" class="hdimg" src="https://ah.189.cn/sj/cms/activity/img/202104/hd.png"/>
-			<view style="height: 40rpx;"></view>
+			<p class="hdtj"></p>
+<!-- 			<img @click="redirect" class="hdimg" src="https://ah.189.cn/sj/cms/activity/img/202104/hd.png"/>
+ -->			<view style="height: 40rpx;"></view>
 		</template>
 	</AwardResultPopup>
 </template>
