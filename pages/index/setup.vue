@@ -50,7 +50,7 @@
 					// siteName: "合肥市大富山庄共建共享",
 					// subAreaId: ""
 				},
-				storeId:"",
+				storeId:"983",
 				userId:"",
 				sourceCode:""
 			}
@@ -95,8 +95,8 @@
 					phoneNum: this.phoneNum,
 					jp: this.jp,
 					adressObj: this.adressObj,
-					storeId:this.storeId,
-					userId:this.userId,
+					storeId:983,
+					userId:8426,
 					sourceCode:this.sourceCode
 				})
 				.then(resp => {
@@ -139,10 +139,10 @@
 			}
 		},
 		onLoad(options) {
-			if(options.storeId)
-				this.storeId=options.storeId
-			if(options.userId)
-				this.userId=options.userId
+			// if(options.storeId)
+			// 	this.storeId=options.storeId
+			// if(options.userId)
+			// 	this.userId=options.userId
 			if(options.sourceCode)
 				this.sourceCode=options.sourceCode
 			this.phoneNum = uni.getStorageSync("phoneNum")
