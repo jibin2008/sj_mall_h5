@@ -159,9 +159,9 @@ export function getHighestPrice(latnId){
 	latnId=`${latnId}`
 	if(latnId==="554")
 		return 1000
-	else if(latnId==="555"||latnId==="556")
+	else if(latnId==="555"||latnId==="556"||latnId==="561")
 		return 1700
-	else if(latnId==="557")
+	else if(latnId==="560")
 		return 2900
 	else
 		return 2200
