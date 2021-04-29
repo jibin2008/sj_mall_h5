@@ -73,7 +73,7 @@
             "port" : 8080,
             "disableHostCheck" : true,
             "proxy" : {
-    //             "/gzwz/service/award" : {
+    //             "/gzwz/service/award/getAwardIndex" : {
     //                 "target" : "http://localhost:9008",
     //                 "changeOrigin" : true,
     //                 "secure" : false

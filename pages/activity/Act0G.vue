@@ -15,7 +15,7 @@
 			<view v-if="showNetAgeInfo" class="wl-bg">
 				<img class='wl-lb' src="https://ah.189.cn/sj/cms/activity/img/lb.png"/>
 				<text>经检测: 您当前已经在网</text>
-				<text class="wl-zd">{{awardInfo.netAge}}年</text>
+-				<text class="wl-zd">{{awardInfo.netAge}}年{{awardInfo.netAgeMouth?(awardInfo.netAgeMouth+'个月'):''}}</text>
 				<text>，可获得</text>
 				<text class="wl-zd">{{awardInfo.netAgeAmount}}元</text>
 				<text>购机直降金额</text>
@@ -137,7 +137,7 @@
 					return it1.awardId!==7
 				}).map(it=>{
 					let cpn = [0,2,4,6].indexOf(it.awardId)>-1
-					?((this.awardsList[it.awardId].price + it.awardItemId)+ "元" )
+					?((it.netAgeAmount + it.awardLvlAmount)+ "元" )
 					:this.awardsList[it.awardId].text
 					cpn += parseType(this.awardsList[it.awardId].type)
 					return {
@@ -161,7 +161,7 @@
 					return 0
 			},
 			lvlAmount(){
-				return LVL_PRICE[this.awardInfo.lvl]
+				return LVL_PRICE[this.awardInfo.lvl-1]
 			}
 		},
 		data() {
