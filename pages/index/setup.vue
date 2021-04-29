@@ -38,7 +38,7 @@
 				idCardCode: "",
 				addressDetails: "",
 				phoneNum: '',
-				jp: "50M 24个月免费宽带加装",
+				jp: "100M免费宽带加装",
 				price: 200,
 				adressObj: {
 					// ability: "0",

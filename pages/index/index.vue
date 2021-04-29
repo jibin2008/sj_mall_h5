@@ -7,7 +7,7 @@
 		</div>
 
 
-		<fzItm ref="fp" @kj="kj" :resultIMg="(isTarget&&myAwardList.length==0)?'https://ah.189.cn/sj/cms/activity/dc/static/img/4.png':'https://ah.189.cn/sj/cms/activity/dc/static/img/3.png'" class="fpv"></fzItm>
+		<fzItm ref="fp" @kj="kj" :resultIMg="(isTarget&&myAwardList.length==0)?'https://ah.189.cn/sj/cms/activity/dc/static/img/2.png':'https://ah.189.cn/sj/cms/activity/dc/static/img/3.png'" class="fpv"></fzItm>
 		
 		
 		<text class="dczc-hdgz" @click="$refs.jhPop.open()">激活教程</text>
@@ -119,7 +119,7 @@
 					api.myRcd(val).then(rsp=>{
 						this.myAwardList=rsp.data.map(itm=>{
 							return {
-								couponName:"0元加装50M宽带，免费24个月",
+								couponName:"0元加装100M宽带",
 								createTime:itm.createTime
 							}
 						})
