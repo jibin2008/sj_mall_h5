@@ -19,7 +19,7 @@ export function getActAward({phoneNumber,storeId,userId,sourceCode,byChanel}){
 }
 
 export function getActAwardRecordTop20(){
-	return Request.aesReq('/gzwz/service/actv/bsc/rcdtp20',extActIds());
+	return Request.aesReq('/gzwz/service/actv/bsc/rcdtp20',extActIds({awardIdx:3}));
 }
 
 export function getSms(phoneNumber){
