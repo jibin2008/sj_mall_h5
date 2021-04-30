@@ -376,8 +376,14 @@
 			}
 			if(option.userId)
 				this.userId=option.userId
+			if(option.mid)
+				this.userId=option.mid
+				
 			if(option.storeId)
 				this.storeId=option.storeId
+			if(option.shopId)
+				this.storeId=option.shopId
+				
 			if(option.byChanel)
 				this.byChanel=option.byChanel
 			if(option.sourceCode)
