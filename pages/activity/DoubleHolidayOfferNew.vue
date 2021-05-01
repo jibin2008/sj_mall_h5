@@ -108,7 +108,7 @@
 			cnpText(){
 				if(this.awardsList.length>0){
 					let award = this.awardsList[this.awardIndex]
-					return award.text + parseType(award.type)
+					return award.text + (award.textType?award.textType:"")
 				}else{
 					return ''
 				}
