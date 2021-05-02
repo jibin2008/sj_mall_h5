@@ -325,7 +325,7 @@
 					,price:phoneIfo.price
 					,iterm:phoneIfo.name
 					,yh:this.awardsList[this.awardIndex].price
-					,yh1:this.awardInfo.netAgeAmount
+					,yh1:0
 					,sourceCode:this.sourceCode
 				}).then(resp=>{
 					if(resp.data.result==0){
