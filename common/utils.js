@@ -9,6 +9,7 @@ export function parseType(type){
 		case 4:return "购机优惠券"
 		case 5:return "流量包"
 		case 6:return "代金券"
+		case 11:return "消费券"
 		default: return "优惠券"
 	}
 }
