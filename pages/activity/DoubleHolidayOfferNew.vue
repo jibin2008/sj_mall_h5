@@ -162,7 +162,7 @@
 					{
 						"productCode": 18953,
 						"icon": "https://ah.189.cn/sj/cms/activity/h51/static/imgs/50.png",
-						"text": "50元5G畅想",
+						"text": "50元5G畅享",
 						textType:"年包优惠券"
 					},
 					{
