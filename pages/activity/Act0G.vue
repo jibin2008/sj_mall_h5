@@ -1,7 +1,9 @@
 <template>
 	<Loading :logout="isLogout" @ready="dataReady" v-if="loading" :storeId="storeId"
 		ref="loadPage"
-		:phone='phone'></Loading>
+		:phone='phone' 
+		:sourceCode="sourceCode"
+		:byChanel="byChanel"></Loading>
 	<div v-else class="body" :style="getBg()">
 		<div class="logout">
 			<text>{{this.isLogin?this.phoneS:'您好！'}}【</text>
