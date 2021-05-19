@@ -38,7 +38,7 @@
 		        <div @click="openMy" class=" fl w50"><img src="https://ah.189.cn/sj/cms/activity/img/icon_hdgz.png"></div>
 		        <div @click="$refs.activityRulesPopup.open()" class=" fl w50 ml10"><img src="https://ah.189.cn/sj/cms/activity/img/icon_wdjp.png"></div>
 		    </div>
-		    <div class=" clear">
+		    <div class="clear">
 		</div>
 		<!--中奖名单-->
 		<ZjmdPanel :rcdList='allAwardListTopC'></ZjmdPanel>
@@ -258,6 +258,9 @@
 			logout(){
 				this.isLogout=true
 				this.loading=true
+				this.$nextTick(()=>{
+					this.$refs.loadPage.init()
+				})
 			},
 			copyUrl(){
 				window.clipboardData.setData("Text",window.location.href)

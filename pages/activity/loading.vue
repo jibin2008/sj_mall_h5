@@ -123,6 +123,7 @@
 				})
 				this.loadStoreInfo().then(()=>{
 					if(this.logout){
+						uni.hideLoading()
 						this.$refs.changePhonePopup.open()
 					}else{
 						new Promise((rs,rj)=>{
