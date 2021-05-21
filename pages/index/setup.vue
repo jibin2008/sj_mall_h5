@@ -2,7 +2,7 @@
 	<view>
 		<view class="header">装宽带</view>
 		<FormItem label="抽中奖品">{{jp}}</FormItem>
-		<Title text="更具国家实名制要求,请准确提供身份证信息"></Title>
+		<Title text="根据国家实名制要求,请准确提供身份证信息"></Title>
 		<FormItem label="您的姓名" v-model="name" placeholder="请输入身份证姓名"></FormItem>
 		<FormItem label="身份证号" v-model="idCardCode" placeholder="请输入身份证号"></FormItem>
 		<FormItem label="联系电话">{{phoneNum}}</FormItem>
