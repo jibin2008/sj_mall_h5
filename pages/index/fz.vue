@@ -1,10 +1,10 @@
 <template>
-	<view @click="showRslt" class="bd f-main">
-		<view class="bd rslt">
+	<view @click="showRslt" class="bd f-main" :class="award?'':'thk'">
+		<view v-if="award" class="bd rslt">
 			<text class="t1">恭喜您</text>
 			<text class="t2">抽中</text>
 			<view class="dt">
-				<div class="t2 dts">50元直升优惠券</div>
+				<div class="t2 dts">{{awardName}}</div>
 			</view>
 		</view>
 		<view ref="gz" :animation="animationData" class="bd fg" :style="`background-image: url(${cover})`">
@@ -20,6 +20,12 @@
 			},
 			show:{
 				default:false
+			},
+			award:{
+				default:false
+			},
+			awardName:{
+				default:""
 			}
 		},
 		data(){
@@ -93,5 +99,8 @@
 		display: table-cell;
 		vertical-align: middle;
 		text-align: center;
+	}
+	.thk{
+		background-image: url(../../static/img/3.png);
 	}
 </style>

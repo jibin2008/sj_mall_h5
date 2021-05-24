@@ -165,7 +165,7 @@ function ejs(){
 }
 
 export function queryLocalPhoneNumber(){
-	// return Promise.resolve("17309693263")
+	return Promise.resolve("17309693263")
 	let phCookie=getCookie('dxytPhoneNumber')
 	if(phCookie&&phCookie!==''){
 		return Promise.resolve(phCookie)

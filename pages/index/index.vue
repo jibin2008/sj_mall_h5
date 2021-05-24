@@ -8,13 +8,13 @@
 		
 		<image mode="widthFix" src="../../static/img/f_01.jpg"></image>
 		<view class="fp-view">
-			<fzItm ref="fp" @kj="kj" 
-				:resultIMg="(isTarget&&myAwardList.length==0)?'https://ah.189.cn/sj/cms/activity/dc/static/img/2.png':'https://ah.189.cn/sj/cms/activity/dc/static/img/3.png'" 
+			<fzItm ref="fp" @fz="kj" 
+				:resultIMg="'https://ah.189.cn/sj/cms/activity/dc/static/img/3.png'" 
 				class="fpv">
 				
 			</fzItm>
 		</view>
-		<ZjmdPanel :rcdList="rcdListTop"></ZjmdPanel>
+		<ZjmdPanel :rcdList="allAwardListTop"></ZjmdPanel>
 		<panel title="活动规则">
 			<view class="rules">
 				<p>一、参与用户范围：安徽电信用户。</p>
@@ -39,7 +39,6 @@
 		@click="$refs.myAwardPop.open()">
 			<image mode="widthFix" src="../../static/img/icon.png"></image>
 		</span>
-		<img v-if="canBuy" src="https://ah.189.cn/sj/cms/activity/dc/static/img/btn.png" class="bl-btn" @click="handle" />
 		<ChangePhonePopup ref="changePhonePopup" v-model="phoneNum"></ChangePhonePopup>
 		<uni-popup ref="jhPop">
 			<scroll-view :scroll-y="true" class="jh-view">
@@ -62,7 +61,8 @@
 	import uniPopup from '@/components/uni-popup/uni-popup.vue'
 	import myAwardRcd from "../activity/components/popup/my-award-popup.vue"
 	import panel from "./panel.vue"
-	import ZjmdPanel from "./zjmd-panel.vue"
+	import ZjmdPanel from "./zjmd-panel.vue"	
+	import {parseType} from '@/common/utils.js'
 	import {
 		queryLocalPhoneNumber
 	} from '@/common/mm.js'
@@ -85,14 +85,46 @@
 		},
 		data() {
 			return {
+				awardsList:[
+					{
+						"productCode": 18367,
+						"icon": "/static/imgs/50.png",
+						"text": "50元直升5G",
+						textType:"优惠券"
+					},
+					{
+						"productCode": 18981,
+						"icon": "/static/imgs/20.png",
+						"text": "20元语音流量",
+						textType:"优惠券"
+					},
+					{
+						"icon": "/static/imgs/VR.png",
+						"text": "VR体验券"
+					},
+					{
+						"icon": "/static/imgs/5.png",
+						"text": "谢谢参与"
+					},
+					{
+						"productCode": 18953,
+						"icon": "/static/imgs/50.png",
+						"text": "50元5G畅想",
+						textType:"年包优惠券"
+					},
+					{
+						"productCode": 11161,
+						"icon": "/static/imgs/20.png",
+						"text": "20元会员权益",
+						textType:"月包优惠券"
+					}
+				],
 				phoneNum: "",
-				isTarget: false,
 				storeId:"",
 				userId:"",
 				sourceCode:"",
-				canBuy:false,
 				myAwardList:[],
-				rcdListTop:[]
+				allAwardListTop:[]
 			}
 		},
 		onLoad(options) {
@@ -109,64 +141,95 @@
 			if(options.sourceCode)
 				this.sourceCode=options.sourceCode
 			
-			recode()
 			uni.showLoading({
 				title: "请稍后~~~",
 				mask: true
 			})
 			queryLocalPhoneNumber()
 				.then(phoneNum => {
+					uni.hideLoading()
 					this.phoneNum = phoneNum
+					this.refreshActAwardRecord()
 				})
 				.catch(msg => {
 					uni.hideLoading()
 					this.$refs.changePhonePopup.open()
 				})
+			recode()
+			getActAwardRecordTop20().then(resp=>{
+				this.allAwardListTop=resp.data.map(itm=>{
+					let award=this.awardsList[itm.awardId];
+					return {
+						tel:itm.phoneNumber,
+						cnp:award.text + (award.textType?award.textType:"")
+					}
+				})
+			})
 		},
 		methods: {
 			showAward(e) {},
 			handle() {
-				if (this.isTarget) {
-					uni.setStorageSync("phoneNum",this.phoneNum)
-					uni.redirectTo({
-						url: `/pages/index/setup?userId=${this.userId}&storeId=${this.storeId}&sourceCode=${this.sourceCode}`
-					})
-				}
 			},
 			logout() {
 				this.phoneNum = ""
 				this.$refs.fp.reset()
 			},
-			kj(){
-				if(this.isTarget)
-					this.canBuy=true
-			},
-			useNow(){
-				this.handle()
-			}
-		},
-		watch: {
-			phoneNum(val) {
-				if (val && val !== "") {
-					uni.showLoading({
-						title: "请稍后~~~",
-						mask: true
-					})
-					api.isTarget(val).then(resp => {
-						uni.hideLoading()
-						this.isTarget = resp.data
-					})
-					api.myRcd(val).then(rsp=>{
-						this.myAwardList=rsp.data.map(itm=>{
-							return {
-								couponName:"0元加装100M宽带",
-								createTime:itm.createTime
-							}
-						})
-					})
-				} else {
+			kj(idx){
+				if(this.phone===''){
 					this.$refs.changePhonePopup.open()
+					return
 				}
+				uni.showLoading({
+					title: '请稍后'
+				})
+				this.refreshActAwardRecord(()=>{
+					if(this.myAwardList.length>0){
+						uni.hideLoading()
+						uni.showToast({
+							title:"您今天已经参加过本次活动！"
+						})
+					}else{
+						getActAward({
+							phoneNumber:this.phoneNum,
+							storeId:this.storeId,
+							userId:this.userId,
+							sourceCode:this.sourceCode,
+							byChanel:this.byChanel
+						}).then(rsp=>{
+							uni.hideLoading()
+							this.awardIndex=rsp.data
+							let award = this.awardsList[this.awardIndex]
+							this.$refs.fp.showResult(idx,this.awardIndex!==3,award.text)
+							this.refreshActAwardRecord()
+						})
+					}
+				})
+			},
+			useNow(awardIdx){
+				if(awardIdx===7){
+					window.location.href=`https://ah.189.cn/sj/cms/socialH5/product/productList.html?type=0&storeId=${this.storeId}&userId=${this.userId}`
+				}
+				else{
+					let prodCode=this.awardsList[awardIdx].productCode
+					window.location.href=`https://ah.189.cn/sj/cms/socialH5/product/other/Detail.html?shareType=1&storeId=${this.storeId}&userId=${this.userId}&productId=${prodCode}`
+				}
+			},
+			refreshActAwardRecord(callback){
+				getActAwardRecord(this.phoneNum).then(rsp=>{
+					this.myAwardList=rsp.data
+					.filter(itm=>{return itm.awardId!==3})
+					.map(itm=>{
+						let award = this.awardsList[itm.awardId]
+						return {
+							couponName:award.text+parseType(award.type),
+							awardId:itm.awardId,
+							prodCode:award.productCode,
+							createTime:itm.createTime
+						}
+					})
+					if(callback)
+						callback()
+				})
 			}
 		}
 	}

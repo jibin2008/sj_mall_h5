@@ -1,18 +1,14 @@
 <template>
 	<view class="fp">
-		<fp id="itm1" :result="resultIMg" class="itm" :show="idxShow(0)" @showRslt="showResult(0)"></fp>
-		<fp id="itm2" :result="resultIMg" class="itm" :show="idxShow(1)" @showRslt="showResult(1)"></fp>
-		<fp id="itm3" :result="resultIMg" class="itm" :show="idxShow(2)" @showRslt="showResult(2)"></fp>
+		<fp :awardName="awardName" :award="awardL[0]" id="itm1" class="itm" :show="idxShow(0)" @showRslt="click(0)"></fp>
+		<fp :awardName="awardName" :award="awardL[1]" id="itm2" class="itm" :show="idxShow(1)" @showRslt="click(1)"></fp>
+		<fp :awardName="awardName" :award="awardL[2]" id="itm3" class="itm" :show="idxShow(2)" @showRslt="click(2)"></fp>
 	</view>
 </template>
 
 <script>
 	import fp from "./fz.vue"
 	export default{
-		props:{
-			resultIMg:{
-			}
-		},
 		components:{
 			fp
 		},
@@ -20,24 +16,34 @@
 			return {
 				show:false,
 				resultIndex:0,
-				hasClick:false
+				hasClick:false,
+				awardL:[
+					false,false,false
+				],
+				awardName:''
 			}
 		},
 		methods:{
 			idxShow(idx){
 				return this.show&&idx===this.resultIndex
 			},
-			showResult(idx){
-				if(this.hasClick)
-					return
-				this.hasClick=true
+			showResult(idx,award,awardName){
+				let awT=[false,false,false]
+				awT[idx]=award
+				this.awardL=awT
+				this.awardName=awardName
 				this.resultIndex=idx
 				this.show=true
-				this.$emit("kj")
 			},
 			reset(){
 				this.hasClick=false
 				this.show=false
+			},
+			click(idx){
+				if(this.hasClick)
+					return
+				this.hasClick=true
+				this.$emit("fz",idx)
 			}
 		}
 	}

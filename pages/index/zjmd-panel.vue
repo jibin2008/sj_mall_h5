@@ -33,7 +33,7 @@
 <style scoped>
 	.list_lh{ height:400rpx; overflow:hidden; padding:0px 20rpx; line-height:70rpx; padding-bottom:-20rpx;}
 
-	.bbxd{border-bottom:1px dashed #c9c8c1;}
+	.bbxd{border-bottom:1px dashed #c9c8c1;text-align: center;}
 	
 	#sliderUl {
 		padding-bottom: 20rpx;
