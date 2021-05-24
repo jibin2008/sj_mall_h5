@@ -45,7 +45,6 @@
 
 <style scoped>
 	.fp{
-		width: 630rpx;
 		padding: 40rpx 0rpx;
 		display: flex;
 		justify-content: center;
@@ -54,6 +53,6 @@
 	.fp .itm{
 		width: 187rpx;
 		height: 239rpx;
-		margin: 0rpx 10rpx;
+		margin: 0rpx 5rpx;
 	}
 </style>

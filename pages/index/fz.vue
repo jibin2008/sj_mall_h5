@@ -1,6 +1,13 @@
 <template>
-	<view @click="showRslt" class="bd" :style="`background-image: url(${result})`">
-		<view ref="gz" :animation="animationData" class="bd" :style="`background-image: url(${cover})`">
+	<view @click="showRslt" class="bd f-main">
+		<view class="bd rslt">
+			<text class="t1">恭喜您</text>
+			<text class="t2">抽中</text>
+			<view class="dt">
+				<div class="t2 dts">50元直升优惠券</div>
+			</view>
+		</view>
+		<view ref="gz" :animation="animationData" class="bd fg" :style="`background-image: url(${cover})`">
 		</view>
 	</view>
 </template>
@@ -8,9 +15,6 @@
 <script>
 	export default{
 		props:{
-			result:{
-				default:"https://ah.189.cn/sj/cms/activity/dc/static/img/2.png"
-			},
 			cover:{
 				default:"https://ah.189.cn/sj/cms/activity/dc/static/img/1.png"
 			},
@@ -48,9 +52,46 @@
 </script>
 
 <style scoped>
+	.f-main{
+		position: relative;
+	}
 	.bd{
 		background-repeat: round;
 		height: 100%;
 		width: 100%;
+	}
+	.fg{
+		position: absolute;
+		top: 0rpx;
+	}
+	.rslt{
+		background-image: url(../../static/img/p-bg.png);
+		display: flex;
+		flex-direction: column;
+		justify-content: start;
+		align-items: center;
+	}
+	.t1{
+		font-size: 36rpx;
+		color: #bc4a01;
+		font-weight: bold;
+		margin-top: 20rpx;
+		margin-bottom: 10rpx;
+	}
+	
+	.t2{
+		font-size: 22rpx;
+		color: #bd4c00;
+		font-weight: bold;
+		line-height: 30rpx;
+	}
+	.dt{
+		display: table;
+		max-width: 80%;
+	}
+	.dts{
+		display: table-cell;
+		vertical-align: middle;
+		text-align: center;
 	}
 </style>

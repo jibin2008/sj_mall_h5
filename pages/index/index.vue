@@ -5,13 +5,40 @@
 			<text style="text-decoration: underline;" @click="logout">{{this.isLogin?'退出':'请登录'}}</text>
 			<text>】</text>
 		</div>
-
-
-		<fzItm ref="fp" @kj="kj" :resultIMg="(isTarget&&myAwardList.length==0)?'https://ah.189.cn/sj/cms/activity/dc/static/img/2.png':'https://ah.189.cn/sj/cms/activity/dc/static/img/3.png'" class="fpv"></fzItm>
+		
+		<image mode="widthFix" src="../../static/img/f_01.jpg"></image>
+		<view class="fp-view">
+			<fzItm ref="fp" @kj="kj" 
+				:resultIMg="(isTarget&&myAwardList.length==0)?'https://ah.189.cn/sj/cms/activity/dc/static/img/2.png':'https://ah.189.cn/sj/cms/activity/dc/static/img/3.png'" 
+				class="fpv">
+				
+			</fzItm>
+		</view>
+		<ZjmdPanel :rcdList="rcdListTop"></ZjmdPanel>
+		<panel title="活动规则">
+			<view class="rules">
+				<p>一、参与用户范围：安徽电信用户。</p>
+				<p>二、活动时间：2021年6月1日—2021年6月30日。</p>
+				<p>三、抽奖规则：活动期间内，同一手机号码每日可参与1次翻卡，中奖概率随机。</p>
+				<p>四、奖品包含：20元优惠券、50元优惠券（仅限办理指定业务使用）。</p>
+				<p>五、奖品使用范围：</p>
+				<p>1、若您翻到优惠券类奖品，将跳转至相应的活动页，具体办理规则以跳转活动页提示为准。业务订购成功后，优惠券将以翼支付权益金的形式在7个工作日内充值到参与号码的翼支付账户中。</p>
+				<p>2、优惠券有效期为24小时，请您抽到奖品后及时使用。</p>
+				<p>六、翼支付权益金到账及使用说明：</p>
+				<p>1、使用规则：可在翼支付合作的各类商户及翼支付客户端使用，可拆分多次使用，有效期120天(过期作废不可补赠送)，翼支付账户等级必须为二星级及以绑卡上用户，更多使用详情见翼支付客户端；</p>
+				<p>2、查询方式：登录翼支付客户端—我的—权益金；</p>
+				<p>3、办理前请先确认翼支付账户是否正常，若翼支付账户异常（未开通账户/黑名单限制/星级未达到二星等）则无法赠送，解决账户异常后可在我的奖品中补领。</p>
+				<p>七、特别提醒:</p>
+				<p>1、对于任何通过不正当或第三方技术手段恶意攻击、篡改活动的参与活动者，安徽电信有权在不事先通知的情况下取消其参加活动及得奖资格；</p>
+				<p>2、如遇不可抗力因素，本次活动因故无法进行时，安徽电信在法律允许的范围内有权决定取消、终止、修改或暂停本活动。</p>
+			</view>
+		</panel>
 		
 		
-		<text class="dczc-hdgz" @click="$refs.jhPop.open()">激活教程</text>
-		<text v-if="isLogin" class="dczc-hdgz dczc-wdjp" @click="$refs.myAwardPop.open()">我的奖品</text>
+		<span class="dczc-hdgz" 
+		@click="$refs.myAwardPop.open()">
+			<image mode="widthFix" src="../../static/img/icon.png"></image>
+		</span>
 		<img v-if="canBuy" src="https://ah.189.cn/sj/cms/activity/dc/static/img/btn.png" class="bl-btn" @click="handle" />
 		<ChangePhonePopup ref="changePhonePopup" v-model="phoneNum"></ChangePhonePopup>
 		<uni-popup ref="jhPop">
@@ -25,10 +52,17 @@
 
 <script>
 	import fzItm from "./fzItm.vue"
-	import api from "./api.js"
+	import { 
+		getActAwardRecord,
+		getActAward,
+		getActAwardRecordTop20,
+		recode
+	} from "./api.js"
 	import ChangePhonePopup from "../activity/components/popup/change-phone-popup.vue"
 	import uniPopup from '@/components/uni-popup/uni-popup.vue'
 	import myAwardRcd from "../activity/components/popup/my-award-popup.vue"
+	import panel from "./panel.vue"
+	import ZjmdPanel from "./zjmd-panel.vue"
 	import {
 		queryLocalPhoneNumber
 	} from '@/common/mm.js'
@@ -37,7 +71,9 @@
 			fzItm,
 			ChangePhonePopup,
 			uniPopup,
-			myAwardRcd
+			myAwardRcd,
+			panel,
+			ZjmdPanel
 		},
 		computed: {
 			isLogin() {
@@ -55,7 +91,8 @@
 				userId:"",
 				sourceCode:"",
 				canBuy:false,
-				myAwardList:[]
+				myAwardList:[],
+				rcdListTop:[]
 			}
 		},
 		onLoad(options) {
@@ -63,6 +100,7 @@
 				this.storeId=options.storeId
 			if(options.shopId)
 				this.storeId=options.shopId
+				
 			if(options.userId)
 				this.userId=options.userId
 			if(options.mid)
@@ -70,6 +108,8 @@
 				
 			if(options.sourceCode)
 				this.sourceCode=options.sourceCode
+			
+			recode()
 			uni.showLoading({
 				title: "请稍后~~~",
 				mask: true
@@ -134,36 +174,30 @@
 
 <style>
 	.content {
-		background-image: url(../../static/img/bg.jpg);
-		background-repeat: no-repeat;
-		background-size: cover;
-		width: 750rpx;
-		height: 4675rpx;
+		background: #ec454f;
 		position: relative;
 	}
-
-	.dczc-hdgz {
-		position: fixed;
-		right: 0rpx;
-		top: 100rpx;
-		width: 126rpx;
-		height: 44rpx;
-		font-size: 22rpx;
-		line-height: 44rpx;
-		text-align: center;
-		background: #ff8201;
-		color: #FFFFFF;
-		font-weight: bold;
-		border-radius: 22rpx 0rpx 0rpx 22rpx;
+	.content image{
+		width: 750rpx;
 	}
-	.dczc-wdjp{
-		top: 150rpx;
+	.fp-view{
+		background: url(../../static/img/f_02.jpg) no-repeat;
+		background-size: contain;
+		height: 391rpx;
+		width: 750rpx;
+		padding-top: 130rpx;
+	}
+	.dczc-hdgz {
+		position: absolute;
+		right: 0rpx;
+		top: 628rpx;
+	}
+	.dczc-hdgz image{
+		width: 172rpx;
+		height: 74rpx;
 	}
 
 	.fpv {
-		position: absolute;
-		top: 980rpx;
-		left: 56rpx;
 	}
 
 	.bl-btn {
@@ -186,5 +220,11 @@
 	}
 	.jh-img{
 		width: 640rpx;
+	}
+	.rules {
+		padding: 0rpx 30rpx;
+		font-size: 24rpx;
+		color: #999;
+		line-height: 36rpx;
 	}
 </style>
