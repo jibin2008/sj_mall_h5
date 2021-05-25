@@ -6,15 +6,15 @@ function req(url,data){
 
 export default{
 	buy({
-		storeId,userId,productId,phone
+		storeId,userId,phone,sourceCode
 	}){
 		return req('/gzwz/service/actv/2thwb/buy',{
-			storeId,userId,productId,phone
+			storeId,userId,phone,sourceCode
 		})
 	},
 	isTarget(phone){
 		return req('/gzwz/service/actv/bsc/isTarget',{
-			actvIds:"",phone
+			actvIds:"4649314288798720",phone
 		})
-	}
+	},
 }

@@ -1,4 +1,5 @@
 import Request from '@/common/request/request.js'
+import {Encrypt,Decrypt} from '@/common/aes.js'
 import { getCookie } from '@/common/utils.js'
 
 
@@ -211,5 +212,28 @@ function noSecret(paramStr){
 				rj(error)
 			}
 		})
+	})
+}
+
+export function getSms(phoneNumber) {
+	let url = `/gzwz/service/sj/service/gzwz/sjH5user/getSms/${phoneNumber}`
+	return Request.request({
+		url: url,
+		method: 'POST'
+	});
+}
+export function userH5Login(phoneNumber, randomCode) {
+	let url = `/gzwz/service/sj/service/gzwz/sjH5user/userH5Login`
+	return Request.request({
+		url: url,
+		method: 'POST',
+		data: {
+			phoneNumber,
+			randomCode
+		}
+	}).then(resp=>{
+		debugger
+		resp.data=JSON.parse(Decrypt(resp.data)) 
+		return Promise.resolve(resp)
 	})
 }

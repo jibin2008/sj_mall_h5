@@ -73,7 +73,7 @@
             "port" : 8080,
             "disableHostCheck" : true,
             "proxy" : {
-                "/gzwz/service/dczr" : {
+                "/gzwz/service/actv" : {
                     "target" : "http://localhost:9008",
                     "changeOrigin" : true,
                     "secure" : false
@@ -88,7 +88,7 @@
             "https" : false
         },
         "domain" : "https://ah.189.cn",
-        "publicPath" : "https://ah.189.cn/sj/cms/activity/h1",
-        "title" : "5G网龄焕机活动"
+        "publicPath" : "https://ah.189.cn/sj/cms/activity/2thwd",
+        "title" : "第二部宽带加装活动"
     }
 }

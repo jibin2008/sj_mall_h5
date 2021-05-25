@@ -3,9 +3,9 @@
 		icon='https://ah.189.cn/sj/cms/activity/img/cry.png'
 	>
 		<template>
-			<p class="xxcy">谢谢参与</p>
-			<p class="hdtj">—活动推荐—</p>
-			<img @click="redirect" class="hdimg" src="https://ah.189.cn/sj/cms/activity/img/202104/hd.png"/>
+			<p class="xxcy">亲，很遗憾~</p>
+			<p class="hdtj">您未抽中办理资格</p>
+			<!-- <img @click="redirect" class="hdimg" src="https://ah.189.cn/sj/cms/activity/img/202104/hd.png"/> -->
 			<view style="height: 40rpx;"></view>
 		</template>
 	</AwardResultPopup>
