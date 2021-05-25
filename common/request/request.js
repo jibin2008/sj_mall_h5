@@ -57,16 +57,18 @@ const resInterceptor = (response, conf={}) => {
     // 必须返回你需要处理的数据，将会进入resolve（then中处理）
     // 如果需要reject，需要设置mypReqToReject:true，还可以携带自己定义的任何提示内容（catch中处理）
 	if(conf.header.encrypt === "aes"){
-		debugger
-		let data = JSON.parse(Decrypt(response.data.content))
-		if(data.seq === conf.header.encryptSeq){
-			response.data = data.data
-		}else{
-			return {
-				mypReqToReject:true,
-				errorMsg:"数据异常！！！"
+		if(response.statusCode === 200){
+			let data = JSON.parse(Decrypt(response.data.content))
+			if(data.seq === conf.header.encryptSeq){
+				response.data = data.data
+			}else{
+				return {
+					mypReqToReject:true,
+					errorMsg:"数据异常！！！"
+				}
 			}
-		}
+		}else
+			return response
 	}
     return response
 }
@@ -74,5 +76,16 @@ const resInterceptor = (response, conf={}) => {
 // 实例化请求器
 // 您可以根据需要实例化多个请求器
 const req = new Request(config, reqInterceptor, resInterceptor)
+
+req.aesReq = function(url,data){
+	return this.request({
+		url,
+		method: 'POST',
+		data,
+		header:{
+			encrypt:"aes"
+		}
+	})
+}
 
 export default req
