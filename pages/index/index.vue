@@ -1,12 +1,12 @@
 <template>
 	<div class="content">
+		
+		<image mode="widthFix" src="../../static/img/f_01.jpg"></image>
 		<div class="logout">
 			<text>{{this.isLogin?this.phoneS:'您好！'}}【</text>
 			<text style="text-decoration: underline;" @click="logout">{{this.isLogin?'退出':'请登录'}}</text>
 			<text>】</text>
 		</div>
-		
-		<image mode="widthFix" src="../../static/img/f_01.jpg"></image>
 		<view class="fp-view">
 			<fzItm ref="fp" @fz="kj" 
 				:resultIMg="'https://ah.189.cn/sj/cms/activity/dc/static/img/3.png'" 
@@ -174,6 +174,7 @@
 			logout() {
 				this.phoneNum = ""
 				this.$refs.fp.reset()
+				this.$refs.changePhonePopup.open()
 			},
 			kj(idx){
 				if(this.phone===''){
