@@ -62,7 +62,6 @@
 	import myAwardRcd from "../activity/components/popup/my-award-popup.vue"
 	import panel from "./panel.vue"
 	import ZjmdPanel from "./zjmd-panel.vue"	
-	import {parseType} from '@/common/utils.js'
 	import {
 		queryLocalPhoneNumber
 	} from '@/common/mm.js'
@@ -157,7 +156,9 @@
 				})
 			recode()
 			getActAwardRecordTop20().then(resp=>{
-				this.allAwardListTop=resp.data.map(itm=>{
+				this.allAwardListTop=resp.data.filter(itm=>{
+					return itm.awardId!==2
+				}).map(itm=>{
 					let award=this.awardsList[itm.awardId];
 					return {
 						tel:itm.phoneNumber,
@@ -217,11 +218,11 @@
 			refreshActAwardRecord(callback){
 				getActAwardRecord(this.phoneNum).then(rsp=>{
 					this.myAwardList=rsp.data
-					.filter(itm=>{return itm.awardId!==3})
+					.filter(itm=>{return itm.awardId!==3&&itm.awardId!==2})
 					.map(itm=>{
 						let award = this.awardsList[itm.awardId]
 						return {
-							couponName:award.text+parseType(award.type),
+							couponName:award.text+(award.textType?award.textType:""),
 							awardId:itm.awardId,
 							prodCode:award.productCode,
 							createTime:itm.createTime
