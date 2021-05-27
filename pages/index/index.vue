@@ -36,7 +36,7 @@
 		
 		
 		<span class="dczc-hdgz" 
-		@click="$refs.myAwardPop.open()">
+		@click="showAward">
 			<image mode="widthFix" src="../../static/img/icon.png"></image>
 		</span>
 		<ChangePhonePopup ref="changePhonePopup" v-model="phoneNum"></ChangePhonePopup>
@@ -61,7 +61,8 @@
 	import uniPopup from '@/components/uni-popup/uni-popup.vue'
 	import myAwardRcd from "../activity/components/popup/my-award-popup.vue"
 	import panel from "./panel.vue"
-	import ZjmdPanel from "./zjmd-panel.vue"	
+	import ZjmdPanel from "./zjmd-panel.vue"
+	import {isEmpty} from '@/common/common.js'
 	import {
 		queryLocalPhoneNumber
 	} from '@/common/mm.js'
@@ -76,7 +77,7 @@
 		},
 		computed: {
 			isLogin() {
-				return this.phoneNum !== ''
+				return !isEmpty(this.phoneNum)
 			},
 			phoneS() {
 				return this.phoneNum === '' ? '' : (this.phoneNum.substr(0, 3) + '****' + this.phoneNum.substr(7, 4))
@@ -88,14 +89,12 @@
 					{
 						"productCode": 18367,
 						"icon": "/static/imgs/50.png",
-						"text": "50元直升5G",
-						textType:"优惠券"
+						"text": "50元优惠券"
 					},
 					{
 						"productCode": 18981,
 						"icon": "/static/imgs/20.png",
-						"text": "20元语音流量",
-						textType:"优惠券"
+						"text": "20元优惠券"
 					},
 					{
 						"icon": "/static/imgs/VR.png",
@@ -108,14 +107,12 @@
 					{
 						"productCode": 18953,
 						"icon": "/static/imgs/50.png",
-						"text": "50元5G畅想",
-						textType:"年包优惠券"
+						"text": "50元优惠券"
 					},
 					{
 						"productCode": 11161,
 						"icon": "/static/imgs/20.png",
-						"text": "20元会员权益",
-						textType:"月包优惠券"
+						"text": "20元月包优惠券"
 					}
 				],
 				phoneNum: "",
@@ -123,7 +120,8 @@
 				userId:"",
 				sourceCode:"",
 				myAwardList:[],
-				allAwardListTop:[]
+				allAwardListTop:[],
+				isClick:false
 			}
 		},
 		onLoad(options) {
@@ -162,7 +160,7 @@
 					let award=this.awardsList[itm.awardId];
 					return {
 						tel:itm.phoneNumber,
-						cnp:award.text + (award.textType?award.textType:"")
+						cnp:award.text
 					}
 				})
 			})
@@ -173,14 +171,18 @@
 			},
 			logout() {
 				this.phoneNum = ""
+				this.isClick=false
 				this.$refs.fp.reset()
 				this.$refs.changePhonePopup.open()
 			},
 			kj(idx){
-				if(this.phone===''){
+				if(isEmpty(this.phoneNum)){
 					this.$refs.changePhonePopup.open()
 					return
 				}
+				if(this.isClick)
+					return
+				this.isClick=true
 				uni.showLoading({
 					title: '请稍后'
 				})
@@ -232,6 +234,13 @@
 					if(callback)
 						callback()
 				})
+			},
+			showAward(){
+				if(isEmpty(this.phoneNum)){
+					this.$refs.changePhonePopup.open()
+					return
+				}
+				this.$refs.myAwardPop.open()
 			}
 		}
 	}

@@ -1,5 +1,5 @@
 <template>
-	<uni-popup :maskClick="false" ref='popup'>
+	<uni-popup ref='popup'>
 	  <div class="ad_tc">
 	    <!-- <a @click="$refs.popup.close" class="dblock fr close">
 	      <img class="close-img" src="https://ah.189.cn/sj/cms/activity/img/close1.png"/>

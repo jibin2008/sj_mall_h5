@@ -40,9 +40,9 @@
 				this.show=false
 			},
 			click(idx){
-				if(this.hasClick)
-					return
-				this.hasClick=true
+				// if(this.hasClick)
+				// 	return
+				// this.hasClick=true
 				this.$emit("fz",idx)
 			}
 		}
