@@ -13,8 +13,8 @@ export default{
 		})
 	},
 	isTarget(phone){
-		return req('/gzwz/service/actv/bsc/isTarget',{
-			actvIds:"4649314288798720",phone
+		return req('/gzwz/service/actv/2thwb/isTarget',{
+			phone
 		})
 	},
 }
