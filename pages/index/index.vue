@@ -187,8 +187,6 @@
 				if(this.isClick)
 					return
 				this.isClick=true
-				this.$refs.fp.showResult(idx,1,"奖项2")
-				return
 				uni.showLoading({
 					title: '请稍后'
 				})
