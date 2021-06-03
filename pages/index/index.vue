@@ -89,12 +89,14 @@
 					{
 						"productCode": 18367,
 						"icon": "/static/imgs/50.png",
-						"text": "50元优惠券"
+						"text": "50元优惠券",
+						ty:"(仅限焕新几乎年包使用)"
 					},
 					{
 						"productCode": 18981,
 						"icon": "/static/imgs/20.png",
-						"text": "20元优惠券"
+						"text": "20元优惠券",
+						ty:"(仅限焕新几乎年包使用)"
 					},
 					{
 						"icon": "/static/imgs/VR.png",
@@ -107,12 +109,14 @@
 					{
 						"productCode": 18953,
 						"icon": "/static/imgs/50.png",
-						"text": "50元优惠券"
+						"text": "50元优惠券",
+						ty:"(仅限焕新几乎年包使用)"
 					},
 					{
 						"productCode": 11161,
 						"icon": "/static/imgs/20.png",
-						"text": "20元月包优惠券"
+						"text": "20元月包优惠券",
+						ty:"(仅限焕新几乎年包使用)"
 					}
 				],
 				phoneNum: "",
@@ -183,6 +187,8 @@
 				if(this.isClick)
 					return
 				this.isClick=true
+				this.$refs.fp.showResult(idx,1,"奖项2")
+				return
 				uni.showLoading({
 					title: '请稍后'
 				})
@@ -228,7 +234,8 @@
 							couponName:award.text+(award.textType?award.textType:""),
 							awardId:itm.awardId,
 							prodCode:award.productCode,
-							createTime:itm.createTime
+							createTime:itm.createTime,
+							sTxt:award.ty
 						}
 					})
 					if(callback)

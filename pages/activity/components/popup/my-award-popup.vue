@@ -10,10 +10,10 @@
 					<view class="item" v-for="itm in awardRecordList">
 						<view class="fl item-name">
 							<view class="name1">{{itm.couponName}}</view>
-							<view class="name2">{{getDateStr(itm.createTime.time)}}</view>
+							<view class="name2">{{itm.sTxt}}</view>
 						</view>
-						<!-- <view class="fr btn" v-if="itm.type===5&&itm.status===0" @click="$emit('use',itm.rcdId)">立即领取</view>
-						<view class="fr btn btn-use" v-else-if="itm.type===5">已领取</view> -->
+						<view class="fr btn" @click="$emit('use',itm.awardId)">立即使用</view>
+						<!-- <view class="fr btn btn-use" v-else-if="itm.type===5">已使用</view> -->
 					</view>
 					<view class="item" v-if="awardRecordList.length===0">
 						<view class="fl item-name">
