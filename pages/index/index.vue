@@ -41,6 +41,8 @@
 				
 			if(option.sourceCode)
 				this.sourceCode=option.sourceCode
+				
+			api.recode()
 		},
 		methods: {
 			targetJudge(){
