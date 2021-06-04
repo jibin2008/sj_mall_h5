@@ -1,4 +1,5 @@
 import Request from "../../common/request/request.js"
+import { getCookie } from '@/common/utils.js'
 
 function req(url,data){
 	return Request.aesReq(url,data)
@@ -17,7 +18,7 @@ export default{
 			phone
 		})
 	},
-	function recode(){
+	recode(){
 		let url=`/gzwz/service/sj/service/gzwz/sjH5user/visitorRecord`
 		
 		let sourceCode = getCookie('sourceCode')
