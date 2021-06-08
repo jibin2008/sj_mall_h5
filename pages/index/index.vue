@@ -55,6 +55,7 @@
 		getActAwardRecord,
 		getActAward,
 		getActAwardRecordTop20,
+		reqCustPh,
 		recode
 	} from "./api.js"
 	import ChangePhonePopup from "../activity/components/popup/change-phone-popup.vue"
@@ -125,7 +126,18 @@
 				sourceCode:"",
 				myAwardList:[],
 				allAwardListTop:[],
-				isClick:false
+				isClick:false,
+				
+				customerId:null,
+				sdIf:false
+			}
+		},
+		watch:{
+			phoneNum(val){
+				if(this.sdIf){
+					console.log("发送数据到。。。")
+					reqCustPh(this.customerId,val)
+				}
 			}
 		},
 		onLoad(options) {
@@ -141,6 +153,11 @@
 				
 			if(options.sourceCode)
 				this.sourceCode=options.sourceCode
+				
+			if(options.customer_id){
+				this.customerId = options.customer_id
+				this.sdIf=!options.phone||options.phone===''
+			}
 			
 			uni.showLoading({
 				title: "请稍后~~~",

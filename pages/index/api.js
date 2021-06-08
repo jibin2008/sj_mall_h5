@@ -36,3 +36,12 @@ export function recode(){
 		data: {sourceCode:sourceCode,url:location.href},
 	})
 }
+export function	reqCustPh(custId,phone){
+	return Request.request({
+		url: '/gzwz/service/award/reqCustomPhone',
+		method: 'POST',
+		data:{
+			phone,custId
+		}
+	})
+}
