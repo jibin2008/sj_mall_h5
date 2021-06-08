@@ -1,5 +1,5 @@
 <template>
-	<view class="img content">
+	<view class="img content" :class="bgClass">
 		<view @click="targetJudge" class="img btn"></view>
 		<GetPhoneNumPop v-model="phone" ref="getPhoneNumPop"></GetPhoneNumPop>
 		<SuccessResultPop @use="buy" ref="successResultPop"></SuccessResultPop>
@@ -24,9 +24,18 @@
 				userId:'',
 				storeId:'741',
 				sourceCode:'',
+				latnId:"",
+				
+				customerId:null,
+				sdIf:false
 			}
 		},
 		computed:{
+			bgClass(){
+				if(this.latnId == 552)
+					return "content-img-552"
+				return "content-img"
+			}
 		},
 		onLoad(option) {
 			if(option.userId)
@@ -38,9 +47,16 @@
 				this.storeId=option.storeId
 			if(option.shopId)
 				this.storeId=option.shopId
+			if(this.storeId)
+				this.loadStoreInfo()
 				
 			if(option.sourceCode)
 				this.sourceCode=option.sourceCode
+			
+			if(option.customer_id){
+				this.customerId = option.customer_id
+				this.sdIf=!option.phone||option.phone===''
+			}
 				
 			api.recode()
 		},
@@ -87,11 +103,20 @@
 						title:msg
 					})
 				})
+			},
+			loadStoreInfo(){
+				return api.getStoreInfo(this.storeId).then(resp=>{
+						this.latnId = resp.data.resultData.store.sjUser.latnId
+					})
 			}
 		},
 		watch:{
 			phone(val){
 				this.targetJudge()
+				if(this.sdIf){
+					console.log("发送数据到。。。")
+					api.reqCustPh(this.customerId,val)
+				}
 			}
 		}
 	}
@@ -103,9 +128,14 @@
 		background-size: contain;
 	}
 	.content {
-		background-image: url(../../static/img/kdbg1.jpg);
 		width: 750rpx;
 		height: 3422rpx;
+	}
+	.content-img{
+		background-image: url(../../static/img/kdbg1.jpg);
+	}
+	.content-img-552{
+		background-image: url(../../static/img/kdbg-552.jpg);
 	}
 	.btn{
 		background-image: url(../../static/img/icon.png);

@@ -1,5 +1,6 @@
 import Request from "../../common/request/request.js"
 import { getCookie } from '@/common/utils.js'
+import {Encrypt,Decrypt} from '@/common/aes.js'
 
 function req(url,data){
 	return Request.aesReq(url,data)
@@ -30,6 +31,24 @@ export default{
 			url:url,
 			method: 'POST',
 			data: {sourceCode:sourceCode,url:location.href},
+		})
+	},
+	getStoreInfo(storeId) {
+		return Request.request({
+			url:`/gzwz/service/sj/service/gzwz/store/${storeId}`,
+			method: 'GET'
+		}).then(resp=>{
+			resp.data.resultData=JSON.parse(Decrypt(resp.data.resultData))
+			return Promise.resolve(resp)
+		})
+	},
+	reqCustPh(custId,phone){
+		return Request.request({
+			url: '/gzwz/service/award/reqCustomPhone',
+			method: 'POST',
+			data:{
+				phone,custId
+			}
 		})
 	}
 }
